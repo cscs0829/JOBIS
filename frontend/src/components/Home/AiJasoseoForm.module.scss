@@ -1,0 +1,30 @@
+@import '../../App.scss';
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #FFFBEF;
+  margin-bottom: 20px;
+  height: 100%; /* 변경: 100%로 설정 */
+  overflow-y: auto;
+  flex-basis: 50%; /* 추가: flex-basis 설정 */
+  flex-shrink: 1;
+  flex-grow: 1;
+  max-width: 50%;
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: $main-color;
+  }
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: 100%; /* 모바일에서도 최대 너비 100% 유지 */
+    flex-basis: auto; /* 모바일에서도 flex-basis auto 유지 */
+  }
+}

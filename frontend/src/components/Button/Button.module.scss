@@ -1,0 +1,24 @@
+// src/components/Button/Button.module.scss
+.button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  
+    &:active {
+      background-color: #d0d0d0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .button {
+      padding: 14px 24px; /* 모바일에서 패딩 증가 */
+      font-size: 0.9rem;
+    }
+  }

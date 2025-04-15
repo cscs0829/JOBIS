@@ -1,0 +1,26 @@
+// src/components/LoginButton.scss
+
+.login-button {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  
+    button {
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.3s;
+  
+      &:hover {
+        background-color: #666;
+      }
+    }
+  }
+  

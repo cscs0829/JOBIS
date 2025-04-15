@@ -1,0 +1,40 @@
+$main-color: #ff9500;
+$light-color: #fffaec;
+$bg-color: #fff;
+$radius: 15px;
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "Pretendard-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff")
+    format("woff");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard-Regular";
+}
+
+body {
+  margin: 0;
+}
+
+// 투명 박스
+@mixin glass_box($width, $height) {
+  width: $width;
+  height: $height;
+
+  border-radius: $radius;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(25px);
+}

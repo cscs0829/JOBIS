@@ -1,0 +1,45 @@
+@import '../../App.scss';
+
+.resultContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #FFFBEF;
+    margin-bottom: 20px;
+    height: 100%;
+    overflow-y: auto;
+    flex-basis: 50%;
+    flex-shrink: 1;
+    flex-grow: 1;
+    max-width: 50%;
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: $main-color;
+    }
+
+    .resultText {
+        font-size: 1rem;
+        color: #333;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+    }
+}
+
+@media (max-width: 768px) {
+    .resultContainer {
+        max-width: 100%;
+        flex-basis: auto;
+    }
+}

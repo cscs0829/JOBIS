@@ -1,0 +1,45 @@
+@import "../App.scss";
+
+.Home {
+  min-height: 100vh;
+  height: fit-content;
+  background-color: $bg-color;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 50px;
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .home_wrapper {
+    height: 800px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+// mobile
+@media (max-width: 768px) {
+  .Home {
+    min-height: fit-content;
+    padding: 0;
+    height: 100%;
+    display: block;
+    .home_wrapper {
+      min-width: 500px;
+      width: 100%;
+      flex-direction: column;
+      height: fit-content;
+    }
+  }
+}

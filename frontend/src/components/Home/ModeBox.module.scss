@@ -1,0 +1,58 @@
+@import "../../App.scss";
+
+.ModeBox {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 20px;
+  transition: transform 0.2s ease-out;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0%;
+  background-color: #fff;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    outline: 1.5px solid $main-color;
+
+    transition: transform 0.2s ease-out;
+  }
+
+  &.selected {
+    background-color: $main-color;
+    color: #fff;
+    transition: 0.2s all;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  .desc {
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
+
+// mobile
+@media (max-width: 768px) {
+  .ModeBox {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    h3 {
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+
+    .desc {
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,135 @@
+@import "../../App.scss";
+
+.HomeRightContainer {
+  @include glass_box(fit-content, 100%);
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
+  background-color: $light-color;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  float: left;
+  z-index: 1;
+  transform: translateX(-70%);
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  padding-left: 50px;
+  padding-right: 20px;
+
+  &.entering {
+    transform: translateX(-5%);
+    opacity: 0.8;
+  }
+
+  &.entered {
+    transform: translateX(-5%);
+    opacity: 1;
+  }
+
+  &.exiting {
+    transform: translateX(-70%);
+    opacity: 0;
+  }
+
+  h3 {
+    font-size: 1.24rem;
+    margin-left: 30px;
+    margin-top: 10%;
+    font-family: "Pretendard-Bold";
+  }
+
+  .input_user_info_box {
+    display: flex;
+    border-radius: $radius;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 46px 36px;
+
+    .info_wrapper {
+      position: relative;
+      margin-bottom: 40px;
+
+      h4 {
+        color: $main-color;
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+
+      input {
+        @include glass_box(300px, 40px);
+        padding: 0 10px;
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+        border: 1px solid rgba($main-color, 0.8);
+        box-shadow: 0px 0px 3px 0px rgba($main-color, 0.1);
+
+        &:focus {
+          box-shadow: 0 0 3px $main-color;
+        }
+      }
+
+      .notice_text {
+        color: red;
+        position: absolute;
+        font-size: 14px;
+        bottom: -20px;
+        left: 8px;
+      }
+    }
+
+    button {
+      @include glass_box(fit-content, fit-content);
+      font-family: "Pretendard-Bold";
+      color: #fff;
+      background-color: $main-color;
+      font-weight: 400;
+      font-size: 1.14rem;
+      padding: 10px 35px;
+      border-radius: $radius;
+      cursor: pointer;
+      margin: 50px auto 0;
+    }
+  }
+}
+
+// mobile
+@media (max-width: 768px) {
+  .HomeRightContainer {
+    transform: translateY(-100%);
+    opacity: 1;
+    width: 100%;
+    align-items: center;
+    padding-left: 10px;
+
+    &.entering {
+      transform: translateY(-5%);
+      opacity: 1;
+    }
+
+    &.entered {
+      transform: translateY(-5%);
+      opacity: 1;
+    }
+
+    &.exiting {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    h3 {
+      margin-top: 20%;
+      margin-left: 0;
+      transform: translateX(-50px);
+    }
+
+    .input_user_info_box {
+      padding-top: 0;
+
+      .info_wrapper {
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

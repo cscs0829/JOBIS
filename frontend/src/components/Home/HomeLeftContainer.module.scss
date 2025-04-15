@@ -1,0 +1,102 @@
+@import "../../App.scss";
+
+.HomeLeftContainer {
+  @include glass_box(650px, 100%);
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
+  min-width: 500px;
+  float: left;
+  z-index: 2;
+  background-color: $light-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .authContainer {   /* 새로운 컨테이너 스타일 */
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    box-sizing: border-box;  /* 패딩을 너비에 포함 */
+  }
+
+  .authButtons {   
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .authButton {   
+    @include glass_box(fit-content, fit-content);
+    margin-left: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid $main-color;
+    color: $main-color;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: $main-color;
+      color: #fff;
+    }
+  }
+
+  .title_section {
+    width: 80%;
+    margin: 30px auto;
+
+    h3 {
+    }
+
+    h2 {
+      color: $main-color;
+      font-size: 1.8rem;
+      margin-top: 3px;
+    }
+
+    p {
+      color: #444;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+  }
+
+  .select_mode_section {
+    width: 100%;
+    margin-top: 30px;
+    position: relative;
+  }
+}
+
+// mobile
+@media (max-width: 768px) {
+  .Home {
+    display: block;
+  }
+  .HomeLeftContainer {
+    width: 100%;
+
+    .authContainer {  /* 새로운 컨테이너 스타일 */
+      width: 100%;
+      justify-content: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .authButtons {   
+      width: 100%;
+      justify-content: center;
+    }
+
+    .title_section {
+      margin: 50px;
+      margin-left: 12%;
+    }
+
+    .select_mode_section {
+      margin: 0 auto;
+      height: 200px;
+      width: 500px;
+    }
+  }
+}

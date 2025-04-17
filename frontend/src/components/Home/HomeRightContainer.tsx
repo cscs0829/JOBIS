@@ -2,7 +2,7 @@ import styles from "./HomeRightContainer.module.scss";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 import { HomeRightContainerProps } from "../../types/types";
 import { Transition } from "react-transition-group";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // useNavigate import
 import { nameJobContext } from "../../App";
 import { NameJobContext } from "../../types/types";
 
@@ -10,17 +10,16 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
   selectedMode,
   rightContainerRef,
 }) => {
-  const { name, setName, job, setJob } = useContext(
-    nameJobContext
-  ) as NameJobContext;
+  const { name, setName, job, setJob, interviewType, setInterviewType } =
+  useContext(nameJobContext) as NameJobContext;
 
-  // 마운트 시 이름과 직업 공백으로 초기화
   useEffect(() => {
     setName("");
     setJob("");
+    setInterviewType("");
   }, []);
 
-  const navigator = useNavigate();
+  const navigator = useNavigate(); 
 
   const inputNameRef = useRef<HTMLInputElement>(null);
   const inputJobRef = useRef<HTMLInputElement>(null);
@@ -38,7 +37,7 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
       return;
     }
 
-    navigator(`/interview/${selectedMode}`);
+    navigator(`/interview`);
   };
 
   const handleGoToAiJasoseo = () => {
@@ -47,6 +46,14 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
 
   const handleGoToAiGuide = () => {
     navigator("/ai-guide");
+  };
+
+  const handleGoToCompanyRecommendation = () => { // 회사 추천 페이지 이동
+    navigator("/company-recommendation");
+  };
+
+  const handleGoToMentorRecommendation = () => { // 멘토 추천 페이지 이동
+    navigator("/mentor-recommendation");
   };
 
   return (
@@ -106,9 +113,10 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
                   <h4>면접 유형</h4>
                   <input
                     type="text"
+                    value={interviewType}
                     placeholder="예: 기술면접, 인성면접"
                     // 상태값이 없으므로 별도 useState 필요
-                    onChange={() => {}}
+                    onChange={(e) => setInterviewType(e.target.value)}
                   />
                   {/* 유효성 검사 메시지는 원하시면 추가 가능 */}
                 </div>
@@ -136,8 +144,8 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
             <>
               <h3>회사 / 멘토 추천</h3>
               <div className={styles.input_user_info_box}>
-                <button onClick={() => alert("회사 추천 기능")}>회사 추천</button>
-                <button onClick={() => alert("멘토 추천 기능")}>멘토 추천</button>
+                <button onClick={handleGoToCompanyRecommendation}>회사 추천</button>
+                <button onClick={handleGoToMentorRecommendation}>멘토 추천</button>
               </div>
             </>
           )}

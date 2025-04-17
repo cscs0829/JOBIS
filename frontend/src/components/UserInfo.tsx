@@ -1,33 +1,45 @@
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import styles from "./UserInfo.module.scss";
+import { useNavigate } from "react-router-dom";
 
-const UserInfo = () => {
+// Define the props interface
+interface UserInfoProps {
+  displayMode: "greeting" | "buttons"; // 'displayMode' can only be "greeting" or "buttons"
+}
+
+const UserInfo = ({ displayMode }: UserInfoProps) => {
   const { userInfo, logout } = useAuth();
+  const navigate = useNavigate();
 
   if (!userInfo) {
     return null;
   }
 
   const handleMyInfoClick = () => {
-    // "내 정보" 버튼 클릭 시 처리할 로직 (예: 페이지 이동)
-    alert("내 정보 페이지로 이동합니다!"); // 예시: alert 메시지
+    navigate("/useredit");
   };
 
-  return (
-    <div className={styles.userInfoContainer}>
+  if (displayMode === "greeting") {
+    return (
       <div className={styles.userInfoText}>
         <p>안녕하세요, {userInfo.nickname}님!</p>
-        {userInfo.id && <p>아이디: {userInfo.id}</p>}
       </div>
+    );
+  }
+
+  if (displayMode === "buttons") {
+    return (
       <div className={styles.userInfoButtons}>
         <button className={styles.myInfoButton} onClick={handleMyInfoClick}>
           내 정보
         </button>
-        <button onClick={logout}>로그아웃</button>
+        <button className={styles.logoutButton} onClick={logout}>로그아웃</button>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null; // 기본적으로 아무것도 렌더링하지 않음
 };
 
 export default UserInfo;

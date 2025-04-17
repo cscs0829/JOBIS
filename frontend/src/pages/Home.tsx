@@ -6,7 +6,7 @@ import { Transition } from "react-transition-group";
 import HomeLeftContainer from "../components/Home/HomeLeftContainer";
 
 const Home: FC = () => {
-  const [selectedMode, setSelectedMode] = useState<Number>(-1);
+  const [selectedMode, setSelectedMode] = useState<number>(-1);
 
   // rightContainer의 width를 가져오기 위한 변수
   const [rightContainerWidth, setRightContainerWidth] = useState<number | null>(

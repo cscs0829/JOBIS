@@ -1,50 +1,51 @@
-import { Key, RefObject, ChangeEventHandler, ChangeEvent } from "react"; // 올바른 import 구문
+import { Key, RefObject, ChangeEventHandler, ChangeEvent } from "react"; 
 
 export interface HomeLeftContainerProps {
-    selectedMode: Number;
-    setSelectedMode: React.Dispatch<React.SetStateAction<Number>>;
-    rightContainerWidth: Number | null;
+    selectedMode: number;
+    setSelectedMode: React.Dispatch<React.SetStateAction<number>>;
+    rightContainerWidth: number | null;
     state: string;
 }
 
 export interface HomeRightContainerProps {
-    selectedMode: Number;
+    selectedMode: number;
     rightContainerRef: RefObject<HTMLDivElement>;
 }
 
 export interface InputAnsProps {
-    ans: String;
-    setAns: React.Dispatch<React.SetStateAction<String>>;
-    onClick: () => void;
-    isLoading: boolean;
-    isError: boolean;
+  ans: string;
+  setAns: React.Dispatch<React.SetStateAction<string>>;
+  onClick: () => void;
+  isLoading: boolean;
+  isError: boolean;
 }
 
 export interface ChatBoxProps {
-    text: String;
-    role: String;
+  text: String;
+  role: String;
 }
 
 export interface ModeBoxProps {
-    id: Key;
-    title: String;
-    description: String;
-    selectedMode: Number;
-    setSelectedMode: React.Dispatch<React.SetStateAction<Number>>;
+  id: Key;
+  title: String;
+  description: String;
+  selectedMode: number;
+  setSelectedMode: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface NameJobContext {
-    name: string;
-    setName: React.Dispatch<React.SetStateAction<string>>;
-    job: string;
-    setJob: React.Dispatch<React.SetStateAction<string>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  job: string;
+  setJob: React.Dispatch<React.SetStateAction<string>>;
+  interviewType: string;
+  setInterviewType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface NavbarProps {
-    navbarToggle: boolean;
-    setNavbarToggle: React.Dispatch<React.SetStateAction<boolean>>;
-    selectedMode: Number;
-    handleChangeMode: (modeNum: Number) => void;
+  navbarToggle: boolean;
+  setNavbarToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  handleChangeMode: (modeNum: number) => void;
 }
 
 export interface FormData {
@@ -58,12 +59,14 @@ export interface FormData {
 }
 
 export interface UserEditFormData {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    desiredJobTitle: string;
-    desiredJobCategory: string;
+  nickname: string;
+  password?: string; 
+  passwordConfirm?: string; 
+  email: string;
+  phone: string;
+  address: string;
+  desiredJobTitle: string;
+  desiredJobCategory: string;
 }
 
 export interface UserEditNavbarProps {
@@ -83,15 +86,19 @@ export interface GuideInputProps {
 }
 
 export interface AiGuideFormProps {
-    field: string;
-    company: string;
-    strengths: string;
-    onFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onCompanyChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onStrengthsChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    onResumeUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onPortfolioUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onGenerateGuide: () => void;
+  field: string;
+  company: string;
+  strengths: string;
+  experiences: string;
+  selfIntro: string;
+  onFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCompanyChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onStrengthsChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onExperiencesChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSelfIntroChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onResumeUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPortfolioUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onGenerateGuide: () => void;
 }
 
 export interface AiGuideResponse {
@@ -103,4 +110,52 @@ export interface GuideFileInputProps {
   label: string;
   id: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface Company {
+  id: number;
+  name: string;
+  techStack: string[];
+  location: string;
+  salary: string;
+}
+
+export interface CompanySearchCriteria {
+  techStack?: string;
+  location?: string;
+  salary?: string;
+}
+
+export interface CompanyCardProps { // ✅ CompanyCardProps export
+  company: Company;
+}
+
+export interface Mentor {
+  id: number;
+  nickname: string;
+  techStack: string[];
+  location: string;
+  company?: string;
+  price: {
+    min: number;
+    max: number;
+  };
+}
+
+export interface MentorSearchCriteria {
+  techStack?: string;
+  location?: string;
+  price?: {
+    min?: number;
+    max?: number;
+  };
+}
+
+export interface MentorCardProps { // ✅ MentorCardProps export
+  mentor: Mentor;
+}
+
+export interface CompanyMentorNavbarProps {
+  selectedTab: number;
+  handleTabChange: (tabIndex: number) => void;
 }

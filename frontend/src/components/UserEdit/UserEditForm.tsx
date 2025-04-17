@@ -3,7 +3,7 @@ import styles from './UserEditForm.module.scss';
 import Input from '../Input/Input';
 import FileInput from '../Input/FileInput';
 import { UserEditFormData, UserEditFormProps } from '../../types/types';
-import FileEditModal from './FileEditModal'; // FileEditModal 컴포넌트 임포트
+import FileEditModal from './FileEditModal';
 
 const UserEditForm: React.FC<UserEditFormProps> = ({ selectedTab }) => {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -22,7 +22,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ selectedTab }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<UserEditFormData>({
-    name: '',
+    nickname: '',
+    password: '',
+    passwordConfirm: '',
     email: '',
     phone: '',
     address: '',
@@ -57,13 +59,17 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ selectedTab }) => {
 
   let onModalFileChange: (file: File | null) => void = () => {};
 
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-
   const handleSubmit = async () => {
+    // Validation (Simple example)
+    if (formData.password !== formData.passwordConfirm) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
+
     const formDataToSend = new FormData();
     for (const key in formData) {
       if (formData.hasOwnProperty(key)) {
@@ -96,12 +102,44 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ selectedTab }) => {
       {selectedTab === 0 ? (
         <>
           <h2>회원 정보 수정</h2>
-          <Input label="이름" name="name" value={formData.name} onChange={handleInputChange} />
-          <Input label="이메일" name="email" value={formData.email} onChange={handleInputChange} />
-          <Input label="연락처" name="phone" value={formData.phone} onChange={handleInputChange} />
-          <Input label="주소" name="address" value={formData.address} onChange={handleInputChange} />
-          <Input label="희망 직종" name="desiredJobTitle" value={formData.desiredJobTitle} onChange={handleInputChange} />
-          <Input label="희망 직업" name="desiredJobCategory" value={formData.desiredJobCategory} onChange={handleInputChange} />
+          <Input
+            label="닉네임"
+            name="nickname"
+            value={formData.nickname}
+            onChange={handleInputChange}
+          />
+          <Input
+            label="비밀번호"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+          <Input
+            label="비밀번호 확인"
+            name="passwordConfirm"
+            type="password"
+            value={formData.passwordConfirm}
+            onChange={handleInputChange}
+          />
+          <Input
+            label="이메일"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <Input
+            label="연락처"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+          />
+          <Input
+            label="주소"
+            name="address"
+            value={formData.address}
+            onChange={handleInputChange}
+          />
         </>
       ) : (
         <>
@@ -119,11 +157,13 @@ const UserEditForm: React.FC<UserEditFormProps> = ({ selectedTab }) => {
             />
           </div>
           <div onClick={() => openModal(coverLetterFile, coverLetterPreviewUrl, "자기소개서", setCoverLetterFile, setCoverLetterPreviewUrl)}>
-             <FileInput
+            <FileInput
               label="자기소개서 첨부"
               onChange={(file) => handleFileChange(file, setCoverLetterFile, setCoverLetterPreviewUrl)}
             />
           </div>
+          <Input label="희망 직종" name="desiredJobTitle" value={formData.desiredJobTitle} onChange={handleInputChange} />
+          <Input label="희망 직업" name="desiredJobCategory" value={formData.desiredJobCategory} onChange={handleInputChange} />
         </>
       )}
       <button className={styles.submitButton} onClick={handleSubmit}>수정 완료</button>

@@ -10,14 +10,32 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;  /* 변경: 왼쪽 정렬 */
 
-  .authContainer {   /* 새로운 컨테이너 스타일 */
+  .userInfoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* 변경: 양쪽 정렬 */
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .userInfoGreeting {
+    /* Styles for the greeting on the left */
+  }
+
+  .userInfoButtons {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 유지 */
+  }
+
+  .authContainer {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     padding: 20px;
-    box-sizing: border-box;  /* 패딩을 너비에 포함 */
+    box-sizing: border-box;
   }
 
   .authButtons {   
@@ -75,6 +93,23 @@
   }
   .HomeLeftContainer {
     width: 100%;
+
+    .userInfoContainer {
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .userInfoGreeting {
+      text-align: center;
+    }
+
+    .userInfoButtons {
+      width: 100%;
+      justify-content: center;
+      gap: 8px;
+    }
 
     .authContainer {  /* 새로운 컨테이너 스타일 */
       width: 100%;

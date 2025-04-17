@@ -57,6 +57,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         id: data.mem_id,
         email: data.mem_email,
       });
+      sessionStorage.setItem("login_id", data.mem_id); 
+      localStorage.setItem("login_id", data.mem_id);  
       setIsLoggedIn(true);
     } catch (error) {
       console.error("로그인 실패:", error);

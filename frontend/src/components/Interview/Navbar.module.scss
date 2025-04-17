@@ -6,16 +6,11 @@
   flex-direction: column;
   justify-content: end;
 
-  .mode_wrapper {
-    flex-grow: 0.6;
-  }
-
   .extra_wrapper {
     flex-basis: 15%;
     margin-bottom: 50px;
   }
 
-  .mode_wrapper,
   .extra_wrapper {
     margin-left: 12px;
 
@@ -95,14 +90,10 @@
       font-size: 1.4rem;
     }
 
-    .mode_wrapper {
-      margin: 0;
-    }
     .extra_wrapper {
       margin-left: 0;
     }
 
-    .mode_wrapper ul,
     .extra_wrapper ul {
       margin-left: 8px;
     }

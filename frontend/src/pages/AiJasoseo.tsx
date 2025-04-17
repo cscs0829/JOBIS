@@ -28,18 +28,20 @@ const AiJasoseoPage: React.FC = () => {
   const handleGenerateDraft = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/generate-draft', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:9000/jasoseo/generate-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+      
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const data = await response.json();
-      setResult(data.draft);
+      console.log("🎯 초안 결과 응답:", data); // ✅ 이 줄 추가
+      setResult(data.draft); // 응답에서 초안 텍스트를 가져옴
     } catch (error) {
       console.error('Error:', error);
       alert('자소서 초안 생성에 실패했습니다.');

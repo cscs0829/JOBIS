@@ -12,7 +12,6 @@ import { useMediaQuery } from "react-responsive";
 import { mobileQuery } from "../../constants/constants";
 
 const Navbar: FC<NavbarProps> = ({
-  selectedMode,
   handleChangeMode,
   navbarToggle,
   setNavbarToggle,
@@ -38,23 +37,10 @@ const Navbar: FC<NavbarProps> = ({
           }}
         />
       )}
-      <div className={styles.mode_wrapper}>
-        <div className={styles.mode_title}>MODE</div>
-        <ul>
-          <li
-            className={Number(selectedMode) === 0 ? styles.selected : "none"}
-            onClick={() => handleChangeMode(0)}
-          >
-            <FaBookOpen color="999" />
-            <span>연습면접</span>
-          </li>
-
-        </ul>
-      </div>
       <div className={styles.extra_wrapper}>
         <div className={styles.mode_title}>EXTRA</div>
         <ul>
-          <li onClick={() => handleChangeMode(Number(selectedMode))}>
+          <li onClick={() => handleChangeMode(0)}>
             <VscDebugRestart color="999" />
             <span>면접 재시작</span>
           </li>

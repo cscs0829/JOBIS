@@ -11,15 +11,15 @@ const ModeBox: FC<ModeBoxProps> = ({
 }) => {
   const handleSelectedMode = () => {
     // 선택되어있던 모드를 한번 더 선택한 경우
-    if (selectedMode === (id as Number)) setSelectedMode(-1);
+    if (selectedMode === (id as number)) setSelectedMode(-1);
     // 다른 모드를 선택한 경우
-    else setSelectedMode(id as Number);
+    else setSelectedMode(id as number);
   };
 
   return (
     <div
       className={`${styles.ModeBox} ${
-        styles[selectedMode === (id as Number) ? "selected" : "not_selected"]
+        styles[selectedMode === (id as number) ? "selected" : "not_selected"]
       }`}
       style={{
         left: `${50 + (Number(id) - 1) * 28}%`,

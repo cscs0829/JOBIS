@@ -1,0 +1,77 @@
+// src/pages/CompanyRecommendation.module.scss
+@import '../App.scss';
+
+.companyMentorPage {
+  height: 100vh;
+  background-color: $bg-color;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 10px 0;
+}
+
+.companyMentorContainer {
+  min-height: 600px;
+  margin: auto 0;
+  width: 80%;
+  height: 95%;
+  max-width: 1200px;
+  min-width: 700px;
+  background-color: $light-color;
+  display: flex;
+  border-radius: $radius;
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.companyMentorLeft {
+  border-right: 1.5px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 20px;
+  flex-basis: 200px;
+  flex-shrink: 0;
+}
+
+.companyMentorRight {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.resultContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 4개 카드 */
+  gap: 16px;
+  margin-top: 20px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .companyMentorPage {
+    display: block;
+    padding: 0;
+    min-width: 300px;
+  }
+  .companyMentorContainer {
+    height: 100%;
+    min-width: 0;
+    width: 100%;
+    flex-direction: column;
+    padding: 0;
+  }
+  .companyMentorLeft {
+    display: block;
+    flex-basis: 0;
+    border: none;
+    padding: 0;
+  }
+  .companyMentorRight {
+    padding: 10px;
+    height: 95%;
+  }
+}

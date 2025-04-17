@@ -12,7 +12,6 @@ import { useSpring, animated } from "@react-spring/web";
 import { useMediaQuery } from "react-responsive";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Navbar from "../components/Interview/Navbar";
-import InterviewFlowAPI from "../utils/InterviewFlowAPI";
 
 // Interview 컴포넌트 등장 애니메이션
 const interviewAnimation = {
@@ -29,19 +28,22 @@ const interviewAnimation = {
 };
 
 const Interview: FC = () => {
-  const { selectedMode } = useParams();
-  const restartToggle = useRef<boolean>(false); // 모드변경, 재시작 판정 토글
-  const { name, job } = useContext(nameJobContext) as NameJobContext;
-  const [messages, setMessages] = useState<{ content: String; role: String }[]>(
+  // useParams()에서 기본값 설정
+  const restartToggle = useRef<boolean>(false);
+  const [selectedMode, setSelectedMode] = useState<string>("일반");
+  const { name, job, interviewType } = useContext(
+    nameJobContext
+  ) as NameJobContext;
+  const [messages, setMessages] = useState<{ content: string; role: string }[]>(
     []
-  ); // 대화 내역
-  const [ans, setAns] = useState<String>(""); // 면접자 답변
-  const [isLoading, setIsLoading] = useState<boolean>(false); // gpt 답변 기다리는 중
-  const [isError, setIsError] = useState<boolean>(false); // 토큰초과로 면접 종료될때 변경되는 플래그
+  );
+  const [ans, setAns] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const chatListRef = useRef<HTMLDivElement>(null);
 
-  const abortController = useRef<AbortController | null>(null); // 모드 변경 전 API 호출을 중지시키기 위한 ref
-  const isMount = useRef<boolean>(true); // 첫 마운트인지 아닌지 판단하기 위한 ref, gpt가 첫 마디를 할 때 false로 변경됨
+  const abortController = useRef<AbortController | null>(null);
+  const isMount = useRef<boolean>(true);
   const navigate = useNavigate();
   const [navbarToggle, setNavbarToggle] = useState<boolean>(false);
 
@@ -50,41 +52,29 @@ const Interview: FC = () => {
   });
 
   useEffect(() => {
-    // 면접내역 스크롤을 항상 가장 아래로 이동
     if (chatListRef.current !== null)
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
   }, [messages]);
 
-  // animated.div 컴포넌트 마운트 시 발동하는 효과
   const [springs, api] = useSpring(() => interviewAnimation);
 
   useEffect(() => {
-    // 모드가 바뀌는 것은 pathvariable에 의해 페이지 이동을 하므로 컴포넌트가 리마운트 되지 않는다.
-    // 따라서 마운트 플래그를 따로 선언해준다.
     isMount.current = true;
-
-    // 페이지 마운트 시 gpt부터 말하도록 submit 함수를 호출
     handleSubmit();
-
-    // 모드 변경 시 발동하는 효과
     api.start(interviewAnimation);
-
-    // Navbar 닫아줌
     setNavbarToggle(false);
 
-    // 클린업 함수를 이용하여 모드가 바뀌기 전의 API 호출을 중지시킴
     return () => {
       abortController.current?.abort();
     };
   }, [restartToggle.current]);
 
-  // 모드 변경 시 대화내역 초기화 후 페이지 이동하는 함수
   const handleChangeMode = (modeNum: Number) => {
     restartToggle.current = !restartToggle.current;
     setMessages([]);
     setAns("");
     setIsError(false);
-    navigate(`/interview/${modeNum}`);
+    navigate(`/interview`);
   };
 
   const handleSubmit = async () => {
@@ -93,37 +83,86 @@ const Interview: FC = () => {
     isMount.current = false;
 
     setAns("");
+
+    const isFirst = messages.length === 0;
+
+    const systemPrompt = {
+      role: "system",
+      content: `
+        [역할]
+        너는 ${name} 스타일의 AI 면접관 역할을 수행하고 있어.
+
+        [상황]
+        지원자는 ${job} 직무에 지원했어.
+        ${interviewType} 유형의 면접을 진행할거야.
+
+        [규칙]
+        🎯 면접 시 유의사항:
+
+        1. 처음 질문은 인사 없이 바로 시작하세요. "첫 질문", "시작하겠습니다", "지원해주셔서 감사합니다" 같은 말 절대 하지 마세요.
+        2. 질문은 짧고 명확하게, 최대 2문장 이내로 하세요.
+        3. 사용자의 마지막 답변을 기반으로 꼭! 꼬리 질문을 이어가세요.
+        4. 질문은 총 5개 이내로 제한합니다.
+
+        [행동]
+        지금부터 첫 질문을 하세요.
+      `.trim(),
+    };
+
+    const filteredMessages = messages.filter((msg) => {
+      return !(msg.role === "assistant" && /첫.*질문/gi.test(msg.content));
+    });
+
     const updatedMessages = [
+      ...(isFirst ? [systemPrompt] : []),
       ...messages,
-      ...(ans ? [{ role: "user", content: `${ans}` }] : []),
+      ...(ans ? [{ role: "user", content: ans }] : []),
     ];
+
     setMessages(updatedMessages);
-
     abortController.current = new AbortController();
-    const response = await InterviewFlowAPI(
-      updatedMessages,
-      name,
-      job,
-      selectedMode,
-      abortController
-    );
-    const data = await response.json();
 
-    if (response.status === 400) {
-      setMessages([
-        ...messages,
-        {
-          content:
-            "면접이 너무 길어져 더 이상 진행할 수 없습니다.\n면접을 다시 시작해 주시기 바랍니다.\n불편을 드려 죄송합니다.",
-          role: "assistant",
+    try {
+      const response = await fetch("http://localhost:9000/interview/interview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ]);
+        body: JSON.stringify({
+          persona: name,
+          job: job,
+          interviewType: interviewType,
+          selectedMode: selectedMode,
+          messages: updatedMessages,
+        }),
+        signal: abortController.current?.signal,
+      });
+
+      const data = await response.json();
+      
+      
+
+      if (response.status === 400) {
+        setMessages([
+          ...updatedMessages,
+          {
+            role: "assistant",
+            content:
+              "면접이 너무 길어져 더 이상 진행할 수 없습니다.\n면접을 다시 시작해 주시기 바랍니다.\n불편을 드려 죄송합니다.",
+          },
+        ]);
+        setIsError(true);
+      } else if (response.status === 200) {
+        const assistantMessage = {
+          role: "assistant",
+          content: data.reply,
+        };
+        setMessages([...updatedMessages, assistantMessage]);
+      }
+    } catch (err) {
+      console.error("면접 중 오류 발생:", err);
       setIsError(true);
     }
-    if (response.status === 200) {
-      setMessages(data);
-    }
-
     setIsLoading(false);
   };
 
@@ -142,12 +181,10 @@ const Interview: FC = () => {
               src={`${process.env.PUBLIC_URL}/assets/logo.png`}
               width={isMobile ? "35px" : "50px"}
             />
-            <h2>{Modes[Number(selectedMode)].title}</h2>
           </div>
 
           <Navbar
             navbarToggle={navbarToggle}
-            selectedMode={Number(selectedMode)}
             handleChangeMode={handleChangeMode}
             setNavbarToggle={setNavbarToggle}
           />
@@ -155,9 +192,11 @@ const Interview: FC = () => {
         <div className={styles.interview_right}>
           <div className={styles.interview_right_wrapper}>
             <div className={styles.chatList} ref={chatListRef}>
-              {messages.map((it, idx) => (
-                <ChatBox key={idx} text={it.content} role={it.role} />
-              ))}
+              {messages
+                .filter((it) => it.role !== "system")
+                .map((it, idx) => (
+                  <ChatBox key={idx} text={it.content} role={it.role} />
+                ))}
               {isLoading ? (
                 <div className={styles.loading}>
                   <div className={styles[`loading-text`]}>

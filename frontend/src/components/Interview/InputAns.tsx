@@ -5,6 +5,7 @@ import { InputAnsProps } from "../../types/types";
 import styles from "./InputAns.module.scss";
 import { useMediaQuery } from "react-responsive";
 import { mobileQuery } from "../../constants/constants";
+import { text } from "stream/consumers";
 
 const InputAns: FC<InputAnsProps> = ({
   ans,
@@ -13,12 +14,10 @@ const InputAns: FC<InputAnsProps> = ({
   isLoading,
   isError,
 }) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState("auto");
-
-  const isMobile = useMediaQuery({
-    query: mobileQuery,
-  });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isMobile = useMediaQuery({ query: mobileQuery });
+  const firstTextareaHeight = useRef<number | undefined>();
 
   useEffect(() => {
     adjustTextareaHeight();

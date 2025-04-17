@@ -5,8 +5,8 @@ import ModeBox from "./ModeBox";
 import { HomeLeftContainerProps } from "../../types/types";
 import { useMediaQuery } from "react-responsive";
 import LoginButton from "./LoginButton";
-import UserInfo from "../UserInfo"; // UserInfo 컴포넌트 import
-import { useAuth } from "../../contexts/AuthContext"; // useAuth 훅 import
+import UserInfo from "../UserInfo";
+import { useAuth } from "../../contexts/AuthContext";
 
 const HomeLeftContainer: FC<HomeLeftContainerProps> = ({
   selectedMode,
@@ -18,7 +18,7 @@ const HomeLeftContainer: FC<HomeLeftContainerProps> = ({
   const isMobile = useMediaQuery({
     query: mobileQuery,
   });
-  const { isLoggedIn } = useAuth(); // useAuth 훅에서 isLoggedIn 상태 가져오기
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     firstMountFlag.current = true;
@@ -39,7 +39,14 @@ const HomeLeftContainer: FC<HomeLeftContainerProps> = ({
       style={isMobile ? {} : moveLeftAnimation}
     >
       {isLoggedIn ? (
-        <UserInfo /> // 로그인 상태면 UserInfo 컴포넌트 렌더링
+        <div className={styles.userInfoContainer}>
+          <div className={styles.userInfoGreeting}>
+            <UserInfo displayMode="greeting" />  {/* UserInfo 컴포넌트 재사용 */}
+          </div>
+          <div className={styles.userInfoButtons}>
+            <UserInfo displayMode="buttons" />  {/* UserInfo 컴포넌트 재사용 */}
+          </div>
+        </div>
       ) : (
         <div className={styles.authContainer}>
           <LoginButton />

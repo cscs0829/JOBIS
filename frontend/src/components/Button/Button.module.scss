@@ -16,6 +16,12 @@
     }
   }
 
+    .primary {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+
   @media (max-width: 768px) {
     .button {
       padding: 14px 24px; /* 모바일에서 패딩 증가 */

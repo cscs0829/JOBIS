@@ -17,7 +17,11 @@ const UserInfo = ({ displayMode }: UserInfoProps) => {
   }
 
   const handleMyInfoClick = () => {
-    navigate("/useredit");
+    navigate("/user-info-edit");
+  };
+
+  const handleResumeEditClick = () => {
+    navigate("/user-file-edit"); // 이력서 수정 페이지를 /user-file-edit 로 변경
   };
 
   if (displayMode === "greeting") {
@@ -32,7 +36,10 @@ const UserInfo = ({ displayMode }: UserInfoProps) => {
     return (
       <div className={styles.userInfoButtons}>
         <button className={styles.myInfoButton} onClick={handleMyInfoClick}>
-          내 정보
+          회원 수정
+        </button>
+        <button className={styles.resumeEditButton} onClick={handleResumeEditClick}>
+          이력서 수정  {/* 이력서 수정 버튼 추가 */}
         </button>
         <button className={styles.logoutButton} onClick={logout}>로그아웃</button>
       </div>

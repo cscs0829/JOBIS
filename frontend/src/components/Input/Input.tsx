@@ -3,6 +3,7 @@ import styles from './Input.module.scss'; // 이 CSS 파일 생성
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  isTextArea?: boolean; // Added isTextArea as an optional property
 }
 
 const Input: React.FC<InputProps> = ({ label, ...props }) => {

@@ -1,74 +1,111 @@
+// src/components/Company/CompanyNavbar.tsx
 import React, { FC, useState } from "react";
 import styles from "./CompanyNavbar.module.scss";
-import { CompanyMentorNavbarProps } from "../../types/types";
-import { useNavigate } from "react-router-dom";
-import { IoBusinessOutline, IoPersonCircleOutline, IoHomeSharp } from "react-icons/io5";
-import { FaTimes } from "react-icons/fa";
-import { useMediaQuery } from "react-responsive";
-import { mobileQuery } from "../../constants/constants";
+import { useNavigate } from 'react-router-dom';
+import {
+    FaRegFileAlt,
+    FaQuestionCircle,
+    FaBars,
+    FaArrowLeft,
+    FaTimes,
+} from 'react-icons/fa';
+import { useMediaQuery } from 'react-responsive';
+import { mobileQuery } from '../../constants/constants';
 
-const CompanyNavbar: FC<CompanyMentorNavbarProps> = ({
-  selectedTab,
-  handleTabChange,
-}) => {
-  const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMobile = useMediaQuery({ query: mobileQuery });
+// CompanyNavbar 컴포넌트가 받을 prop 타입 정의
+export interface CompanyNavbarProps {
+    selectedTab: number;
+    handleTabChange: (tabIndex: number) => void;
+}
 
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+const CompanyNavbar: FC<CompanyNavbarProps> = ({ selectedTab, handleTabChange }) => {
+    const navigate = useNavigate();
+    const isMobile = useMediaQuery({ query: mobileQuery });
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const goToCompanyRecommendation = () => {
-    navigate("/company-recommendation");
-  };
+    const handleGoBack = () => {
+        navigate(-1);
+    };
 
-  const goToMentorRecommendation = () => {
-    navigate("/mentor-recommendation");
-  };
 
-  return (
-    <nav className={`${styles.Navbar} ${isMobileMenuOpen ? styles.open : ""}`}>
-      {isMobile && (
-        <FaTimes className={styles.mobile_menu_icon} onClick={closeMobileMenu} />
-      )}
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
 
-      <div className={styles.title}>
-        <h2>회사 및 멘토 추천</h2>
-      </div>
 
-      <div className={styles.mode_wrapper}>
-        <div className={styles.mode_title}>Mode</div>
-        <ul>
-          <li
-            className={`${styles.mode_item} ${selectedTab === 0 ? styles.selected : ""}`}
-            onClick={() => { goToCompanyRecommendation(); if (isMobile) closeMobileMenu(); }}
-          >
-            <IoBusinessOutline />
-            <span>회사 추천</span>
-          </li>
-          <li
-            className={`${styles.mode_item} ${selectedTab === 1 ? styles.selected : ""}`}
-            onClick={() => { goToMentorRecommendation(); if (isMobile) closeMobileMenu(); }}
-          >
-            <IoPersonCircleOutline />
-            <span>멘토 추천</span>
-          </li>
-        </ul>
-      </div>
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
 
-      <div className={styles.extra_wrapper}>
-        <div className={styles.extra_title}>Extra</div>
-        <ul>
-          <li onClick={() => navigate("/")}>
-            <IoHomeSharp />
-            <span>처음화면</span>
-          </li>
-        </ul>
-      </div>
-      {isMobile && !isMobileMenuOpen && (
-        <FaTimes className={styles.mobile_menu_icon} onClick={() => setIsMobileMenuOpen(true)} />
-      )}
-    </nav>
-  );
+    const goToMentorRecommendation = () => {
+        navigate("/mentor-recommendation");
+    };
+
+    return (
+        <nav className={styles.navbar}>
+            {isMobile ? (
+            <>
+                <FaBars className={styles.menuIcon} onClick={toggleMobileMenu} />
+                <h2 className={styles.title}>회사 및 멘토 추천</h2>
+                {isMobileMenuOpen && (
+                <div className={styles.mobileMenu}>
+                    <button className={styles.closeButton} onClick={closeMobileMenu}>
+                        <FaTimes />
+                    </button>
+                    <p className={styles.modeTitle}>MODE</p>
+                    <ul>
+                        <li className={styles.selected}>
+                            <FaRegFileAlt />
+                            <span>회사 추천</span>
+                        </li>
+                        <li onClick={goToMentorRecommendation}> {/* Updated onClick handler */}
+                            <FaQuestionCircle />
+                            <span>멘토 추천</span>
+                        </li>
+                    </ul>
+                    <p className={styles.modeTitle}>EXTRA</p>
+                    <ul>
+                        <li onClick={() => navigate('/')}>
+                            <FaArrowLeft />
+                            <span>처음 화면</span>
+                        </li>
+                    </ul>
+                </div>
+                )}
+            </>
+            ) : (
+            <>
+                <h2 className={styles.title}>회사 및 멘토 추천</h2> {/* Removed the arrow icon and onClick handler */}
+
+
+                <div className={styles.modeWrapper}>
+                    <p className={styles.modeTitle}>MODE</p>
+                    <ul>
+                        <li className={styles.selected}>
+                            <FaRegFileAlt />
+                            <span>회사 추천</span>
+                        </li>
+                        <li onClick={goToMentorRecommendation}> {/* Updated onClick handler */}
+                            <FaQuestionCircle />
+                            <span>멘토 추천</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div className={styles.extraWrapper}>
+                    <p className={styles.modeTitle}>EXTRA</p>
+                    <ul>
+                        <li onClick={() => navigate('/')}>
+                            <FaArrowLeft />
+                            <span>처음 화면</span>
+                        </li>
+                    </ul>
+                </div>
+            </>
+            )}
+        </nav>
+    );
 };
 
 export default CompanyNavbar;

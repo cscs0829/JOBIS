@@ -1,4 +1,4 @@
-// src/pages/MentorRecommendation.module.scss
+// src/pages/CompanyRecommendation.module.scss
 @import '../App.scss';
 
 .companyMentorPage {
@@ -44,17 +44,11 @@
 
 .resultContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 최소 너비 줄임 */
-  gap: 8px; /* gap 줄임 */
-  margin-top: 10px; /* margin-top 줄임 */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 4개 카드 */
+  gap: 16px;
+  margin-top: 20px;
   overflow-y: auto;
   height: 100%;
-}
-
-.addButtonContainer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
 }
 
 @media (max-width: 768px) {
@@ -62,22 +56,39 @@
     display: block;
     padding: 0;
     min-width: 300px;
-  }
-  .companyMentorContainer {
-    height: 100%;
-    min-width: 0;
-    width: 100%;
-    flex-direction: column;
-    padding: 0;
-  }
-  .companyMentorLeft {
-    display: block;
-    flex-basis: 0;
-    border: none;
-    padding: 0;
-  }
-  .companyMentorRight {
-    padding: 10px;
-    height: 95%;
+    .companyMentorContainer {
+      height: 100%;
+      min-width: 0;
+      width: 100%;
+      flex-direction: column;
+      padding: 0;
+      .companyMentorLeft {
+        display: block;
+        flex-basis: 0;
+        border: none;
+        padding: 0;
+
+        .title {
+          justify-content: center;
+          border-bottom: 1.5px solid #ddd;
+          margin: 0 20px;
+          h2 {
+            font-size: 1.2rem;
+          }
+          position: relative;
+          .hamburgerIcon {
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            left: 2px;
+            top: 10px;
+          }
+        }
+      }
+      .companyMentorRight {
+        padding: 10px;
+        height: 95%;
+      }
+    }
   }
 }

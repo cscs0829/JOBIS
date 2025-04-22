@@ -1,4 +1,3 @@
-// src/pages/Signup.tsx
 import styles from "./Signup.module.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,15 +5,14 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-    nickname: "",
-    birthday: "",
-    gender: "",
-    address: "",
-    phone: "",
+    mem_id: "",
+    mem_pw: "",
+    mem_email: "",
+    mem_nick: "",
+    mem_gender: "",
+    mem_birthdate: "",
+    mem_addr: "",
+    mem_phone: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,20 +25,16 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
     try {
       await signup({
-        mem_id: formData.email,
-        mem_pw: formData.password,
-        mem_email: formData.email,
-        mem_nick: formData.nickname,
-        mem_gender: formData.gender === "male" ? "M" : "F",
-        mem_birthdate: formData.birthday,
-        mem_addr: formData.address,
-        mem_phone: formData.phone,
+        mem_id: formData.mem_id,
+        mem_pw: formData.mem_pw,
+        mem_email: formData.mem_email,
+        mem_nick: formData.mem_nick,
+        mem_gender: formData.mem_gender,
+        mem_birthdate: formData.mem_birthdate,
+        mem_addr: formData.mem_addr,
+        mem_phone: formData.mem_phone,
       });
       navigate("/");
     } catch (error) {
@@ -53,27 +47,34 @@ const Signup = () => {
     <div className={styles.authContainer}>
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
-        <input name="email" type="email" placeholder="이메일" onChange={handleChange} />
-        <input name="password" type="password" placeholder="비밀번호" onChange={handleChange} />
-        <input name="confirmPassword" type="password" placeholder="비밀번호 확인" onChange={handleChange} />
-        <input name="nickname" type="text" placeholder="닉네임" onChange={handleChange} />
-        <input name="birthday" type="date" placeholder="생년월일" onChange={handleChange} />
+        <input name="mem_id" type="text" placeholder="아이디" onChange={handleChange} />
+        <input name="mem_pw" type="password" placeholder="비밀번호" onChange={handleChange} />
+        <input name="mem_email" type="email" placeholder="이메일" onChange={handleChange} />
+        <input name="mem_nick" type="text" placeholder="닉네임" onChange={handleChange} />
         <div className={styles.genderButtons}>
           <label>
-            <input type="radio" name="gender" value="male" onChange={handleChange} />
+            <input type="radio" name="mem_gender" value="M" onChange={handleChange} />
             남자
           </label>
           <label>
-            <input type="radio" name="gender" value="female" onChange={handleChange} />
+            <input type="radio" name="mem_gender" value="F" onChange={handleChange} />
             여자
           </label>
         </div>
-        <input name="address" type="text" placeholder="주소" onChange={handleChange} />
-        <input name="phone" type="tel" placeholder="연락처" onChange={handleChange} />
+        <input name="mem_birthdate" type="date" placeholder="생년월일" onChange={handleChange} />
+        <input name="mem_addr" type="text" placeholder="주소" onChange={handleChange} />
+        <input name="mem_phone" type="tel" placeholder="연락처" onChange={handleChange} />
 
         <button type="submit">회원가입</button>
-        <p onClick={() => navigate("/login")}>로그인</p>
       </form>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px' }}>
+        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/login")}>
+          로그인
+        </p>
+        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/")}>
+          메인
+        </p>
+      </div>
     </div>
   );
 };

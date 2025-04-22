@@ -44,36 +44,115 @@
     flex-direction: column;
     margin: 0;
     padding: 46px 36px;
+    width: 100%;
 
-    .info_wrapper {
+    div {
+      margin-bottom: 20px;
       position: relative;
-      margin-bottom: 40px;
+      width: 100%;
 
       h4 {
-        color: $main-color;
-        margin-top: 30px;
         margin-bottom: 10px;
+        color: $main-color;
+        text-align: left;
+      }
+    }
+    
+    button {
+      @include glass_box(fit-content, fit-content);
+      font-family: "Pretendard-Bold";
+      color: #fff;
+      background-color: $main-color;
+      font-weight: 400;
+      font-size: 1.14rem;
+      padding: 10px 35px;
+      border-radius: $radius;
+      cursor: pointer;
+      margin: 30px auto 0;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($main-color, 10%);
+      }
+    }
+
+    .select_button {
+      @include glass_box(fit-content, fit-content);
+      font-family: "Pretendard-Bold";
+      color: $main-color;
+      background-color: #fff;
+      font-weight: 400;
+      font-size: 1.14rem;
+      padding: 10px 35px;
+      border-radius: $radius;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($light-color, 5%);
       }
 
-      input {
-        @include glass_box(300px, 40px);
-        padding: 0 10px;
-        background: rgba(255, 255, 255, 0.2);
-        outline: none;
-        border: 1px solid rgba($main-color, 0.8);
-        box-shadow: 0px 0px 3px 0px rgba($main-color, 0.1);
-
-        &:focus {
-          box-shadow: 0 0 3px $main-color;
+      &.selected_button { /* [추가] 선택된 버튼 스타일 */
+        background-color: $main-color;
+        color: #fff;
+        &:hover {
+          background-color: darken($main-color, 10%);
         }
       }
+    }
 
-      .notice_text {
-        color: red;
-        position: absolute;
-        font-size: 14px;
-        bottom: -20px;
-        left: 8px;
+    .notice_text {
+      color: red;
+      position: absolute;
+      font-size: 14px;
+      bottom: -20px;
+      left: 8px;
+    }
+
+    div > div {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #555;
+      text-align: left;
+    }
+
+    button.selected {
+      background-color: darken($main-color, 15%);
+      color: #fff;
+    }
+
+    .interviewTypeButtons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      margin-top: 10px;
+      margin-bottom: 20px;
+
+      button {
+        @include glass_box(auto, 30px);
+        padding: 0 15px;
+        font-size: 0.9rem;
+        color: $main-color; /* 초기 텍스트 색상 주황색 */
+        font-weight: bold;
+        background-color: #fff; /* 초기 배경색 흰색 */
+        border: none;
+        margin-right: 5px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease; /* 모든 속성에 transition 적용 */
+
+        &:hover {
+          background-color: darken($main-color, 10%);
+          color: #fff;
+        }
+
+        &.selected {
+          background-color: $main-color; /* 선택 시 배경색 주황색 */
+          color: #fff; /* 선택 시 텍스트 색상 흰색 */
+          &:hover {
+            background-color: darken($main-color, 15%);
+          }
+        }
       }
     }
 
@@ -87,14 +166,17 @@
       padding: 10px 35px;
       border-radius: $radius;
       cursor: pointer;
-      margin: 50px auto 0;
+      margin: 30px auto 0;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($main-color, 10%);
+      }
     }
   }
-}
 
-// mobile
-@media (max-width: 768px) {
-  .HomeRightContainer {
+  // mobile
+  @media (max-width: 768px) {
     transform: translateY(-100%);
     opacity: 1;
     width: 100%;
@@ -125,11 +207,17 @@
     .input_user_info_box {
       padding-top: 0;
 
-      .info_wrapper {
-        input {
-          width: 100%;
-        }
+      div {
+        width: 100%;
       }
     }
+  }
+
+  .persona_select_box {
+    margin-bottom: 30px;
+  }
+
+  .job_select_box {
+    margin-bottom: 30px;
   }
 }

@@ -1,38 +1,72 @@
+import React, {
+  FC,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import styles from "./HomeRightContainer.module.scss";
-import { FC, useContext, useEffect, useRef, useState } from "react";
-import { HomeRightContainerProps } from "../../types/types";
+import {
+  HomeRightContainerProps,
+} from "../../types/types";
 import { Transition } from "react-transition-group";
-import { useNavigate } from "react-router-dom"; // useNavigate import
+import { useNavigate } from "react-router-dom";
 import { nameJobContext } from "../../App";
 import { NameJobContext } from "../../types/types";
+// import PersonaSelectModal from "./PersonaSelectModal"; // 제거
+// import JobSelectModal from "./JobSelectModal"; // 제거
 
 const HomeRightContainer: FC<HomeRightContainerProps> = ({
   selectedMode,
   rightContainerRef,
+  selectedPersona,
+  onSelectPersona,
+  openJobModal,
+  selectedJob,
+  setJob,
+  selectedInterviewType,
+  setInterviewType,
+  openPersonaModal, // 이름 변경
+  selectJob,
+  handleJobInputChange,
+  jobInputValue,
 }) => {
-  const { name, setName, job, setJob, interviewType, setInterviewType } =
-  useContext(nameJobContext) as NameJobContext;
+  const { name, setName, job, setJob: setJobFromContext, interviewType, setInterviewType: setInterviewTypeFromContext } =
+    useContext(nameJobContext) as NameJobContext;
 
-  useEffect(() => {
-    setName("");
-    setJob("");
-    setInterviewType("");
-  }, []);
-
-  const navigator = useNavigate(); 
-
-  const inputNameRef = useRef<HTMLInputElement>(null);
+  const navigator = useNavigate();
   const inputJobRef = useRef<HTMLInputElement>(null);
   const [inputNotice, setInputNotice] = useState<boolean>(false);
+  const [isPersonaButtonSelected, setIsPersonaButtonSelected] = useState<boolean>(false);
+  const [isJobButtonSelected, setIsJobButtonSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    setName(selectedPersona || "");
+    setJobFromContext(selectedJob || "");
+    setInterviewTypeFromContext(selectedInterviewType || "");
+  }, [selectedPersona, selectedJob, selectedInterviewType]);
+
+  const handlePersonaButtonClick = () => {
+    openPersonaModal(); // 이름 변경
+    setIsPersonaButtonSelected(true);
+  };
+
+  const handleJobButtonClick = () => {
+    openJobModal();
+    setIsJobButtonSelected(true);
+  };
 
   const handleInterviewStart = () => {
-    if (name.length === 0 && inputNameRef.current) {
-      inputNameRef.current.focus();
-      setInputNotice(true);
+    if (!selectedPersona) {
+      openPersonaModal(); // 이름 변경
       return;
     }
-    if (job.length === 0 && inputJobRef.current) {
-      inputJobRef.current.focus();
+    if (!selectedJob) {
+      openJobModal();
+      return;
+    }
+    if (!selectedInterviewType) {
       setInputNotice(true);
       return;
     }
@@ -45,15 +79,20 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
   };
 
   const handleGoToAiGuide = () => {
-    navigator("/ai-guide");
+    navigator("/ai-feedback");
   };
 
-  const handleGoToCompanyRecommendation = () => { // 회사 추천 페이지 이동
+  const handleGoToCompanyRecommendation = () => {
     navigator("/company-recommendation");
   };
 
-  const handleGoToMentorRecommendation = () => { // 멘토 추천 페이지 이동
+  const handleGoToMentorRecommendation = () => {
     navigator("/mentor-recommendation");
+  };
+
+  const handleInterviewTypeClick = (type: string) => {
+    setInterviewType(type);
+    setInputNotice(false);
   };
 
   return (
@@ -64,61 +103,65 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
           className={`${styles.HomeRightContainer} ${styles[state]}`}
         >
           {selectedMode === 0 && (
-            // AI 면접 서비스의 키는 0입니다.
             <>
               <h3>원하시는 면접을 설정해보세요</h3>
               <div className={styles.input_user_info_box}>
-                <div className={styles.info_wrapper}>
+                {/* 면접관 페르소나 선택 버튼 */}
+                <div className={styles.persona_select_box}>
                   <h4>면접관 페르소나</h4>
-                  <input
-                    ref={inputNameRef}
-                    type="text"
-                    placeholder="예: 까칠한 면접관, 꼬리물기 면접관"
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && inputJobRef.current)
-                        inputJobRef.current.focus();
-                    }}
-                  />
-                  {inputNotice && name.length === 0 && (
+                  <button
+                    className={`${styles.select_button} ${isPersonaButtonSelected ? styles.selected_button : ""}`}
+                    onClick={handlePersonaButtonClick}
+                  >
+                    면접관 페르소나 선택
+                  </button>
+                  {selectedPersona && (
+                    <div>선택된 페르소나: {selectedPersona}</div>
+                  )}
+                </div>
+
+                {/* 직무 선택 버튼 */}
+                <div className={styles.job_select_box}>
+                  <h4>직무</h4>
+                  <button
+                    className={`${styles.select_button} ${isJobButtonSelected ? styles.selected_button : ""}`}
+                    onClick={handleJobButtonClick}
+                  >
+                    직무 선택
+                  </button>
+                  {selectedJob && <div>선택된 직무: {selectedJob}</div>}
+                </div>
+
+                {/* 면접 유형 선택 UI */}
+                <div>
+                  <h4>면접 유형</h4>
+                  <div className={styles.interviewTypeButtons}>
+                    <button
+                      className={
+                        selectedInterviewType === "기술 면접"
+                          ? styles.selected
+                          : styles.unselected
+                      }
+                      onClick={() => handleInterviewTypeClick("기술 면접")}
+                    >
+                      기술 면접
+                    </button>
+                    <button
+                      className={
+                        selectedInterviewType === "인성 면접"
+                          ? styles.selected
+                          : styles.unselected
+                      }
+                      onClick={() => handleInterviewTypeClick("인성 면접")}
+                    >
+                      인성 면접
+                    </button>
+                  </div>
+                  {inputNotice && !selectedInterviewType && (
                     <div className={styles.notice_text}>
-                      면접관 페르소나를 입력해주세요
+                      면접 유형을 선택해주세요
                     </div>
                   )}
-                </div>
-
-                <div className={styles.info_wrapper}>
-                  <h4>직무</h4>
-                  <input
-                    ref={inputJobRef}
-                    type="text"
-                    placeholder="직무를 입력하세요"
-                    value={job}
-                    onChange={(e) => {
-                      setJob(e.target.value);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleInterviewStart();
-                    }}
-                  />
-                  {inputNotice && job.length === 0 && (
-                    <div className={styles.notice_text}>직무를 입력해주세요</div>
-                  )}
-                </div>
-
-                <div className={styles.info_wrapper}>
-                  <h4>면접 유형</h4>
-                  <input
-                    type="text"
-                    value={interviewType}
-                    placeholder="예: 기술면접, 인성면접"
-                    // 상태값이 없으므로 별도 useState 필요
-                    onChange={(e) => setInterviewType(e.target.value)}
-                  />
-                  {/* 유효성 검사 메시지는 원하시면 추가 가능 */}
                 </div>
 
                 <button onClick={handleInterviewStart}>면접 시작</button>
@@ -127,28 +170,29 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
           )}
 
           {selectedMode === 1 && (
-            // AI 자소서 도우미의 키는 1입니다.
             <>
               <h3>AI 자소서 도우미</h3>
               <div className={styles.input_user_info_box}>
                 <button onClick={handleGoToAiJasoseo}>자소서 초안 작성</button>
-                <button onClick={handleGoToAiGuide}>
-                  자소서 가이드
-                </button>
+                <button onClick={handleGoToAiGuide}>자소서 가이드</button>
               </div>
             </>
           )}
 
           {selectedMode === 2 && (
-            // 회사 / 멘토 추천의 키는 2입니다.
             <>
               <h3>회사 / 멘토 추천</h3>
               <div className={styles.input_user_info_box}>
-                <button onClick={handleGoToCompanyRecommendation}>회사 추천</button>
-                <button onClick={handleGoToMentorRecommendation}>멘토 추천</button>
+                <button onClick={handleGoToCompanyRecommendation}>
+                  회사 추천
+                </button>
+                <button onClick={handleGoToMentorRecommendation}>
+                  멘토 추천
+                </button>
               </div>
             </>
           )}
+          
         </div>
       )}
     </Transition>

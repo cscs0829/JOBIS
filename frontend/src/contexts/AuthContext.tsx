@@ -1,5 +1,5 @@
 // src/contexts/AuthContext.tsx
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface UserInfoType {
   nickname: string;
@@ -36,6 +36,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
 
+  // ✅ 새로고침 시 sessionStorage에 저장된 로그인 정보 복원
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("userInfo");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUserInfo(parsedUser);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   // ✅ 로그인 요청
   const login = async (id: string, password: string) => {
     try {
@@ -58,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email: data.mem_email,
       });
       sessionStorage.setItem("login_id", data.mem_id); 
-      localStorage.setItem("login_id", data.mem_id);  
+      sessionStorage.setItem("userInfo", JSON.stringify(data)); // ✅ 전체 유저 정보 저장
       setIsLoggedIn(true);
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -82,12 +92,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const data = await response.json();
-      setUserInfo({
+      const user: UserInfoType = {
         nickname: data.mem_nick,
         id: data.mem_id,
         email: data.mem_email,
-      });
+      };
+
+      setUserInfo(user);
       setIsLoggedIn(true);
+      sessionStorage.setItem("login_id", data.mem_id);
+      sessionStorage.setItem("userInfo", JSON.stringify(user)); // ✅ 저장
     } catch (error) {
       console.error("회원가입 실패:", error);
       throw error;
@@ -95,6 +109,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    sessionStorage.removeItem("login_id"); // 세션 스토리지에서 로그인 ID 제거
+    sessionStorage.removeItem("userInfo"); // ✅ 유저 정보도 삭제
     setIsLoggedIn(false);
     setUserInfo(null);
   };

@@ -49,6 +49,13 @@
   }
 }
 
+// ✅ 1. 두 버튼을 묶는 영역 추가
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
 .copyButton {
   margin-top: 10px;
   padding: 8px 16px;
@@ -62,5 +69,21 @@
 
   &:hover {
     background-color: #e48e00;
+  }
+}
+
+// ✅ 3. AI 면접 이동 버튼 스타일 추가
+.interviewButton {
+  padding: 8px 16px;
+  background-color: #4d7ef9;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #375dc9;
   }
 }

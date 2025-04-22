@@ -12,7 +12,7 @@ import React, { FC, useState } from 'react';
  import { mobileQuery } from '../../constants/constants';
  
 
- const AiJasoseoNavbar: FC = () => {
+  const AiJasoseoNavbar: FC = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: mobileQuery });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,8 +33,8 @@ import React, { FC, useState } from 'react';
   };
  
 
-  const goToAiGuide = () => {  // New function to navigate to AiGuide
-  navigate('/ai-guide');
+  const goToAiFeedback = () => {  // New function to navigate to AiFeedback
+  navigate('/ai-feedback');
   };
  
 
@@ -53,11 +53,11 @@ import React, { FC, useState } from 'react';
   <ul>
   <li className={styles.selected}>
   <FaRegFileAlt />
-  <span>자소서 초안 작성</span>
+  <span>AI 자소서 작성</span>
   </li>
-  <li onClick={goToAiGuide}>  {/* Updated onClick handler */}
+  <li onClick={goToAiFeedback}>  {/* Updated onClick handler */}
   <FaQuestionCircle />
-  <span>자소서 가이드</span>
+  <span>AI 자소서 피드백</span>
   </li>
   </ul>
   <p className={styles.modeTitle}>EXTRA</p>
@@ -72,10 +72,7 @@ import React, { FC, useState } from 'react';
   </>
   ) : (
   <>
-  <div className={styles.title} onClick={handleGoBack}>
-  <FaArrowLeft />
-  <h2>AI 자소서 서비스</h2>
-  </div>
+  <h2 className={styles.title}>AI 자소서 서비스</h2>  {/* Removed the arrow icon and onClick handler */}
  
 
   <div className={styles.modeWrapper}>
@@ -83,11 +80,11 @@ import React, { FC, useState } from 'react';
   <ul>
   <li className={styles.selected}>
   <FaRegFileAlt />
-  <span>자소서 초안 작성</span>
+  <span>AI 자소서 작성</span>
   </li>
-  <li onClick={goToAiGuide}>  {/* Updated onClick handler */}
+  <li onClick={goToAiFeedback}>  {/* Updated onClick handler */}
   <FaQuestionCircle />
-  <span>자소서 가이드</span>
+  <span>AI 자소서 피드백</span>
   </li>
   </ul>
   </div>

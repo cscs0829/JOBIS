@@ -1,28 +1,19 @@
-import React, { FC, ChangeEvent } from 'react';
-import styles from './FileInput.module.scss';
+import React from "react";
+ import styles from "./FileInput.module.scss";
 
-interface FileInputProps {
+ interface FileInputProps {
   label: string;
-  onChange: (file: File | null) => void;
-}
+  id: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+ }
 
-const FileInput: FC<FileInputProps> = ({ label, onChange }) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    onChange(file);
-  };
-
+ const FileInput: React.FC<FileInputProps> = ({ label, id, onChange }) => {
   return (
-    <div className={styles.fileInputWrapper}>
-      <label htmlFor="fileInput">{label}</label>
-      <input
-        type="file"
-        id="fileInput"
-        style={{ display: 'none' }}
-        onChange={handleChange}
-      />
-    </div>
+  <div className={styles.fileInputWrapper}>
+  <label htmlFor={id}>{label}</label>
+  <input type="file" id={id} onChange={onChange} multiple />
+  </div>
   );
-};
+ };
 
-export default FileInput;
+ export default FileInput;

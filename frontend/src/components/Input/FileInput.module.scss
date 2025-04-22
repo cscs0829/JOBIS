@@ -1,21 +1,66 @@
-.fileInputWrapper {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-  
-    label {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 5px;
+/* FileListDisplay.module.scss (with potential enhancements) */
+.FileListDisplay {
+  margin-top: 1rem;
+  width: 100%;
+
+  &__file {
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid black;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+  }
+
+  &__details {
+      display: flex;
+      flex-direction: column;
+      flex: 1;           /* Take up most space */
+      margin-right: 10px;
+  }
+
+  &__name {
+      font-weight: bold;
+  }
+
+  &__size {
+      font-size: 0.8em;
+      color: #888;
+  }
+
+  &__progress {
+      /* Styles for progress bar (if needed) */
+      height: 8px;
+      background-color: #e0e0e0;
       border-radius: 4px;
+      margin-top: 4px;
+      overflow: hidden;
+  }
+
+  &__progressBar {
+      /* Style for the progress bar's fill */
+      height: 100%;
+      background-color: green;
+      width: 50%;      /* Example: 50% progress */
+  }
+
+  &__remove {
       cursor: pointer;
-      text-align: center;
-      background-color: #f9f9f9;
-  
+      font-weight: bold;
+      color: red;
+      margin-left: 10px;
+      padding: 0 5px;
+      border: 1px solid red;
+      border-radius: 50%;
+      height: 20px;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       &:hover {
-        background-color: #f0f0f0;
+          opacity: 0.7;
       }
-    }
-  } 
+  }
+}

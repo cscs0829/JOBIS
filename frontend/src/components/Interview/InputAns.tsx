@@ -63,7 +63,7 @@ const InputAns: FC<InputAnsProps> = ({
     if (!e.shiftKey && e.key === "Enter") {
       e.preventDefault();
       if (ans.length === 0) return;
-      onClick();
+      onClick(ans);
     }
   };
 
@@ -94,7 +94,7 @@ const InputAns: FC<InputAnsProps> = ({
           icon={faPaperPlane}
           onClick={() => {
             if (ans.length === 0) return; // 면접자가 아무 내용도 입력하지 않았을 경우 전송 불가
-            onClick();
+            onClick(ans);
           }}
         />
       )}

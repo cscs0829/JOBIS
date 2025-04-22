@@ -41,6 +41,7 @@ const Interview: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const chatListRef = useRef<HTMLDivElement>(null);
+  const [sessionId, setSessionId] = useState<number | null>(null);
 
   const abortController = useRef<AbortController | null>(null);
   const isMount = useRef<boolean>(true);
@@ -51,6 +52,79 @@ const Interview: FC = () => {
     query: mobileQuery,
   });
 
+  const saveMessageToDB = async (
+    intr_idx: number,
+    talk_person: "interviewer" | "interviewee",
+    talk_content: string
+  ) => {
+    console.log("📤 DB 저장 요청!", { intr_idx, talk_person, talk_content });
+    try {
+      await fetch("http://localhost:9000/interview/save-detail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          intr_idx: intr_idx,
+          talk_person: talk_person,
+          talk_content: talk_content,
+        }),
+      });
+    } catch (err) {
+      console.error("❌ 메시지 저장 실패:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (sessionId !== null && messages.length === 0) {
+      console.log("🎯 세션 준비 완료 후 첫 질문 실행");
+      handleSubmit("");
+    }
+  }, [sessionId]);
+
+  useEffect(() => {
+    const startInterviewSession = async () => {
+      console.log("🔥 start 호출 직전");
+
+      const storedMemId = localStorage.getItem("mem_id");
+
+      console.log("🚀 전달값:", {
+        persona: name,
+        job,
+        interviewType,
+        mem_id: storedMemId, // ✅ 바로 반영
+      });
+
+      try {
+        const res = await fetch("http://localhost:9000/interview/start", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            persona: name,
+            job: job,
+            interviewType: interviewType,
+            mem_id: storedMemId,
+          }),
+        });
+        console.log("🚀 전달값:", {
+          persona: name,
+          job,
+          interviewType,
+          mem_id: storedMemId,
+        });
+        const data = await res.json();
+        setSessionId(data.session_id);
+        console.log("✅세션 ID:", data.session_id);
+      } catch (err) {
+        console.error("❌ 요청 실패:", err);
+      }
+    };
+
+    startInterviewSession();
+  }, []);
+
   useEffect(() => {
     if (chatListRef.current !== null)
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
@@ -60,7 +134,6 @@ const Interview: FC = () => {
 
   useEffect(() => {
     isMount.current = true;
-    handleSubmit();
     api.start(interviewAnimation);
     setNavbarToggle(false);
 
@@ -77,35 +150,33 @@ const Interview: FC = () => {
     navigate(`/interview`);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (inputAns: string) => {
     if (!isMount.current && (isLoading || isError)) return;
     setIsLoading(true);
     isMount.current = false;
-
-    setAns("");
 
     const isFirst = messages.length === 0;
 
     const systemPrompt = {
       role: "system",
       content: `
-        [역할]
-        너는 ${name} 스타일의 AI 면접관 역할을 수행하고 있어.
-
-        [상황]
-        지원자는 ${job} 직무에 지원했어.
-        ${interviewType} 유형의 면접을 진행할거야.
-
-        [규칙]
-        🎯 면접 시 유의사항:
-
-        1. 처음 질문은 인사 없이 바로 시작하세요. "첫 질문", "시작하겠습니다", "지원해주셔서 감사합니다" 같은 말 절대 하지 마세요.
-        2. 질문은 짧고 명확하게, 최대 2문장 이내로 하세요.
-        3. 사용자의 마지막 답변을 기반으로 꼭! 꼬리 질문을 이어가세요.
-        4. 질문은 총 5개 이내로 제한합니다.
-
-        [행동]
-        지금부터 첫 질문을 하세요.
+      [역할]
+      너는 ${name} 스타일의 AI 면접관 역할을 수행하고 있어.
+      
+      [상황]
+      지원자는 ${job} 직무에 지원했어.
+      ${interviewType} 유형의 면접을 진행할거야.
+      
+      [규칙]
+      🎯 면접 시 유의사항:
+      
+      1. 처음 질문은 인사 없이 바로 시작하세요. "첫 질문", "시작하겠습니다", "지원해주셔서 감사합니다" 같은 말 절대 하지 마세요.
+      2. 질문은 짧고 명확하게, 최대 2문장 이내로 하세요.
+      3. 사용자의 마지막 답변을 기반으로 꼭! 꼬리 질문을 이어가세요.
+      4. 질문은 총 5개 이내로 제한합니다.
+      
+      [행동]
+      지금부터 첫 질문을 하세요.
       `.trim(),
     };
 
@@ -116,31 +187,38 @@ const Interview: FC = () => {
     const updatedMessages = [
       ...(isFirst ? [systemPrompt] : []),
       ...messages,
-      ...(ans ? [{ role: "user", content: ans }] : []),
+      ...(ans ? [{ role: "user", content: inputAns }] : []),
     ];
 
+    // ✅ 사용자 답변 저장 (ans 값이 있을 경우에만)
+    if (ans && sessionId) {
+      await saveMessageToDB(sessionId, "interviewee", ans);
+    }
+
     setMessages(updatedMessages);
+    setAns("");
     abortController.current = new AbortController();
 
     try {
-      const response = await fetch("http://localhost:9000/interview/interview", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          persona: name,
-          job: job,
-          interviewType: interviewType,
-          selectedMode: selectedMode,
-          messages: updatedMessages,
-        }),
-        signal: abortController.current?.signal,
-      });
+      const response = await fetch(
+        "http://localhost:9000/interview/interview",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            persona: name,
+            job: job,
+            interviewType: interviewType,
+            selectedMode: selectedMode,
+            messages: updatedMessages,
+          }),
+          signal: abortController.current?.signal,
+        }
+      );
 
       const data = await response.json();
-      
-      
 
       if (response.status === 400) {
         setMessages([
@@ -157,6 +235,14 @@ const Interview: FC = () => {
           role: "assistant",
           content: data.reply,
         };
+
+        const finalMessages = [...updatedMessages, assistantMessage];
+        setMessages(finalMessages);
+
+        if (sessionId !== null) {
+          await saveMessageToDB(sessionId, "interviewer", data.reply);
+        }
+
         setMessages([...updatedMessages, assistantMessage]);
       }
     } catch (err) {

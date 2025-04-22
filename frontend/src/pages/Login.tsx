@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
-  const [id, setId] = useState(""); // username을 id로 변경
+  const [id, setId] = useState(""); 
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(id, password); // username 대신 id 전달
+      await login(id, password); 
       navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -37,8 +37,15 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">로그인</button>
-        <p onClick={() => navigate("/signup")}>회원가입 하기</p>
       </form>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px' }}>
+        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/signup")}>
+          회원가입
+        </p>
+        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/")}>
+          홈
+        </p>
+      </div>
     </div>
   );
 };

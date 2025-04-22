@@ -103,17 +103,28 @@
   left: 0;
   width: 100%;
   z-index: 2;
+  }
 
   .menuIcon {
   font-size: 1.5rem;
   cursor: pointer;
   color: #555;
+  position: absolute; /* 이 줄 추가 */
+        left: 10px;       /* 이 줄 추가 */
+        top: 50%;         /* 이 줄 추가 */
+        transform: translateY(-50%); /* 이 줄 추가 - 세로 중앙 정렬 */
+      
   }
 
   .title {
-  font-size: 1.2rem;
-  color: $main-color;
-  font-weight: bold;
+    font-size: 1.2rem;
+    color: $main-color;
+    font-weight: bold;
+    position: relative;  /* 이 줄 추가 */
+    display: flex;       /* 이 줄 추가 */
+    align-items: center; /* 이 줄 추가 - 세로 중앙 정렬 */
+    justify-content: flex-start; /* 이 줄 추가 - 제목을 시작 부분에 정렬 */
+    padding-left: 40px;  /* 이 줄 추가 - 아이콘을 위한 공간 확보 */
   }
 
   .mobileMenu {
@@ -190,7 +201,7 @@
   }
   }
   }
- }
+ 
 
  @keyframes slideIn {
   from { transform: translate(-50%, -60%); opacity: 0; }

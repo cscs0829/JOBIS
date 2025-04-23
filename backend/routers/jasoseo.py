@@ -4,12 +4,29 @@ from datetime import datetime
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import fitz  # PyMuPDF
+
 
 load_dotenv()
 router = APIRouter()
 
 # ✅ OpenAI 인스턴스
 openai = OpenAI(api_key=os.getenv("OPENAI_API"))
+
+# ✅ PDF 텍스트 추출 함수
+async def extract_pdf_text(upload_file: UploadFile) -> str:
+    if upload_file is None:
+        return ""
+    try:
+        contents = await upload_file.read()
+        pdf = fitz.open(stream=contents, filetype="pdf")
+        text = ""
+        for page in pdf:
+            text += page.get_text()
+        return text.strip()
+    except Exception as e:
+        print(f"PDF 파싱 오류: {upload_file.filename} - {e}")
+        return ""
 
 # ✅ 자기소개서 초안 생성 및 DB 저장 API
 @router.post("/generate-draft")
@@ -22,6 +39,7 @@ async def generate_and_save_draft(
     emphasisPoints: str = Form(...),
     resume: UploadFile = File(None),
     portfolio: UploadFile = File(None),
+    cv: UploadFile = File(None)
 ):
     print("📥 [generate-draft 요청 도착]")
     print("📌 mem_id:", mem_id)
@@ -30,6 +48,12 @@ async def generate_and_save_draft(
     print("📌 field:", field)
     print("📌 company:", company)
     print("📌 emphasisPoints:", emphasisPoints)
+
+    # ✅ PDF 텍스트 추출
+    cv_text = await extract_pdf_text(cv)
+    resume_text = await extract_pdf_text(resume)
+    portfolio_text = await extract_pdf_text(portfolio)
+
     # ✅ 프롬프트 구성
     prompt = f"""
     다음 정보를 기반으로 AI 자기소개서 초안을 작성해줘:
@@ -39,6 +63,15 @@ async def generate_and_save_draft(
     - 지원 분야: {field}
     - 지원 회사: {company}
     - 강조 포인트: {emphasisPoints}
+    
+    [첨부된 이력서 내용]
+    {cv_text}
+
+    [첨부된 자기소개서 내용]
+    {resume_text}
+
+    [첨부된 포트폴리오 내용]
+    {portfolio_text}
 
     [작성 조건]
     - '네 알겠습니다'와 같이 대답하지 말고 바로 작성
@@ -46,7 +79,7 @@ async def generate_and_save_draft(
     - 질문항목에 대한 작성의 시작은 항상 질문 보여주고 [소제목]을 붙이고 개행처리 한 다음 내용작성
     - 여기서 [소제목]은 답변의 주제를 나타내는 제목인데 면접관이 봤을 때 이목을 끌 수 있고 재치있는 제목으로 작성
     - [소제목]은 20자 이내로 작성 
-    - 자기소개서의 각 항목은 최소 300자~최대1000자 이상 작성
+    - 자기소개서의 각 항목은 최소 500자~최대1000자 이상 작성
     - 구체적인 예시와 진정성 있는 문장으로 구성
     - 중복 표현 피하기
     - 문장은 자연스럽게, 사람처럼 작성

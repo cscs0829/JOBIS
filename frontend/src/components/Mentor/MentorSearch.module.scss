@@ -4,32 +4,38 @@
 .searchContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* 간격 줄임 */
-  padding: 12px; /* 패딩 줄임 */
-  background-color: #FFFBEF;
+  gap: 10px; // 간격 조정
+  padding: 15px; // 패딩 조정
+  background-color: #FFFBEF; // 배경색 유지 또는 페이지 배경과 통일
   border-radius: $radius;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 100%; /* 너비를 100%로 설정 */
+  // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 필요 시 유지
+  width: 100%;
+  margin-bottom: 15px; // 검색 조건 영역과 결과 영역 사이 간격
 
   h2 {
     color: $main-color;
-    margin-bottom: 10px; /* 간격 줄임 */
+    margin-bottom: 12px; // 간격 조정
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem; // 폰트 크기 조정
   }
 
   input {
-    padding: 8px; /* input 패딩 줄임 */
+    padding: 10px; // input 패딩 조정
     font-size: 0.9rem;
   }
 
   .priceRange {
     display: flex;
-    gap: 8px; /* 간격 줄임 */
+    gap: 10px; // 간격 조정
+    // 각 Input 너비 동일하게 설정 (선택 사항)
+    > * {
+      flex: 1;
+    }
   }
 
-  button {
-    align-self: center;
-    padding: 6px 12px; /* button 패딩 줄임 */
-  }
+  // 버튼 스타일 제거
+  // button {
+  //   align-self: center;
+  //   padding: 6px 12px;
+  // }
 }

@@ -12,15 +12,14 @@
     flex-shrink: 0;
 
     .title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 30px;
-        cursor: pointer;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
 
         h2 {
-            margin-left: 10px;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: $main-color;
+            text-align: center;
         }
     }
 

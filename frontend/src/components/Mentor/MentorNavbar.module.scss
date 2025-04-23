@@ -1,214 +1,170 @@
-@import '../../App.scss';
+// src/components/Mentor/MentorNavbar.module.scss
+@import '../../App.scss'; //
 
- .navbar {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Changed from space-between */
-  padding: 20px 0;
-  border-right: 1.5px solid #ddd;
-  width: 250px;
-  flex-shrink: 0;
-  background-color: #FFFBEF;
+.navbar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* flex-start로 변경 */
+    background-color: #FFFBEF;
+    border-right: 1.5px solid #ddd;
+    padding: 20px 0;
+    width: 250px;
+    flex-shrink: 0;
 
-  .title {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 30px;
+    /* 데스크탑 타이틀 */
+    .title {
+        padding: 15px 20px;
+        margin-bottom: 20px;
 
-  h2 {
-  color: $main-color;
-  margin-left: 10px;
-  font-size: 1.3rem;
-  }
+        h2 {
+            font-size: 1.4rem;
+            color: $main-color; //
+            text-align: center;
+        }
+    }
 
-  svg {
-  font-size: 1.2rem;
-  color: #555;
-  }
-  }
+    .modeWrapper {
+        flex-grow: 1;
+    }
 
-  .modeTitle {
-  color: #999;
-  font-size: 0.8rem;
-  margin-bottom: 18px; /* Changed from 10px */
-  margin-left: 12px; /* Changed from 10px */
-  }
+    .extraWrapper {
+        margin-bottom: 50px;
+        flex-basis: auto;
+    }
 
-  ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    .modeWrapper,
+    .extraWrapper {
+        margin-left: 12px;
 
-  li {
-  display: flex;
-  align-items: center;
-  padding: 10px 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin: 14px 5px; /* Added margin */
+        .modeTitle {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 18px;
+        }
 
-  &:hover {
-  background-color: #f5f5f5;
-  }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
 
-  svg {
-  margin-right: 18px; /* Changed from 10px */
-  font-size: 14px; /* Changed from 1.1rem */
-  color: #777;
-  }
+            li {
+                display: flex;
+                align-items: center;
+                padding: 10px 10px;
+                margin: 14px 5px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
 
-  span {
-  font-size: 0.9rem; /* Changed from 1rem */
-  color: #444;
-  font-family: "Pretendard-Bold"; /* Added font-family */
-  }
+                > *:first-child {
+                    font-size: 1.1rem;
+                    margin-right: 18px;
+                    color: #777;
+                }
 
-  &.selected {
-  background-color: $light-color;
-  border-left: 4px solid $main-color;
+                span {
+                    font-size: 0.9rem;
+                    color: #444;
+                    font-family: 'Pretendard-Bold';
+                }
 
-  svg,
-  span {
-  color: $main-color;
-  font-weight: bold;
-  }
-  }
-  }
-  }
+                &:hover {
+                    background-color: #f5f5f5;
+                    * {
+                        color: $main-color; //
+                    }
+                }
 
-  .modeWrapper {
-  flex-grow: 0.6; /* Added flex-grow */
-  }
+                &.selected {
+                    background-color: $light-color; //
+                    border-left: 4px solid $main-color; //
 
-  .extraWrapper {
-  margin-bottom: 50px; /* Changed from 20px */
-  flex-basis: 15%; /* Added flex-basis */
-  }
- }
+                    svg,
+                    span {
+                        color: $main-color; //
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
 
- // 모바일 스타일 (필요한 경우)
- @media (max-width: 768px) {
-  .navbar {
-  height: 60px; /* 모바일 헤더 높이 */
-  background-color: #f8f8f8;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  position: fixed; /* 헤더 고정 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 2;
-  }
+    .menuIcon {
+        display: none;
+    }
+}
 
-  .menuIcon {
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #555;
-  position: absolute; /* 이 줄 추가 */
-        left: 10px;       /* 이 줄 추가 */
-        top: 50%;         /* 이 줄 추가 */
-        transform: translateY(-50%); /* 이 줄 추가 - 세로 중앙 정렬 */
-      
-  }
+/* 모바일 스타일 */
+@media (max-width: 768px) { /* mobileQuery 값으로 대체 가능 */
+    .navbar {
+        width: fit-content;
+        padding: 20px;
+        border-radius: 20px;
+        border: 0.5px solid $main-color; //
+        background-color: $light-color; //
+        position: absolute;
+        z-index: 3;
+        height: auto;
+        top: 20%;
+        left: 20px;
+        transition: all 0.3s;
+        justify-content: flex-start;
+        box-shadow: none;
 
-  .title {
-    font-size: 1.2rem;
-    color: $main-color;
-    font-weight: bold;
-    position: relative;  /* 이 줄 추가 */
-    display: flex;       /* 이 줄 추가 */
-    align-items: center; /* 이 줄 추가 - 세로 중앙 정렬 */
-    justify-content: flex-start; /* 이 줄 추가 - 제목을 시작 부분에 정렬 */
-    padding-left: 40px;  /* 이 줄 추가 - 아이콘을 위한 공간 확보 */
-  }
+        &.disappear {
+            opacity: 0;
+            transform: translateX(-120%);
+        }
 
-  .mobileMenu {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  animation: slideIn 0.3s ease-out forwards;
+        &.appear {
+            opacity: 1;
+            transform: translateX(0%);
+            box-shadow: 0px 0px 1000px 4000px rgba(0, 0, 0, 0.5);
+        }
 
-  .modeTitle {
-  color: #999;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  }
+        .title {
+             padding: 15px 20px;
+             margin-bottom: 20px;
+             border-bottom: 1px solid #eee;
 
-  ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+             h2 {
+                 font-size: 1.4rem;
+                 color: $main-color; //
+                 text-align: center;
+             }
+         }
 
-  li {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin: 5px 0;
+        .menuIcon {
+            display: block;
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            left: 2px;
+            top: 10px;
+            font-size: 1.2rem;
+        }
 
-  &:hover {
-  background-color: #f5f5f5;
-  }
+         .modeWrapper,
+         .extraWrapper {
+             margin-left: 0;
+             ul {
+                 margin-left: 8px;
+             }
+         }
 
-  svg {
-  margin-right: 10px;
-  font-size: 1rem;
-  color: #777;
-  }
-
-  span {
-  font-size: 0.9rem;
-  color: #444;
-  font-family: "Pretendard-Bold";
-  }
-
-  &:first-child {
-  margin-top: 0;
-  }
-
-  &:last-child {
-  margin-bottom: 0;
-  }
-  }
-  }
-
-  .closeButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #777;
-  background: none;
-  border: none;
-  animation: fadeIn 0.3s ease-in-out 0.3s forwards;
-  }
-  }
-  }
- 
-
- @keyframes slideIn {
-  from { transform: translate(-50%, -60%); opacity: 0; }
-  to { transform: translate(-50%, -50%); opacity: 1; }
- }
-
- @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
- }
+         /* 닫기 버튼 스타일 */
+         .closeButton {
+            position: absolute;
+            top: 15px; /* 위치 조정 */
+            right: 15px; /* 위치 조정 */
+            font-size: 1.5rem; /* 크기 조정 */
+            cursor: pointer;
+            color: #888; /* 색상 조정 */
+            background: none;
+            border: none;
+            padding: 0; /* 기본 패딩 제거 */
+            line-height: 1; /* 라인 높이 조정 */
+            z-index: 4; /* 다른 요소 위에 오도록 */
+         }
+    }
+}

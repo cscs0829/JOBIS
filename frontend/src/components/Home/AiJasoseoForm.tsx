@@ -21,7 +21,13 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [resumeFiles, setResumeFiles] = useState<File[]>([]);
   const [portfolioFiles, setPortfolioFiles] = useState<File[]>([]);
+  const [showCvModal, setShowCvModal] = useState(false);
+  const [cvFiles, setCvFiles] = useState<File[]>([]);
 
+  const handleCvUpload = (files: File[]) => {
+    setCvFiles(files);
+  };
+  
   const handleResumeUpload = (files: File[]) => {
     setResumeFiles(files);
   };
@@ -30,9 +36,13 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
     setPortfolioFiles(files);
   };
 
+  const handleSaveCv = (files: File[]) => {
+    console.log('이력서 파일 저장:', files);
+  };
+
   const handleSaveResume = (files: File[]) => {
     // 이력서 파일 저장 로직
-    console.log('이력서 파일 저장:', files);
+    console.log('자기소개서 파일 저장:', files);
     // 여기에 실제 파일 저장 로직을 구현하세요 (예: API 호출)
   };
 
@@ -46,21 +56,56 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
     <div className={styles.formContainer}>
       <h2>AI 자소서 작성</h2>
 
+{/* 1. 이력서 파일 첨부 */}
       <div>
+  <label htmlFor="cvFile">이력서 파일 첨부</label>
+  <button onClick={() => setShowCvModal(true)} id="cvFile">
+    {cvFiles.length > 0
+      ? cvFiles.map(file => file.name).join(', ')
+      : '이력서 첨부'}
+  </button>
+  <FileUploadModal
+  isOpen={showCvModal}
+  onClose={() => setShowCvModal(false)}
+  onFileUpload={(files) => {
+    setCvFiles(files);
+    if (files.length > 0) {
+      const syntheticEvent = {
+        target: { value: "", files: [files[0]] } // value는 무시
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      onChange(syntheticEvent, 'cvFile'); // ✅ 상위 전달
+    }
+  }}
+  onSaveFiles={handleSaveCv}
+/>
+
+</div>
+
+{/* 2. 자기소개서 파일 첨부 */}
+<div>
   <label htmlFor="resumeFile">자기소개서 파일 첨부</label>
   <button onClick={() => setShowResumeModal(true)} id="resumeFile">
     {resumeFiles.length > 0
       ? resumeFiles.map(file => file.name).join(', ')
-      : '자소서 첨부'}
+      : '자기소개서 첨부'}
   </button>
   <FileUploadModal
-    isOpen={showResumeModal}
-    onClose={() => setShowResumeModal(false)}
-    onFileUpload={handleResumeUpload}
-    onSaveFiles={handleSaveResume}
-  />
+  isOpen={showResumeModal}
+  onClose={() => setShowResumeModal(false)}
+  onFileUpload={(files) => {
+    setResumeFiles(files);
+    if (files.length > 0) {
+      const syntheticEvent = {
+        target: { value: "", files: [files[0]] }
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      onChange(syntheticEvent, 'resumeFile'); // ✅ 추가
+    }
+  }}
+  onSaveFiles={handleSaveResume}
+/>
 </div>
 
+{/* 3. 포트폴리오 파일 첨부 */}
 <div>
   <label htmlFor="portfolioFile">포트폴리오 파일 첨부</label>
   <button onClick={() => setShowPortfolioModal(true)} id="portfolioFile">
@@ -69,11 +114,19 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
       : '포트폴리오 첨부'}
   </button>
   <FileUploadModal
-    isOpen={showPortfolioModal}
-    onClose={() => setShowPortfolioModal(false)}
-    onFileUpload={handlePortfolioUpload}
-    onSaveFiles={handleSavePortfolio}
-  />
+  isOpen={showPortfolioModal}
+  onClose={() => setShowPortfolioModal(false)}
+  onFileUpload={(files) => {
+    setPortfolioFiles(files);
+    if (files.length > 0) {
+      const syntheticEvent = {
+        target: { value: "", files: [files[0]] }
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      onChange(syntheticEvent, 'portfolioFile'); // ✅ 추가
+    }
+  }}
+  onSaveFiles={handleSavePortfolio}
+/>
 </div>
       <Input
         label="질문 (예: 지원동기, 성장과정 등)"
@@ -103,7 +156,7 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
         onChange={(e) => onChange(e, 'emphasisPoints')}
       />
 
-      <Button onClick={onGenerate}>초안 작성하기</Button>
+      <Button onClick={onGenerate}>자소서 작성하기</Button>
     </div>
   );
 };

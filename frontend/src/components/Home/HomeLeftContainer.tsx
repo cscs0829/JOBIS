@@ -53,15 +53,13 @@ const HomeLeftContainer: FC<HomeLeftContainerProps> = ({
         </div>
       )}
 
-      <section className={styles.title_section}>
-        <h3>합격의 지름길</h3>
-        <h2>위듀</h2>
-        <p>
-          你可以找到工作
-          <br />
-          면접에 합격하는 그날까지 {isMobile && <br />}위듀는 당신 곁에 있습니다
-        </p>
-      </section>
+<section className={styles.title_section}>
+  <h3>당신의 커리어 내비게이터</h3>
+  <h2>J.O.B.I.S</h2>
+  <p>
+    원하는 미래를 향한 가장 확실한 선택, {isMobile && <br />} J.O.B.I.S가 길을 안내합니다.
+  </p>
+</section>
 
       <section className={styles.select_mode_section}>
         {Modes.map((it) => (

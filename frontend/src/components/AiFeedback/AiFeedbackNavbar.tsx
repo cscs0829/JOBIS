@@ -5,9 +5,9 @@ import React, { FC, useState } from 'react';
   FaRegFileAlt,
   FaQuestionCircle,
   FaBars,
-  FaArrowLeft,
   FaTimes,
  } from 'react-icons/fa';
+ import { IoHomeSharp } from "react-icons/io5"; 
  import { useMediaQuery } from 'react-responsive';
  import { mobileQuery } from '../../constants/constants';
  
@@ -43,7 +43,7 @@ import React, { FC, useState } from 'react';
   {isMobile ? (
   <>
   <FaBars className={styles.menuIcon} onClick={toggleMobileMenu} />
-  <h2 className={styles.title}>AI 자소서 서비스</h2>
+  <h2 className={styles.title}>AI 자소서 피드백</h2>
   {isMobileMenuOpen && (
   <div className={styles.mobileMenu}>
   <button className={styles.closeButton} onClick={closeMobileMenu}>
@@ -63,7 +63,7 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>EXTRA</p>
   <ul>
   <li onClick={() => navigate('/')}>
-  <FaArrowLeft />
+  <IoHomeSharp />
   <span>처음 화면</span>
   </li>
   </ul>
@@ -73,8 +73,7 @@ import React, { FC, useState } from 'react';
   ) : (
   <>
   <div className={styles.title} onClick={handleGoBack}>
-  <FaArrowLeft />
-  <h2>AI 자소서 서비스</h2>
+  <h2>AI 자소서 피드백</h2>
   </div>
  
 
@@ -97,7 +96,7 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>EXTRA</p>
   <ul>
   <li onClick={() => navigate('/')}>
-  <FaArrowLeft />
+  <IoHomeSharp />
   <span>처음 화면</span>
   </li>
   </ul>

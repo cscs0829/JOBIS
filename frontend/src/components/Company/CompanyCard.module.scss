@@ -1,31 +1,74 @@
-// src/components/Company/CompanyCard.module.scss
 @import "../../App.scss";
 
 .card {
-  padding: 16px; /* padding 축소 */
-  border: 1px solid #ddd;
+  padding: 18px;
+  border: 1px solid #e0e0e0;
   border-radius: $radius;
   background-color: #fff;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-  width: 220px; /* 카드 너비 설정 */
-  height: 180px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  width: 100%;
+  max-width: 280px;
+  // height: 200px; // 고정 높이 제거
+  min-height: 200px; // 최소 높이 설정으로 변경
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 12px; // 내부 요소 간격 유지
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
   }
 
-  h3 {
+  .cardInfo {
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+     overflow: hidden; // 내부 내용이 넘칠 경우 대비 (선택 사항)
+
+     h3 {
+       color: $main-color;
+       font-size: 1.15rem; // 제목 폰트 크기 유지
+       margin-bottom: 4px;
+       line-height: 1.4; // 줄 간격 추가 (여러 줄일 때 가독성)
+       // --- 텍스트 생략 처리 (예: 최대 3줄) ---
+       overflow: hidden;
+       text-overflow: ellipsis;
+       display: -webkit-box;
+       -webkit-line-clamp: 3; // 최대 3줄까지 표시
+       -webkit-box-orient: vertical;
+       // --------------------------------------
+     }
+
+     p {
+       font-size: 0.9rem;
+       color: #555;
+       line-height: 1.4;
+       margin-bottom: 0;
+       // --- 한 줄 생략 처리 (선택 사항) ---
+       // white-space: nowrap;
+       // overflow: hidden;
+       // text-overflow: ellipsis;
+       // -------------------------------
+     }
+  }
+
+
+  .applyBtn {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
     color: $main-color;
-    margin-bottom: 8px; /* margin-bottom 축소 */
-    font-size: 1.1rem;
-  }
-
-  p {
-    margin-bottom: 6px; /* margin-bottom 축소 */
-    font-size: 0.9rem;
+    background-color: #fff;
+    border: 1px solid $main-color;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    align-self: flex-end; // 오른쪽 정렬 유지
+    // margin-top: auto; // space-between 대신 버튼을 항상 아래로 밀고 싶을 때 사용 가능
   }
 }

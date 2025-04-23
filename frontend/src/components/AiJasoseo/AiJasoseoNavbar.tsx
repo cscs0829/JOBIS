@@ -5,9 +5,9 @@ import React, { FC, useState } from 'react';
   FaRegFileAlt,
   FaQuestionCircle,
   FaBars,
-  FaArrowLeft,
   FaTimes,
  } from 'react-icons/fa';
+ import { IoHomeSharp } from "react-icons/io5"; 
  import { useMediaQuery } from 'react-responsive';
  import { mobileQuery } from '../../constants/constants';
  
@@ -63,7 +63,7 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>EXTRA</p>
   <ul>
   <li onClick={() => navigate('/')}>
-  <FaArrowLeft />
+  <IoHomeSharp />
   <span>처음 화면</span>
   </li>
   </ul>
@@ -72,8 +72,9 @@ import React, { FC, useState } from 'react';
   </>
   ) : (
   <>
-  <h2 className={styles.title}>AI 자소서 서비스</h2>  {/* Removed the arrow icon and onClick handler */}
- 
+  <div className={styles.title} onClick={handleGoBack}>
+  <h2>AI 자소서 서비스</h2>
+  </div>
 
   <div className={styles.modeWrapper}>
   <p className={styles.modeTitle}>MODE</p>
@@ -94,7 +95,7 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>EXTRA</p>
   <ul>
   <li onClick={() => navigate('/')}>
-  <FaArrowLeft />
+  <IoHomeSharp />
   <span>처음 화면</span>
   </li>
   </ul>

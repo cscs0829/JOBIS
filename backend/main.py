@@ -1,6 +1,7 @@
 from fastapi import FastAPI # 웹 서버 생성용 클래스
-from routers import interview, user, jasoseo, guide, recommend, upload  # ✅ 정상 import / 로그인/면접 기능 따로 나눈 파일
+from routers import tts, interview, user, jasoseo, guide, recommend, upload  # ✅ 정상 import / 로그인/면접 기능 따로 나눈 파일
 from fastapi.middleware.cors import CORSMiddleware # 포트 번호 다른 리엑트 서버랑 연결
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
 
@@ -19,6 +20,10 @@ app.include_router(jasoseo.router, prefix="/jasoseo")
 app.include_router(guide.router, prefix="/guide")
 app.include_router(recommend.router, prefix="/recommend")
 app.include_router(upload.router)
+app.include_router(tts.router)
+
+# "/audio" 경로로 접속하면 audio 폴더 내의 정적(mp3) 파일을 제공 4/23 추가
+app.mount("/audio", StaticFiles(directory="audio"), name="audio")
 
 # CORS 다른 프론트 포트 번호일 때 API 요청 허용
 app.add_middleware(

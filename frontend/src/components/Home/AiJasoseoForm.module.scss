@@ -26,26 +26,26 @@
 
   /* Improved styling for file upload buttons */
   button {
-  padding: 12px 16px;
-  font-size: 1rem;
-  background-color: #f0f0f0; /* Light gray background */
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  text-align: left; /* Align text to the left */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%; /* Full width */
-  box-sizing: border-box;
-  margin-bottom: 8px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    background-color: #f0f0f0; // 배경색
+    color: #333; // 글자색 수정됨 (기존 black)
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center; // 가운데 정렬 (수정됨)
+    display: flex;
+    align-items: center;
+    justify-content: center; // 가운데 정렬 (수정됨)
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
 
-  &:hover {
-  background-color: #e0e0e0;
-  border-color: #b3b3b3;
-  }
+    &:hover {
+      background-color: #e0e0e0;
+      border-color: #b3b3b3;
+    }
   }
 
   /* Style for the file list */

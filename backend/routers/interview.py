@@ -7,6 +7,11 @@ from dotenv import load_dotenv # load_dotenv로 .env 파일에 api 키 가져옴
 import asyncpg
 from DB.Connection import get_db_connection
 
+# VectorDB 관리 추가 4/23 추가
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 load_dotenv()
 
 router = APIRouter(tags=["interview"])
@@ -18,16 +23,18 @@ class DetailInsertRequest(BaseModel):
     talk_person: str
     talk_content: str
 
+class Message(BaseModel):
+    role: str
+    content: str
+
 # Pydantic 모델
 class InterviewStartRequest(BaseModel):
     persona: str
     job: str
-    interviewType:str
-    mem_id: str
-
-class Message(BaseModel):
-    role: str
-    content: str
+    interviewType: str
+    selectedMode: str
+    mem_id: str # 유사 문장 검색을 위해 필요!
+    messages: list[Message]
 
 class InterviewRequest(BaseModel):
     persona: str

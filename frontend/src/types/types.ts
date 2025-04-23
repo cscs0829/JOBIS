@@ -88,8 +88,9 @@ export interface FormData {
   field: string;
   company: string;
   skills: string;
-  questions: string; // 자소서 질문(지원동기, 성장과정 등) 통합 필드
+  questions: string; 
   portfolioFile?: File | null;
+  cvFile: null,
   resumeFile?: File | null;
   emphasisPoints: string;
 }
@@ -175,31 +176,45 @@ export interface CompanyCardProps {
 export interface Mentor {
   id: number;
   nickname: string;
-  techStack: string[];
-  location: string;
-  company?: string;
-  price: {
+  techStack: string[]; 
+  location: string; 
+  company?: string; 
+  experience?: string; 
+  meetingType: '대면' | '비대면' | '둘다가능'; 
+  meetingLocation?: string; 
+  price: { 
     min: number;
     max: number;
   };
+  mentoringTopics?: string[]; 
+  targetMentees?: string[];  
+  yearsExperience?: number | string; 
+  availability?: string[];   
 }
 
 export interface MentorSearchCriteria {
-  techStack?: string;
-  location?: string;
-  price?: {
+  techStack?: string; 
+  location?: string; 
+  price?: { 
     min?: number;
     max?: number;
   };
+  meetingType?: '대면' | '비대면' | '둘다가능'; 
+  mentoringTopic?: string;
+  targetMentee?: string;   
+  minYearsExperience?: number; 
 }
 
-export interface MentorCardProps {
+export interface MentorCardProps { // MentorCardProps 인터페이스 정의 확인 (이미 있다면 수정)
   mentor: Mentor;
+  // onSelect?: (mentorId: number) => void; // 선택 버튼 콜백 함수 타입 (추후 구현 시)
 }
 
 export interface CompanyMentorNavbarProps {
   selectedTab: number;
   handleTabChange: (tabIndex: number) => void;
+  navbarToggle?: boolean; // 모바일 대응 위해 추가될 수 있음
+  setNavbarToggle?: React.Dispatch<React.SetStateAction<boolean>>; // 모바일 대응 위해 추가될 수 있음
 }
 
 export interface ButtonProps {
@@ -243,6 +258,9 @@ export interface DragAndDropInputProps {
   onCompanyChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEmphasisChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onRequirementChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onResumeUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // --- onResumeUpload 타입 수정 ---
+  // onResumeUpload: (e: React.ChangeEvent<HTMLInputElement>) => void; // 기존 정의
+  onResumeUpload?: (files: File[]) => void; // 선택적 prop으로 변경하고 인자를 File 배열로 수정
+  // ----------------------------
   onGenerateFeedback: () => void;
 }

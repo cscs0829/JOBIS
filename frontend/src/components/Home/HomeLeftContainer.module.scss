@@ -38,12 +38,12 @@
     box-sizing: border-box;
   }
 
-  .authButtons {   
+  .authButtons {
     display: flex;
     justify-content: flex-end;
   }
 
-  .authButton {   
+  .authButton {
     @include glass_box(fit-content, fit-content);
     margin-left: 10px;
     padding: 10px 20px;
@@ -62,20 +62,25 @@
   .title_section {
     width: 80%;
     margin: 30px auto;
+    text-align: left; // ✅ title_section 자체도 왼쪽 정렬 (선택 사항)
 
     h3 {
+      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
     }
 
     h2 {
       color: $main-color;
       font-size: 1.8rem;
       margin-top: 3px;
+      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
     }
 
     p {
       color: #444;
       font-size: 0.9rem;
       margin-top: 10px;
+      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
+      line-height: 1.5; // ✅ 줄 간격 살짝 추가 (가독성 개선, 선택 사항)
     }
   }
 
@@ -118,14 +123,16 @@
       box-sizing: border-box;
     }
 
-    .authButtons {   
+    .authButtons {
       width: 100%;
       justify-content: center;
     }
 
     .title_section {
+      // 모바일에서는 width: 80%, margin: 30px auto 대신 아래 스타일 적용됨
       margin: 50px;
       margin-left: 12%;
+      // text-align: left; 는 여전히 적용됩니다.
     }
 
     .select_mode_section {

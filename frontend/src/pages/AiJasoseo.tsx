@@ -6,12 +6,14 @@ import AiJasoseoNavbar from '../components/AiJasoseo/AiJasoseoNavbar';
 import type { FormData } from '../types/types';
 import { ChangeEvent } from 'react'; // Import ChangeEvent
 
+
 const AiJasoseoPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     field: '',
     company: '',
     questions: '',
     skills: '',
+    cvFile: null, 
     portfolioFile: null,
     resumeFile: null,
     emphasisPoints: '',
@@ -46,6 +48,7 @@ const AiJasoseoPage: React.FC = () => {
       formPayload.append("field", formData.field);
       formPayload.append("company", formData.company);
       formPayload.append("emphasisPoints", formData.emphasisPoints);
+      if (formData.cvFile) formPayload.append("cv", formData.cvFile); // ✅ 이력서 추가
       if (formData.resumeFile) formPayload.append("resume", formData.resumeFile);
       if (formData.portfolioFile) formPayload.append("portfolio", formData.portfolioFile);
   

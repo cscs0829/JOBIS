@@ -141,7 +141,7 @@ const UserFileEdit = () => {
     <div className={styles.userEdit}>
       <div className={styles.userEditContainer}>
         <div className={styles.userEditLeft}>
-          {/* 실제 UserEditNavbar 컴포넌트와 props 전달 */}
+        <UserEditNavbar />
            <DummyUserEditNavbar
              selectedTab={selectedTab}
              handleTabChange={handleTabChange}

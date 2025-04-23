@@ -90,7 +90,7 @@ export interface FormData {
   skills: string;
   questions: string; 
   portfolioFile?: File | null;
-  cvFile: null,
+  cvFile: File | null;
   resumeFile?: File | null;
   emphasisPoints: string;
 }

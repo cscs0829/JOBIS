@@ -51,6 +51,9 @@ const AiJasoseoPage: React.FC = () => {
       if (formData.cvFile) formPayload.append("cv", formData.cvFile); // ✅ 이력서 추가
       if (formData.resumeFile) formPayload.append("resume", formData.resumeFile);
       if (formData.portfolioFile) formPayload.append("portfolio", formData.portfolioFile);
+      console.log("✅ 이력서 파일:", formData.cvFile);
+      console.log("✅ 자기소개서 파일:", formData.resumeFile);
+      console.log("✅ 포트폴리오 파일:", formData.portfolioFile);
   
       const response = await fetch("http://localhost:9000/jasoseo/generate-draft", {
         method: "POST",
@@ -80,6 +83,7 @@ const AiJasoseoPage: React.FC = () => {
             <AiJasoseoForm
               formData={formData}
               onChange={handleInputChange}
+              onFileChange={handleFileChange}  // ✅ 추가
               onGenerate={handleGenerateDraft}
             />
             <AiJasoseoResult result={result} loading={loading} />

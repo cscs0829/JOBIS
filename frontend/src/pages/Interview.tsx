@@ -230,10 +230,6 @@ const Interview: FC = () => {
                 onClick={() => setNavbarToggle(!navbarToggle)}
               />
             )}
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/logo.png`}
-              width={isMobile ? "35px" : "50px"}
-            />
           </div>
           <Navbar
             navbarToggle={navbarToggle}

@@ -9,12 +9,14 @@ import { FileInputProps } from '../../types/types'; // Import FileInputProps
 interface AiJasoseoFormProps {
   formData: FormData;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: keyof FormData) => void;
+  onFileChange: (e: ChangeEvent<HTMLInputElement>, key: keyof FormData) => void; // ✅ 추가
   onGenerate: () => void;
 }
 
 const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   formData,
   onChange,
+  onFileChange,
   onGenerate,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
@@ -68,15 +70,17 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   isOpen={showCvModal}
   onClose={() => setShowCvModal(false)}
   onFileUpload={(files) => {
+    setCvFiles(files); // 미리보기용만
+  }}
+  onSaveFiles={(files) => {
     setCvFiles(files);
     if (files.length > 0) {
       const syntheticEvent = {
-        target: { value: "", files: [files[0]] } // value는 무시
+        target: { value: "", files: [files[0]] }
       } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'cvFile'); // ✅ 상위 전달
+      onFileChange(syntheticEvent, 'cvFile'); // ✅ 여기에서 실제 반영
     }
   }}
-  onSaveFiles={handleSaveCv}
 />
 
 </div>
@@ -93,15 +97,17 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   isOpen={showResumeModal}
   onClose={() => setShowResumeModal(false)}
   onFileUpload={(files) => {
+    setResumeFiles(files); // 미리보기용
+  }}
+  onSaveFiles={(files) => {
     setResumeFiles(files);
     if (files.length > 0) {
       const syntheticEvent = {
         target: { value: "", files: [files[0]] }
       } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'resumeFile'); // ✅ 추가
+      onFileChange(syntheticEvent, 'resumeFile'); // ✅ 실제 반영
     }
   }}
-  onSaveFiles={handleSaveResume}
 />
 </div>
 
@@ -117,15 +123,17 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   isOpen={showPortfolioModal}
   onClose={() => setShowPortfolioModal(false)}
   onFileUpload={(files) => {
+    setPortfolioFiles(files); // 미리보기용
+  }}
+  onSaveFiles={(files) => {
     setPortfolioFiles(files);
     if (files.length > 0) {
       const syntheticEvent = {
         target: { value: "", files: [files[0]] }
       } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'portfolioFile'); // ✅ 추가
+      onFileChange(syntheticEvent, 'portfolioFile'); // ✅ 실제 반영
     }
   }}
-  onSaveFiles={handleSavePortfolio}
 />
 </div>
       <Input

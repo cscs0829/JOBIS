@@ -1,10 +1,10 @@
 import styles from "./Login.module.scss";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
-  const [id, setId] = useState(""); 
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(id, password); 
+      await login(id, password);
       navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -28,7 +28,7 @@ const Login = () => {
           type="text"
           placeholder="아이디"
           value={id}
-          onChange={(e) => setId(e.target.value)} // setUsername 대신 setId
+          onChange={(e) => setId(e.target.value)}
         />
         <input
           type="password"
@@ -38,14 +38,18 @@ const Login = () => {
         />
         <button type="submit">로그인</button>
       </form>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: '20px' }}>
-        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/signup")}>
-          회원가입
+      {/* --- 하단 링크 문구 및 구조 수정 --- */}
+      <div className={styles.bottomLinks}>
+        {/* "계정이 없으신가요? 회원가입" 문구와 /signup 링크 */}
+        <p className={styles.linkPrimary} onClick={() => navigate("/signup")}>
+          계정이 없으신가요? 회원가입
         </p>
-        <p style={{ cursor: 'pointer' }} onClick={() => navigate("/")}>
-          홈
+        {/* "메인으로" 문구와 / 링크 */}
+        <p className={styles.linkSecondary} onClick={() => navigate("/")}>
+          메인으로
         </p>
       </div>
+      {/* -------------------------------- */}
     </div>
   );
 };

@@ -21,7 +21,11 @@
   display: flex;
   border-radius: $radius;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden; // 버튼이 넘치지 않도록 hidden 유지 또는 필요시 visible/auto 조정
+  overflow: hidden; 
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; 
+  animation: slideDownFadeIn 0.5s ease-out forwards; 
 }
 
 .companyMentorLeft {
@@ -130,5 +134,17 @@
          }
       }
     }
+  }
+}
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

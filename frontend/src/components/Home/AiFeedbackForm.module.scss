@@ -1,3 +1,4 @@
+/* src/components/Home/AiFeedbackForm.module.scss */
 @import '../../App.scss'; // App.scss 경로 확인
 
 .formContainer {
@@ -17,6 +18,37 @@
   max-width: 50%; // 최대 너비 제한 (부모가 flex row 일 때)
   box-sizing: border-box; // 패딩, 테두리 포함하여 크기 계산
 
+  .attachedFileSection {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  /* 👇 파일 수정 라벨 컨테이너 스타일 수정 */
+  .fileEditLabelContainer {
+    display: flex;          // flex 레이아웃 적용
+    align-items: center;    // 세로 중앙 정렬
+    gap: 5px;               // 라벨과 아이콘 사이 간격 추가
+    margin-bottom: 8px;     // 버튼과의 간격 조정
+  }
+
+  .fileEditLabel {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+  }
+
+  /* 👇 툴팁 아이콘 스타일 (필요시 추가 조정) */
+  .tooltipIcon {
+    color: #777; // 아이콘 색상 (예시)
+    cursor: help; // 도움말 커서
+    display: flex; // 아이콘 정렬을 위해 flex 추가 (선택 사항)
+    align-items: center; // 세로 중앙 정렬 (선택 사항)
+    margin-bottom: 8px;
+  }
+  
   h2 {
     font-size: 1.75rem; // 제목 폰트 크기
     margin-bottom: 20px; // 제목 하단 여백
@@ -25,7 +57,7 @@
     font-weight: 600; // 제목 굵기
   }
 
-  /* --- Form 요소 공통 스타일 --- */
+  /* --- Form 요소 공통 스타일 (기존 유지) --- */
   label {
     font-size: 1rem; // 레이블 폰트 크기
     color: #555; // 레이블 색상
@@ -59,7 +91,7 @@
   /* ----------------------------- */
 
 
-  /* --- 파일 업로드 버튼 스타일 --- */
+  /* --- 파일 업로드 -> 파일 수정 버튼 스타일 (기존 유지) --- */
   // .tsx 파일에서 Button 컴포넌트에 className={styles.fileUploadButton} 적용 필요
   .fileUploadButton {
     padding: 12px 16px;
@@ -86,7 +118,7 @@
   /* --------------------------- */
 
 
-  /* --- 파일 목록 스타일 --- */
+  /* --- 파일 목록 스타일 (기존 유지, 현재 사용 안 함) --- */
   // .tsx 파일에서 파일 목록 ul에 className={styles.fileList} 적용 필요
   .fileList {
     list-style: none; // 기본 목록 스타일 제거
@@ -106,29 +138,69 @@
   }
   /* ---------------------- */
 
-
-  /* --- 메인 액션 버튼 (피드백 요청) 스타일 --- */
-  // .tsx 파일에서 Button 컴포넌트에 className={styles.submitButton} 적용 필요
-  .submitButton {
+  /* +++ 피드백 종류 선택 버튼 스타일 (신규 추가) +++ */
+  .feedbackSelectButton {
     padding: 12px 16px;
     font-size: 1rem;
-    background-color: #f0f0f0; // 배경색
-    color: #333; // 글자색 수정됨 (기존 black)
+    background-color: #f8f8f8; // 다른 버튼과 구분되는 색상 (예시)
+    color: #444;
     border: 1px solid #ccc;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    text-align: center; // 가운데 정렬 (수정됨)
+    text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center; // 가운데 정렬 (수정됨)
+    justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 8px;
+    margin-bottom: 8px; // 아래 표시 영역과의 간격
 
     &:hover {
-      background-color: #e0e0e0;
-      border-color: #b3b3b3;
+      background-color: #eee;
+      border-color: #bbb;
+    }
+  }
+  /* +++++++++++++++++++++++++++++++++++++++ */
+
+  /* +++ 선택된 피드백 표시 영역 스타일 (신규 추가) +++ */
+  .selectedFeedbackDisplay {
+    font-size: 0.9rem;
+    color: #666;
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    min-height: 30px; // 최소 높이
+    margin-bottom: 15px; // 다음 요소와의 간격
+    line-height: 1.4;
+    white-space: pre-wrap; // 줄바꿈 표시
+  }
+  /* +++++++++++++++++++++++++++++++++++++++ */
+
+  /* --- 메인 액션 버튼 (피드백 요청) 스타일 (기존 유지) --- */
+  // .tsx 파일에서 Button 컴포넌트에 className={styles.submitButton} 적용 필요
+  .submitButton {
+    padding: 14px 24px; // 수정: 피드백 요청 버튼 크기 유지 또는 조정
+    font-size: 1.1rem; // 수정: 피드백 요청 버튼 폰트 크기 유지 또는 조정
+    background-color: $main-color; // 메인 컬러 적용
+    color: white;
+    border: none;
+    border-radius: 10px; // radius 조정 (선택 사항)
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    align-self: center; // 가운데 정렬
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    width: auto; // 너비를 자동으로 설정하여 내용에 맞춤
+    margin-top: 15px; // 위쪽 여백 추가
+
+    &:hover {
+      background-color: darken($main-color, 10%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: scale(0.98);
     }
   }
   /* --------------------------------------- */
@@ -157,16 +229,34 @@
       padding: 10px 12px;
     }
 
-    // 파일 업로드 및 제출 버튼 모바일 스타일
-    .fileUploadButton,
-    .submitButton {
-      font-size: 1rem;
-      padding: 10px 16px;
+    // 파일 수정 버튼 모바일 스타일
+    .fileUploadButton {
+        font-size: 1rem;
+        padding: 10px 16px;
     }
 
     // 파일 목록 모바일 스타일 (필요 시)
     .fileList {
        font-size: 0.85rem;
+    }
+
+    /* +++ 피드백 종류 선택 버튼 모바일 스타일 (신규 추가) +++ */
+    .feedbackSelectButton {
+      font-size: 0.95rem;
+      padding: 10px 14px;
+    }
+    /* +++++++++++++++++++++++++++++++++++++++ */
+
+    /* +++ 선택된 피드백 표시 영역 모바일 스타일 (신규 추가) +++ */
+    .selectedFeedbackDisplay {
+      font-size: 0.85rem;
+    }
+    /* +++++++++++++++++++++++++++++++++++++++ */
+
+    // 피드백 요청 버튼 모바일 스타일
+    .submitButton {
+      font-size: 1rem;
+      padding: 10px 16px;
     }
   }
 }

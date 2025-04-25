@@ -1,127 +1,108 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from DB.Connection import get_db_connection
-from datetime import datetime
+from fastapi import APIRouter, HTTPException, Form
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-import fitz  # PyMuPDF
 
+from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from DB.Connection import get_db_connection
 
 load_dotenv()
 router = APIRouter()
-
-# ✅ OpenAI 인스턴스
 openai = OpenAI(api_key=os.getenv("OPENAI_API"))
 
-# ✅ PDF 텍스트 추출 함수
-async def extract_pdf_text(upload_file: UploadFile) -> str:
-    if upload_file is None:
-        return ""
-    try:
-        contents = await upload_file.read()
-        pdf = fitz.open(stream=contents, filetype="pdf")
-        text = ""
-        for page in pdf:
-            text += page.get_text()
-        return text.strip()
-    except Exception as e:
-        print(f"PDF 파싱 오류: {upload_file.filename} - {e}")
-        return ""
-
-# ✅ 자기소개서 초안 생성 및 DB 저장 API
 @router.post("/generate-draft")
-async def generate_and_save_draft(
+async def generate_draft(
     mem_id: str = Form(...),
-    questions: str = Form(...),
-    skills: str = Form(...),
     field: str = Form(...),
     company: str = Form(...),
     emphasisPoints: str = Form(...),
-    resume: UploadFile = File(None),
-    portfolio: UploadFile = File(None),
-    cv: UploadFile = File(None)
+    qualifications: str = Form(...),
+    projects: str = Form(...),
+    experiences: str = Form(...),
+    major: str = Form(...)
 ):
-    print("📥 [generate-draft 요청 도착]")
-    print("📌 mem_id:", mem_id)
-    print("📌 questions:", questions)
-    print("📌 skills:", skills)
-    print("📌 field:", field)
-    print("📌 company:", company)
-    print("📌 emphasisPoints:", emphasisPoints)
-
-    # ✅ PDF 텍스트 추출
-    cv_text = await extract_pdf_text(cv)
-    resume_text = await extract_pdf_text(resume)
-    portfolio_text = await extract_pdf_text(portfolio)
-
-    # ✅ 프롬프트 구성
-    prompt = f"""
-    다음 정보를 기반으로 AI 자기소개서 초안을 작성해줘:
-
-    - 자소서 질문: {questions}
-    - 보유 스킬: {skills}
-    - 지원 분야: {field}
-    - 지원 회사: {company}
-    - 강조 포인트: {emphasisPoints}
-    
-    [첨부된 이력서 내용]
-    {cv_text}
-
-    [첨부된 자기소개서 내용]
-    {resume_text}
-
-    [첨부된 포트폴리오 내용]
-    {portfolio_text}
-
-    [작성 조건]
-    - '네 알겠습니다'와 같이 대답하지 말고 바로 작성
-    - 사용자가 입력한 자소서 질문에 대한 답변을 작성
-    - 질문항목에 대한 작성의 시작은 항상 질문 보여주고 [소제목]을 붙이고 개행처리 한 다음 내용작성
-    - 여기서 [소제목]은 답변의 주제를 나타내는 제목인데 면접관이 봤을 때 이목을 끌 수 있고 재치있는 제목으로 작성
-    - [소제목]은 20자 이내로 작성 
-    - 자기소개서의 각 항목은 최소 500자~최대1000자 이상 작성
-    - 구체적인 예시와 진정성 있는 문장으로 구성
-    - 중복 표현 피하기
-    - 문장은 자연스럽게, 사람처럼 작성
-    """
-
     try:
-        # ✅ OpenAI GPT 호출
+        conn = await get_db_connection()
+        row = await conn.fetchrow(
+            "SELECT resume_raw_text, self_intro_raw_text, portfolio_raw_text FROM tb_attached WHERE mem_id = $1",
+            mem_id
+        )
+        await conn.close()
+
+        if not row:
+            raise HTTPException(status_code=400, detail="해당 mem_id의 첨부 텍스트를 찾을 수 없습니다.")
+
+        total_text = "\n\n".join([
+            row["resume_raw_text"] or "",
+            row["self_intro_raw_text"] or "",
+            row["portfolio_raw_text"] or ""
+        ]).strip()
+
+        if not total_text:
+            mode = "none"
+        elif len(total_text) < 300:
+            mode = "draft"
+        else:
+            mode = "full"
+
+        similar_text = ""
+        if mode != "none":
+            splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+            docs = splitter.create_documents([total_text])
+            embedding = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
+            vectorstore = Chroma.from_documents(
+                documents=docs,
+                embedding=embedding,
+                persist_directory="./vectorstore/jasoseo_mem"
+            )
+            retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+            relevant_docs = retriever.get_relevant_documents(emphasisPoints)
+            similar_text = "\n\n".join([doc.page_content for doc in relevant_docs])
+
+        # 프롬프트 구성
+        prompt = "너는 전문 HR 채용담당자이자 자소서 첨삭 전문가야.\n"
+
+        if mode == "none":
+            prompt += "\n사용자가 자소서를 작성하지 않았기 때문에 아래 정보를 바탕으로 전체 자소서를 새로 작성해줘."
+        elif mode == "draft":
+            prompt += "\n사용자가 자소서를 일부 작성했지만 미완성 상태야. 아래 내용을 참고해서 자연스럽게 이어서 완성해줘."
+        else:  # mode == "full"
+            prompt += "\n사용자가 자소서를 충분히 작성했기 때문에 전체 문장을 더 매끄럽고 설득력 있게 다듬어줘."
+
+        prompt += f"""
+
+[사용자 입력 정보]
+- 지원 분야: {field}
+- 지원 회사: {company}
+- 자격증: {qualifications}
+- 프로젝트 경험: {projects}
+- 실무/인턴 경험: {experiences}
+- 전공: {major}
+- 강조 포인트: {emphasisPoints}
+"""
+
+        if similar_text.strip():
+            prompt += f"\n[첨부 문서 기반 유사 문장 요약]\n{similar_text}\n"
+
+        prompt += """
+
+[작성 조건]
+- 각 항목은 500~1000자 분량
+- 강조 포인트는 반드시 자연스럽게 포함
+- 유사 문장은 복붙하지 말고 문맥에 맞게 표현해서 반영
+- 진정성 있고 구체적인 문장으로 작성
+- 중복 표현 피하고 문법, 맞춤법 정확히
+"""
+
         response = openai.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}]
         )
         draft = response.choices[0].message.content.strip()
 
+        return {"message": "자기소개서 초안 생성 완료", "draft": draft}
+
     except Exception as e:
-        print("🔥 GPT 생성 오류:", e)
-        raise HTTPException(status_code=500, detail=f"AI 초안 생성 실패: {str(e)}")
-
-    try:
-        # ✅ PostgreSQL 저장
-        conn = await get_db_connection()
-
-        intro_keyword = f"{questions}, {skills}, {field}, {company}, {emphasisPoints}"
-        
-        await conn.execute(
-            """
-            INSERT INTO tb_self_introduction 
-            (mem_id, file_idx, intro_type, intro_keyword, ai_introduction, created_at)
-            VALUES ($1, NULL, $2, $3, $4, NOW())
-            """,
-            mem_id,
-            'A',
-            intro_keyword,
-            draft
-        )
-
-        await conn.close()
-
-    except Exception as db_error:
-        print("🔥 DB 저장 오류:", db_error)
-        raise HTTPException(status_code=500, detail=f"DB 저장 실패: {str(db_error)}")
-
-    return {
-        "message": "자기소개서 초안 생성 및 저장 완료",
-        "draft": draft
-    }
+        raise HTTPException(status_code=500, detail=f"오류 발생: {str(e)}")

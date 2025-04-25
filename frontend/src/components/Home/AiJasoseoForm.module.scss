@@ -1,6 +1,6 @@
 @import '../../App.scss';
 
- .formContainer {
+.formContainer {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -16,6 +16,38 @@
   flex-grow: 1;
   max-width: 50%;
 
+  .attachedFileSection {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  /* 👇 파일 수정 라벨 컨테이너 스타일 수정 */
+  .fileEditLabelContainer {
+    display: flex;          // flex 레이아웃 적용
+    align-items: center;    // 세로 중앙 정렬
+    gap: 5px;               // 라벨과 아이콘 사이 간격 추가
+    margin-bottom: 8px;     // 버튼과의 간격 조정
+  }
+
+  .fileEditLabel {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+  }
+
+  /* 👇 툴팁 아이콘 스타일 (필요시 추가 조정) */
+  .tooltipIcon {
+    color: #777; // 아이콘 색상 (예시)
+    cursor: help; // 도움말 커서
+    display: flex; // 아이콘 정렬을 위해 flex 추가 (선택 사항)
+    align-items: center; // 세로 중앙 정렬 (선택 사항)
+    margin-bottom: 8px;
+  }
+
+
   h2 {
   font-size: 1.75rem;
   margin-bottom: 20px;
@@ -23,8 +55,6 @@
   text-align: center;
   font-weight: 600;
   }
-
-  /* Improved styling for file upload buttons */
   button {
     padding: 12px 16px;
     font-size: 1rem;
@@ -33,7 +63,6 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
     text-align: center; // 가운데 정렬 (수정됨)
     display: flex;
     align-items: center;
@@ -47,6 +76,7 @@
       border-color: #b3b3b3;
     }
   }
+  
 
   /* Style for the file list */
   ul {
@@ -62,87 +92,112 @@
   }
 
   /* Style the labels */
+  // Input 컴포넌트 내부의 label 스타일은 해당 컴포넌트에서 관리됩니다.
+  /*
   label {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 8px;
-  display: block;
-  font-weight: 500;
+    // font-size: 1rem;
+    // color: #555;
+    // margin-bottom: 8px;
+    // display: block;
+    // font-weight: 500;
   }
+  */
 
   /* Style the input fields */
+  // Input 컴포넌트 내부의 input/textarea 스타일은 해당 컴포넌트에서 관리됩니다.
+  /*
   input,
   textarea {
-  padding: 12px 16px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
+  // padding: 12px 16px;
+  // font-size: 1rem;
+  // border: 1px solid #ccc;
+  // border-radius: 8px;
+  // outline: none;
+  // width: 100%;
+  // box-sizing: border-box;
+  // transition: border-color 0.2s ease;
 
-  &:focus {
-  border-color: $main-color;
-  box-shadow: 0 0 6px rgba($main-color, 0.2);
+  // &:focus {
+  // border-color: $main-color;
+  // box-shadow: 0 0 6px rgba($main-color, 0.2);
+  // }
   }
-  }
+  */
 
+  // Input isTextArea={true} 일 때의 스타일은 Input 컴포넌트에서 관리
+  /*
   textarea {
-  resize: vertical;
-  min-height: 100px;
+  // resize: vertical;
+  // min-height: 100px;
   }
+  */
 
-  /* Style the "초안 작성하기" button */
-  button[type="button"] { /* Target the specific button */
-  padding: 14px 24px;
-  font-size: 1.1rem;
-  background-color: $main-color;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  align-self: center;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  /* Style the "자소서 작성하기" button */
+  // '자소서 작성하기' 버튼에 특정 클래스(예: .submitButton)를 부여하고 스타일링하는 것을 추천합니다.
+  .submitButton { // 예시 클래스명 (AiJasoseoForm.tsx에서 className 적용 필요)
+    padding: 14px 24px;
+    font-size: 1.1rem;
+    background-color: $main-color;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    align-self: center;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    width: auto; // 너비를 자동으로 설정하여 내용에 맞춤
+    margin-top: 15px; // 위쪽 여백 추가
 
-  &:hover {
-  background-color: darken($main-color, 10%);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
+    &:hover {
+      background-color: darken($main-color, 10%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
-  &:active {
-  transform: scale(0.98);
-  }
+    &:active {
+      transform: scale(0.98);
+    }
   }
  }
 
  @media (max-width: 768px) {
   .formContainer {
-  max-width: 100%;
-  flex-basis: auto;
-  padding: 15px;
-  margin-bottom: 15px;
-  gap: 15px;
+    max-width: 100%;
+    flex-basis: auto;
+    padding: 15px;
+    margin-bottom: 15px;
+    gap: 15px;
 
-  h2 {
-  font-size: 1.5rem;
-  }
+    /* 👇 모바일에서 라벨 컨테이너 스타일 */
+    .fileEditLabelContainer {
+      margin-bottom: 5px; // 간격 조정
+    }
 
-  label {
-  font-size: 0.9rem;
-  }
+    h2 {
+      font-size: 1.5rem;
+    }
 
-  input,
-  textarea {
-  font-size: 0.95rem;
-  padding: 10px 12px;
-  }
+    // Input 컴포넌트 label 스타일
+    /*
+    label {
+      font-size: 0.9rem;
+    }
+    */
 
-  button, button[type="button"] {
-  font-size: 1rem;
-  padding: 10px 16px;
-  }
+    // Input 컴포넌트 input/textarea 스타일
+    /*
+    input,
+    textarea {
+      font-size: 0.95rem;
+      padding: 10px 12px;
+    }
+    */
+
+    // 버튼 공통 스타일 (모바일)
+    // button, // Button 컴포넌트 스타일 사용 권장
+    .submitButton { // .submitButton 추가
+      font-size: 1rem;
+      padding: 10px 16px;
+    }
   }
  }

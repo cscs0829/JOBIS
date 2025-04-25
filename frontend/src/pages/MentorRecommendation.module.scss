@@ -21,6 +21,10 @@
   border-radius: $radius;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden; // 내부 스크롤 위해 필요 시 조정
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; 
+  animation: slideDownFadeIn 0.5s ease-out forwards; 
 }
 
 .companyMentorLeft { // 클래스 이름 일관성 유지 또는 변경
@@ -126,5 +130,17 @@
         z-index: 10; // 다른 요소 위에 오도록
         margin-top: 0; // 고정 시 margin-top 제거
     }
+  }
+}
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

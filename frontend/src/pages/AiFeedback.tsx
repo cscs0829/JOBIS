@@ -1,53 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AiFeedbackForm from '../components/Home/AiFeedbackForm';
 import AiFeedbackResult from '../components/Home/AiFeedbackResult';
-import styles from './AiFeedback.module.scss'; // 페이지 스타일 import 확인
-import AiGuideNavbar from '../components/AiFeedback/AiFeedbackNavbar'; // Navbar import 확인
+import styles from './AiFeedback.module.scss';
+import AiFeedbackNavbar from '../components/AiFeedback/AiFeedbackNavbar';
+import FeedbackTypeModal from '../components/AiFeedback/FeedbackTypeModal';
 
 const AiFeedbackPage: React.FC = () => {
   const [field, setField] = useState('');
-  const [company, setCompany] = useState('');
-  const [emphasisPoints, setEmphasisPoints] = useState('');
-  const [requirements, setRequirements] = useState('');
-  // --- 이력서 파일 상태 (단일 파일만 처리한다고 가정) ---
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
-  // ---------------------------------------------
+  const [selfIntroText, setSelfIntroText] = useState(''); // ✅ DB에서 불러온 자기소개서 텍스트
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [selectedFeedbackTypes, setSelectedFeedbackTypes] = useState<string[]>([]);
+  const [otherFeedbackType, setOtherFeedbackType] = useState<string>('');
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+
+  // ✅ 자기소개서 자동 로딩 (백엔드 /feedback/load-intro 사용)
+  useEffect(() => {
+    const storedUserInfo = sessionStorage.getItem("userInfo");
+    const mem_id = storedUserInfo ? JSON.parse(storedUserInfo).id : null;
+    if (!mem_id) return;
+
+    fetch(`http://localhost:9000/feedback/load?mem_id=${mem_id}`)
+      .then(res => res.json())
+      .then(data => {
+        setSelfIntroText(data.self_intro || '');
+        console.log("✅ 불러온 자기소개서:", data.self_intro_text);
+      })
+      .catch(err => {
+        console.error("❌ 자기소개서 불러오기 실패:", err);
+      });
+  }, []);
 
   const handleGenerateFeedback = async () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      const loginId = sessionStorage.getItem("login_id") || ""; // 로그인 ID 가져오기
-      formData.append("mem_id", loginId);
-      formData.append("field", field);
-      formData.append("company", company);
-      formData.append("emphasisPoints", emphasisPoints);
-      formData.append("requirements", requirements);
-      // --- resumeFile 상태 변수 사용 확인 ---
-      if (resumeFile) {
-          formData.append("resume", resumeFile); // 'resume' 키로 파일 추가
-          console.log("Appending resume file:", resumeFile.name); // 디버깅 로그 추가
-      } else {
-          console.log("No resume file to append."); // 디버깅 로그 추가
-      }
-      // ------------------------------------
+      const storedUserInfo = sessionStorage.getItem("userInfo");
+      const mem_id = storedUserInfo ? JSON.parse(storedUserInfo).id : "";
 
-      console.log("Sending FormData:", Object.fromEntries(formData)); // 전송 데이터 확인 (파일 제외)
+      formData.append("mem_id", mem_id);
+      formData.append("field", field);
+      formData.append("selected_feedback_types", selectedFeedbackTypes.join(', '));
+      formData.append("other_feedback_type", otherFeedbackType);
 
       const response = await fetch("http://localhost:9000/feedback/generate", {
         method: "POST",
-        body: formData, // Content-Type은 FormData 사용 시 브라우저가 자동 설정
+        body: formData,
       });
 
-      if (!response.ok) { // 응답 상태 코드 확인
-          const errorText = await response.text();
-          throw new Error(`API Error ${response.status}: ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API Error ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
-      setResult(data.feedback); // 백엔드 응답 키 확인 필요
+      setResult(data.feedback);
     } catch (err) {
       console.error("피드백 요청 실패:", err);
       alert(`AI 피드백 요청 실패: ${err instanceof Error ? err.message : String(err)}`);
@@ -57,46 +65,40 @@ const AiFeedbackPage: React.FC = () => {
     }
   };
 
-  // --- onResumeUpload 핸들러 수정 ---
-  // 이제 File 배열을 인자로 받음
-  const handleResumeUpload = (files: File[]) => {
-      if (files.length > 0) {
-          // 첫 번째 파일만 사용한다고 가정
-          setResumeFile(files[0]);
-          console.log("Resume file set:", files[0].name);
-      } else {
-          setResumeFile(null);
-          console.log("Resume file cleared.");
-      }
+  const handleOpenFeedbackModal = () => setIsFeedbackModalOpen(true);
+  const handleCloseFeedbackModal = () => setIsFeedbackModalOpen(false);
+  const handleSaveFeedbackTypes = (selectedTypes: string[], otherType: string) => {
+    setSelectedFeedbackTypes(selectedTypes);
+    setOtherFeedbackType(otherType);
+    console.log("✅ 피드백 선택:", selectedTypes, "기타:", otherType);
   };
-  // ------------------------------
 
   return (
-    // 클래스 이름 확인 (AiGuide or AiFeedback)
     <div className={styles.AiGuide}>
       <div className={styles.ai_guide_container}>
-        {/* Navbar 컴포넌트 이름 확인 */}
-        <AiGuideNavbar />
+        <AiFeedbackNavbar />
         <div className={styles.ai_guide_right}>
           <div className={styles.ai_guide_right_wrapper}>
             <AiFeedbackForm
               field={field}
-              company={company}
-              emphasisPoints={emphasisPoints}
-              requirements={requirements}
               onFieldChange={e => setField(e.target.value)}
-              onCompanyChange={e => setCompany(e.target.value)}
-              onEmphasisChange={e => setEmphasisPoints(e.target.value)}
-              onRequirementChange={e => setRequirements(e.target.value)}
-              // --- 수정된 핸들러 전달 ---
-              onResumeUpload={handleResumeUpload}
-              // -----------------------
+              selectedFeedbackTypes={selectedFeedbackTypes}
+              otherFeedbackType={otherFeedbackType}
+              onOpenFeedbackModal={handleOpenFeedbackModal}
               onGenerateFeedback={handleGenerateFeedback}
             />
             <AiFeedbackResult result={result} loading={loading} />
           </div>
         </div>
       </div>
+
+      <FeedbackTypeModal
+        isOpen={isFeedbackModalOpen}
+        onClose={handleCloseFeedbackModal}
+        onSave={handleSaveFeedbackTypes}
+        initialSelectedTypes={selectedFeedbackTypes}
+        initialOtherType={otherFeedbackType}
+      />
     </div>
   );
 };

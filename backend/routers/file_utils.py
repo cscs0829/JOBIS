@@ -33,8 +33,8 @@ async def save_uploaded_file_and_extract_text(mem_id: str, file_type: str, file:
     except Exception as e:
         print(f"❌ 텍스트 추출 실패: {str(e)}")
         return {"status": "fail", "reason": "text_extract_error"}
-    
-    # 4. DB 저장
+
+    # 4. DB 컬럼 설정
     column_map = {
         "resume": ("resume", "resume_raw_text"),
         "self_intro": ("self_introduction", "self_intro_raw_text"),
@@ -50,7 +50,7 @@ async def save_uploaded_file_and_extract_text(mem_id: str, file_type: str, file:
     try:
         conn = await get_db_connection()
 
-        # 1. 해당 mem_id row 있는지 확인
+        # 1. row 존재 여부 확인
         row = await conn.fetchrow("SELECT * FROM tb_attached WHERE mem_id = $1", mem_id)
         if not row:
             await conn.execute("""
@@ -59,18 +59,38 @@ async def save_uploaded_file_and_extract_text(mem_id: str, file_type: str, file:
             """, mem_id)
             print(f"🆕 mem_id '{mem_id}' 에 대한 새로운 row 삽입됨")
 
-        # 2. 컬럼명 f-string으로 동적으로 삽입
+        # 2. 첨부 파일 업데이트
+        name_col_map = {
+            "resume": "resume_name",
+            "self_intro": "self_intro_name",
+            "portfolio": "portfolio_name"
+        }
+        name_col = name_col_map[file_type]
+
         update_query = f"""
             UPDATE tb_attached
-            SET {file_col} = $1, {text_col} = $2, updated_at = NOW()
-            WHERE mem_id = $3
+            SET {file_col} = $1,
+                {text_col} = $2,
+                {name_col} = $3,
+                updated_at = NOW()
+            WHERE mem_id = $4
         """
+        await conn.execute(update_query, file_path, text, file.filename, mem_id)
 
-        result = await conn.execute(update_query, file_path, text, mem_id)
-        await conn.close()
+        if not row or row["file_idx"] is None:
+            print("❌ file_idx 조회 실패 또는 NULL")
+            return {"status": "fail", "reason": "file_idx_null"}
 
-        print(f"✅ DB 저장 완료 result: {result}")
-        return {"status": "success", "path": file_path, "preview": text[:100]}
+        file_idx = row["file_idx"]
+        print(f"📦 file_idx 반환: {file_idx}")
+
+        return {
+            "status": "success",
+            "file_idx": file_idx,
+            "path": file_path,
+            "preview": text[:100]
+        }
+
     except Exception as e:
         print(f"❌ DB 저장 실패: {str(e)}")
-    return {"status": "fail", "reason": "db_error"}
+        return {"status": "fail", "reason": "db_error"}

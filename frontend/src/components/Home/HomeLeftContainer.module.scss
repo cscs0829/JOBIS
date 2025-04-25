@@ -91,6 +91,14 @@
   }
 }
 
+.mainImage {
+  display: block; // 이미지 하단 여백 제거
+  width: 55%;     // 이미지 너비 (컨테이너 기준)
+  max-width: 500px; // 이미지 최대 너비 (컨테이너 크기 고려)
+  margin: 250px auto 30px auto; // 위쪽 간격, 좌우 자동(가운데 정렬), 아래쪽 간격
+  align-self: center; // Flex column 내에서 가운데 정렬
+}
+
 // mobile
 @media (max-width: 768px) {
   .Home {

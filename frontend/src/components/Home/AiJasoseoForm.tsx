@@ -1,14 +1,15 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
+import { Link } from 'react-router-dom';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
-import { FormData } from '../../types/types';
+import { FormData } from '../../types/types'; // FormData 타입 정의에 맞게 Omit 사용
 import styles from './AiJasoseoForm.module.scss';
-import FileUploadModal from '../Input/FileUploadModal';
-import { FileInputProps } from '../../types/types'; // Import FileInputProps
+import { FaInfoCircle } from 'react-icons/fa'; // react-icons에서 아이콘 임포트
 
 interface AiJasoseoFormProps {
   formData: FormData;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: keyof FormData) => void;
+  // ✅ 필요한 필드만 남기고, 파일 관련 필드는 Omit으로 제외
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: keyof Omit<FormData, 'cvFile' | 'resumeFile' | 'portfolioFile' | 'qualifications' | 'projects' | 'experiences' | 'major'>) => void;
   onGenerate: () => void;
 }
 
@@ -17,117 +18,28 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
   onChange,
   onGenerate,
 }) => {
-  const [showResumeModal, setShowResumeModal] = useState(false);
-  const [showPortfolioModal, setShowPortfolioModal] = useState(false);
-  const [resumeFiles, setResumeFiles] = useState<File[]>([]);
-  const [portfolioFiles, setPortfolioFiles] = useState<File[]>([]);
-  const [showCvModal, setShowCvModal] = useState(false);
-  const [cvFiles, setCvFiles] = useState<File[]>([]);
-
-  const handleCvUpload = (files: File[]) => {
-    setCvFiles(files);
-  };
-  
-  const handleResumeUpload = (files: File[]) => {
-    setResumeFiles(files);
-  };
-
-  const handlePortfolioUpload = (files: File[]) => {
-    setPortfolioFiles(files);
-  };
-
-  const handleSaveCv = (files: File[]) => {
-    console.log('이력서 파일 저장:', files);
-  };
-
-  const handleSaveResume = (files: File[]) => {
-    // 이력서 파일 저장 로직
-    console.log('자기소개서 파일 저장:', files);
-    // 여기에 실제 파일 저장 로직을 구현하세요 (예: API 호출)
-  };
-
-  const handleSavePortfolio = (files: File[]) => {
-    // 포트폴리오 파일 저장 로직
-    console.log('포트폴리오 파일 저장:', files);
-    // 여기에 실제 파일 저장 로직을 구현하세요 (예: API 호출)
-  };
+  const fileEditTooltipText = "이력서, 자기소개서, 포트폴리오 파일은\n'첨부 파일 수정' 버튼을 눌러 관리할 수 있습니다.";
 
   return (
     <div className={styles.formContainer}>
       <h2>AI 자소서 작성</h2>
 
-{/* 1. 이력서 파일 첨부 */}
-      <div>
-  <label htmlFor="cvFile">이력서 파일 첨부</label>
-  <button onClick={() => setShowCvModal(true)} id="cvFile">
-    {cvFiles.length > 0
-      ? cvFiles.map(file => file.name).join(', ')
-      : '이력서 첨부'}
-  </button>
-  <FileUploadModal
-  isOpen={showCvModal}
-  onClose={() => setShowCvModal(false)}
-  onFileUpload={(files) => {
-    setCvFiles(files);
-    if (files.length > 0) {
-      const syntheticEvent = {
-        target: { value: "", files: [files[0]] } // value는 무시
-      } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'cvFile'); // ✅ 상위 전달
-    }
-  }}
-  onSaveFiles={handleSaveCv}
-/>
+      {/* 파일 첨부 섹션 */}
+      <div className={styles.attachedFileSection}>
+        {/* 👇 라벨과 아이콘을 감싸는 컨테이너에 flex 스타일 적용 */}
+        <div className={styles.fileEditLabelContainer}>
+          <label className={styles.fileEditLabel}>첨부 파일 수정</label>
+          <span className={styles.tooltipIcon} title={fileEditTooltipText}>
+             <FaInfoCircle />
+          </span>
+        </div>
+        {/* 설명 문구 제거 */}
+        <Link to="/user-file-edit">
+           <Button>첨부 파일 수정하러 가기</Button> {/* 버튼 텍스트 명확화 */}
+        </Link>
+      </div>
 
-</div>
-
-{/* 2. 자기소개서 파일 첨부 */}
-<div>
-  <label htmlFor="resumeFile">자기소개서 파일 첨부</label>
-  <button onClick={() => setShowResumeModal(true)} id="resumeFile">
-    {resumeFiles.length > 0
-      ? resumeFiles.map(file => file.name).join(', ')
-      : '자기소개서 첨부'}
-  </button>
-  <FileUploadModal
-  isOpen={showResumeModal}
-  onClose={() => setShowResumeModal(false)}
-  onFileUpload={(files) => {
-    setResumeFiles(files);
-    if (files.length > 0) {
-      const syntheticEvent = {
-        target: { value: "", files: [files[0]] }
-      } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'resumeFile'); // ✅ 추가
-    }
-  }}
-  onSaveFiles={handleSaveResume}
-/>
-</div>
-
-{/* 3. 포트폴리오 파일 첨부 */}
-<div>
-  <label htmlFor="portfolioFile">포트폴리오 파일 첨부</label>
-  <button onClick={() => setShowPortfolioModal(true)} id="portfolioFile">
-    {portfolioFiles.length > 0
-      ? portfolioFiles.map(file => file.name).join(', ')
-      : '포트폴리오 첨부'}
-  </button>
-  <FileUploadModal
-  isOpen={showPortfolioModal}
-  onClose={() => setShowPortfolioModal(false)}
-  onFileUpload={(files) => {
-    setPortfolioFiles(files);
-    if (files.length > 0) {
-      const syntheticEvent = {
-        target: { value: "", files: [files[0]] }
-      } as unknown as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent, 'portfolioFile'); // ✅ 추가
-    }
-  }}
-  onSaveFiles={handleSavePortfolio}
-/>
-</div>
+      {/* --- 필수 Input 필드들 --- */}
       <Input
         label="질문 (예: 지원동기, 성장과정 등)"
         value={formData.questions}
@@ -135,7 +47,6 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
         isTextArea={true}
       />
       <Input
-      
         label="보유 스킬"
         value={formData.skills}
         onChange={(e) => onChange(e, 'skills')}
@@ -154,9 +65,11 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
         label="강조 포인트 (선택)"
         value={formData.emphasisPoints}
         onChange={(e) => onChange(e, 'emphasisPoints')}
+        isTextArea={true}
       />
 
-      <Button onClick={onGenerate}>자소서 작성하기</Button>
+      {/* 👇 타입 오류 방지를 위해 Button 컴포넌트의 onClick 타입 확인 또는 수정 필요 */}
+      <Button onClick={onGenerate} className={styles.submitButton}>자소서 작성</Button>
     </div>
   );
 };

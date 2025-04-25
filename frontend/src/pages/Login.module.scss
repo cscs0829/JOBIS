@@ -1,16 +1,22 @@
 /* src/pages/Login.module.scss */
+@import '../App.scss'; // Import App.scss if not already present
 
 .authContainer {
   max-width: 400px;
-  margin: 80px auto; /* 위아래 마진 증가 */
-  padding: 40px; /* 패딩 증가 */
-  background-color: #FAF5EF; /* 흰색 배경 */
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #FAF5EF;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 더 깊은 그림자 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  gap: 25px; /* 요소 간 간격 증가 */
-  align-items: center; /* 중앙 정렬 */
+  gap: 25px;
+  align-items: center;
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; /* 시작 시 투명 */
+  animation: slideDownFadeIn 0.5s ease-out forwards; /* 애니메이션 적용 */
+  /* ------------------- */
 
   h2 {
     color: #333;
@@ -29,7 +35,7 @@
   input[type="password"] {
     padding: 14px;
     font-size: 1rem;
-    border: 1px solid #ccc; /* 연한 테두리 */
+    border: 1px solid #ccc;
     border-radius: 6px;
     transition: border-color 0.3s ease;
 
@@ -42,7 +48,7 @@
 
   button[type="submit"] {
     padding: 14px 20px;
-    background-color: #FFA500; /* 주황색으로 변경 */
+    background-color: #FFA500;
     color: white;
     border: none;
     border-radius: 6px;
@@ -51,29 +57,26 @@
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: darken(#FFA500, 10%); /* 주황색을 어둡게 */
+      background-color: darken(#FFA500, 10%);
     }
   }
 
-  /* --- 하단 링크 컨테이너 스타일 추가 --- */
   .bottomLinks {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: 20px; /* 기존 div의 marginTop과 동일하게 */
+    margin-top: 20px;
   }
 
-  /* --- 공통 링크 스타일 --- */
   .linkPrimary, .linkSecondary {
     font-size: 0.9rem;
     cursor: pointer;
     transition: color 0.3s ease, text-decoration 0.3s ease;
-    margin: 0; /* p 태그 기본 마진 제거 */
+    margin: 0;
   }
 
 
-  /* 작은 화면 반응형 */
   @media (max-width: 600px) {
     max-width: 90%;
     margin: 40px auto;
@@ -91,9 +94,21 @@
       padding: 12px;
     }
 
-    /* 작은 화면 링크 스타일 */
     .linkPrimary, .linkSecondary {
-      font-size: 1rem; /* 다른 요소와 동일하게 */
+      font-size: 1rem;
     }
   }
 }
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px); /* 위에서 20px 떨어진 위치에서 시작 */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* 최종 위치 (원래 위치) */
+  }
+}
+/* --------------------------- */

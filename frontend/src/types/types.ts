@@ -82,6 +82,7 @@ export interface NavbarProps {
   navbarToggle: boolean;
   setNavbarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   handleChangeMode: (modeNum: number) => void;
+  onEndInterview: () => void;
 }
 
 export interface FormData {
@@ -254,17 +255,12 @@ export interface DragAndDropInputProps {
  }
 
  export interface AiFeedbackFormProps {
-  field: string;
-  company: string;
-  emphasisPoints: string;
-  requirements: string;
+  field: string; // '지원할 직무'로 사용됨
   onFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onCompanyChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onEmphasisChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onRequirementChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  // --- onResumeUpload 타입 수정 ---
-  // onResumeUpload: (e: React.ChangeEvent<HTMLInputElement>) => void; // 기존 정의
-  onResumeUpload?: (files: File[]) => void; // 선택적 prop으로 변경하고 인자를 File 배열로 수정
-  // ----------------------------
-  onGenerateFeedback: () => void;
+  selectedFeedbackTypes: string[]; // 선택된 피드백 종류 배열
+  otherFeedbackType: string; // 기타 피드백 입력값
+  onOpenFeedbackModal: () => void; // 피드백 선택 모달 여는 함수
+  onGenerateFeedback: () => void; // 피드백 생성 함수는 유지
 }
+
+

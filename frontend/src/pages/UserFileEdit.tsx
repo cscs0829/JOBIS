@@ -201,6 +201,42 @@ const UserFileEdit = () => {
     }
   };
   
+  const handleDeleteFile = async (fileType: string) => {
+    const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    const storedUserInfo = sessionStorage.getItem("userInfo");
+    const mem_id = storedUserInfo ? JSON.parse(storedUserInfo).id : null;
+    if (!mem_id) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("mem_id", mem_id);
+      formData.append("file_type", fileType);
+
+      await axios.post("http://localhost:9000/delete-file", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setFiles((prev) => ({ ...prev, [fileType]: null }));
+      setFileNames((prev) => ({ ...prev, [fileType]: "" }));
+
+      const stored = sessionStorage.getItem("uploadedFileNames") || "{}";
+      const updated = JSON.parse(stored);
+      delete updated[fileType];
+      sessionStorage.setItem("uploadedFileNames", JSON.stringify(updated));
+
+      alert("파일이 삭제되었습니다.");
+    } catch (err) {
+      console.error("❌ 파일 삭제 실패", err);
+      alert("파일 삭제에 실패했습니다.");
+    }
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -225,6 +261,8 @@ const UserFileEdit = () => {
             openModal={openModal}
             currentFiles={files} // 현재 파일 상태 전달
             fileNames={fileNames} // ✅ 추가
+            onDeleteFile={handleDeleteFile} // ✅ 추가된 삭제 함수 전달
+
           />
         </div>
       </div>

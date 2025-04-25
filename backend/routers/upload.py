@@ -31,3 +31,31 @@ async def get_uploaded_files(mem_id: str):
             "portfolio": row["portfolio_name"],
         }
     return {"resume": None, "self_intro": None, "portfolio": None}
+
+@router.post("/delete-file")
+async def delete_uploaded_file(mem_id: str = Form(...), file_type: str = Form(...)):
+    from DB.Connection import get_db_connection
+
+    file_column_map = {
+        "resume": ("resume", "resume_name", "resume_raw_text"),
+        "self_intro": ("self_introduction", "self_intro_name", "self_intro_raw_text"),
+        "portfolio": ("portfolio", "portfolio_name", "portfolio_raw_text")
+    }
+
+    if file_type not in file_column_map:
+        raise HTTPException(status_code=400, detail="Invalid file_type")
+
+    file_col, name_col, text_col = file_column_map[file_type]
+
+    try:
+        conn = await get_db_connection()
+        await conn.execute(f"""
+            UPDATE tb_attached
+            SET {file_col} = NULL, {name_col} = NULL, {text_col} = NULL, updated_at = NOW()
+            WHERE mem_id = $1
+        """, mem_id)
+        await conn.close()
+
+        return {"status": "success", "message": f"{file_type} 파일이 삭제되었습니다."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"파일 삭제 중 오류 발생: {str(e)}")

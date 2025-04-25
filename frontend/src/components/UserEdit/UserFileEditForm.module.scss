@@ -1,51 +1,177 @@
 @import '../../App.scss';
 
 .formContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #FFFBEF;
-    margin-bottom: 20px;
-    height: 100%;
-    overflow-y: auto;
-    flex-basis: 100%;
-    flex-shrink: 1;
-    flex-grow: 1;
-    max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px; // 그룹 간 간격 증가
+  padding: 30px; // 패딩 증가
+  border: 1px solid #e0e0e0; // 테두리 색상 약간 연하게
+  border-radius: $radius; // App.scss 변수 사용
+  background-color: #FFFBEF;
+  margin-bottom: 20px;
+  // height, overflow, flex 관련 속성 유지
+  height: 100%;
+  overflow-y: auto;
+  flex-basis: 100%;
+  flex-shrink: 1;
+  flex-grow: 1;
+  max-width: 100%;
 
-    h2 {
-        font-size: 1.2rem; // 폰트 크기 줄임
-        margin-bottom: 15px;
-        color: $main-color;
-        text-align: center; // 가운데 정렬
+  h2 {
+    font-size: 1.2rem; // 폰트 크기 줄임
+    margin-bottom: 15px;
+    color: $main-color;
+    text-align: center; // 가운데 정렬
     }
 
-    .submitButton {
-        @include glass_box(fit-content, fit-content);
-        font-family: "Pretendard-Bold";
-        color: #fff;
-        background-color: $main-color;
-        font-weight: 400;
-        font-size: 1rem; // 폰트 크기 줄임
-        padding: 10px 20px; // 패딩 조정
-        border-radius: $radius;
-        cursor: pointer;
-        margin: 20px auto 0; // 여백 조정
-        border: none;
-        transition: opacity 0.2s ease; // 부드러운 효과
-
-        &:hover {
-            opacity: 0.9;
-        }
-    }
+  // 폼 설명 텍스트 스타일 추가
+  .description {
+    font-size: 0.95rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px; // 제목과의 간격
+  }
 }
 
+// 파일 입력 그룹 스타일
+.fileInputGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px; // 요소 간 간격
+  padding: 15px; // 내부 패딩
+  border: 1px solid #eee; // 그룹별 테두리
+  border-radius: 8px; // 둥근 모서리
+  background-color: white;// 그룹 배경색 약간 추가
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f5f5f5; // 호버 효과
+  }
+}
+
+// 파일 타입 레이블 스타일
+.fileLabel {
+  font-weight: 500;
+  color: #444;
+  flex-basis: 100px; // 레이블 너비 고정 (정렬 위해)
+  flex-shrink: 0; // 너비 줄어들지 않도록
+  font-size: 0.9rem; // 폰트 크기 조정
+}
+
+// 파일 정보 영역 (파일 이름 또는 없음 메시지)
+.fileInfo {
+  flex-grow: 1; // 남은 공간 차지
+  overflow: hidden; // 내용 넘칠 경우 숨김
+  min-width: 100px; // 최소 너비
+}
+
+// 파일 이름 스타일
+.fileName {
+  font-size: 0.9rem;
+  color: #333;
+  // 파일 이름 길 경우 생략 처리
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block; // ellipsis 적용 위해 block 요소로
+}
+
+// 파일 없을 때 메시지 스타일
+.noFile {
+  font-size: 0.85rem;
+  color: #888;
+  font-style: italic;
+}
+
+// 버튼 그룹 스타일
+.buttonGroup {
+  display: flex;
+  gap: 8px; // 버튼 사이 간격
+  flex-shrink: 0; // 버튼 영역 줄어들지 않도록
+}
+
+// 공통 액션 버튼 스타일
+.actionButton {
+  display: flex; // 아이콘과 텍스트 정렬
+  align-items: center;
+  gap: 6px; // 아이콘과 텍스트 간격
+  padding: 6px 12px; // 버튼 패딩 조정
+  font-size: 0.85rem; // 버튼 폰트 크기 조정
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid; // 테두리 추가
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  font-weight: 500;
+  white-space: nowrap; // 버튼 텍스트 줄바꿈 방지
+
+  svg { // 아이콘 크기
+    font-size: 0.9em;
+  }
+}
+
+// 파일 업로드/변경 버튼 스타일
+.uploadButton {
+  background-color: #fff;
+  border-color: $main-color;
+  color: $main-color;
+
+  &:hover {
+    background-color: $light-color; // $main-color의 밝은 버전
+    border-color: darken($main-color, 10%);
+  }
+}
+
+// 파일 삭제 버튼 스타일
+.deleteButton {
+  background-color: #fff;
+  border-color: #dc3545; // 빨간색 계열
+  color: #dc3545;
+
+  &:hover {
+    background-color: lighten(#dc3545, 45%);
+    border-color: darken(#dc3545, 10%);
+  }
+}
+
+
+// 모바일 반응형 스타일
 @media (max-width: 768px) {
-    .formContainer {
-        max-width: 100%;
-        flex-basis: auto;
-    }
+  .formContainer {
+    padding: 20px 15px; // 모바일 패딩 조정
+    gap: 20px; // 모바일 그룹 간 간격
+  }
+
+  .fileInputGroup {
+    flex-direction: column; // 모바일에서는 세로로 배치
+    align-items: stretch; // 항목 너비 100%
+    gap: 10px; // 모바일 내부 간격
+    padding: 12px;
+  }
+
+  .fileLabel {
+    flex-basis: auto; // 모바일에서 너비 고정 해제
+    text-align: left; // 왼쪽 정렬
+    margin-bottom: 5px;
+  }
+
+  .fileInfo {
+    text-align: left; // 왼쪽 정렬
+    min-width: 0; // 최소 너비 해제
+  }
+
+  .buttonGroup {
+    justify-content: flex-start; // 버튼 왼쪽 정렬
+    gap: 10px;
+  }
+
+  .actionButton {
+    padding: 8px 14px; // 모바일 버튼 패딩
+    font-size: 0.9rem; // 모바일 버튼 폰트
+  }
 }
+
+// 이전 .fileRow, .deleteIcon 스타일은 삭제하거나 주석 처리합니다.
+/*
+.fileRow { ... }
+.deleteIcon { ... }
+*/

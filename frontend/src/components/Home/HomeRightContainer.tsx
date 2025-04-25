@@ -194,10 +194,10 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
               <div className={styles.input_user_info_box}>
                  {/* 버튼에 action_button 스타일 적용 */}
                 <button className={styles.action_button} onClick={handleGoToAiJasoseo}>
-                  자소서 초안 작성
+                  AI 자소서 작성
                 </button>
                 <button className={styles.action_button} onClick={handleGoToAiFeedback}>
-                  자소서 피드백/가이드
+                  AI 자소서 피드백
                 </button>
               </div>
             </>

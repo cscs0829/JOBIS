@@ -100,7 +100,6 @@ const AiJasoseoPage: React.FC = () => {
             <AiJasoseoForm
               formData={formData}
               onChange={handleInputChange}
-              onFileChange={handleFileChange}  // ✅ 수정됨
               onGenerate={handleGenerateDraft}
             />
             <AiJasoseoResult result={result} loading={loading} />

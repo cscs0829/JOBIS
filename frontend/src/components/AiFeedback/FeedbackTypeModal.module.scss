@@ -1,0 +1,150 @@
+/* src/components/AiFeedback/FeedbackTypeModal.module.scss */
+@import "../../App.scss"; // App.scss 경로 확인
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: $radius;
+  width: 90%;
+  max-width: 550px; // 너비 조정
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.2s ease-out;
+  max-height: 80vh; // 최대 높이
+  display: flex; // flex 레이아웃
+  flex-direction: column; // 세로 방향
+
+  h2 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 20px; // 간격 조정
+    text-align: center;
+  }
+}
+
+.optionsContainer {
+  display: grid; // grid 레이아웃 사용
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // 반응형 그리드
+  gap: 15px; // 카드 간격
+  margin-bottom: 20px; // 아래쪽 간격
+  overflow-y: auto; // 내용 많으면 스크롤
+  padding: 5px; // 내부 여백 (스크롤바 공간)
+  flex-grow: 1; // 남은 공간 차지
+}
+
+.optionCard {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s; // color transition 추가
+  cursor: pointer; // 커서 변경
+  text-align: center; // 텍스트 가운데 정렬 (선택 사항)
+  display: flex; // flex 추가 (내용 정렬 위해)
+  justify-content: center; // 가로 중앙 정렬
+  align-items: center; // 세로 중앙 정렬
+  font-size: 0.95rem; // span 폰트 크기
+  color: #444; // 기본 글자색
+
+  &:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  /* +++ 선택된 카드 스타일 +++ */
+  &.selected {
+    background-color: $main-color; // 주황색 배경
+    color: white; // 흰색 글자
+    border-color: darken($main-color, 5%); // 테두리 색 약간 어둡게 (선택 사항)
+    font-weight: 500; // 약간 굵게 (선택 사항)
+
+    &:hover {
+      background-color: darken($main-color, 10%); // hover 시 더 어둡게
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  }
+  /* ++++++++++++++++++++++++ */
+}
+
+.otherInputContainer {
+  margin-bottom: 25px; // 아래쪽 간격
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $main-color;
+      box-shadow: 0 0 0 2px rgba($main-color, 0.2);
+    }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end; // 오른쪽 정렬
+  gap: 10px;
+  margin-top: auto; // 위쪽 공간 밀어내기
+  padding-top: 15px; // 구분선 역할 (선택 사항)
+  border-top: 1px solid #eee; // 구분선 (선택 사항)
+}
+
+// 버튼 스타일 (Button 컴포넌트 사용 시 클래스명 활용)
+.saveButton {
+  background-color: $main-color;
+  color: white;
+  border-color: $main-color; // 테두리 색상 통일
+  padding: 10px 20px; // 패딩 조정
+  &:hover {
+    background-color: darken($main-color, 10%);
+    border-color: darken($main-color, 10%);
+  }
+}
+
+.cancelButton {
+  background-color: #ccc;
+  color: #333;
+  border-color: #ccc;
+  padding: 10px 20px;
+  &:hover {
+    background-color: darken(#ccc, 10%);
+    border-color: darken(#ccc, 10%);
+  }
+}
+
+// 애니메이션
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

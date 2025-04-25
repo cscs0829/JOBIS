@@ -4,26 +4,30 @@
   max-width: 450px;
   margin: 40px auto;
   padding: 30px;
-  background-color: #FAF5EF; /* 배경색 */
+  background-color: #FAF5EF;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 10px; /* 요소 그룹 간의 간격 조정 (필요시 조절) */
+  gap: 10px;
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; /* 시작 시 투명 */
+  animation: slideDownFadeIn 0.5s ease-out forwards; /* 애니메이션 적용 */
+  /* ------------------- */
 
   h2 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px; /* h2와 form 간격 조정 */
+    margin-bottom: 20px;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* 각 입력 요소 그룹 간의 간격 조정 (피드백 메시지 공간 고려) */
+    gap: 10px;
   }
 
-  /* 모든 input 요소의 기본 스타일 */
   input[type="email"],
   input[type="text"],
   input[type="password"],
@@ -35,8 +39,8 @@
     border-radius: 4px;
     transition: border-color 0.3s ease;
     box-sizing: border-box;
-    width: 100%; /* 기본 너비 */
-    height: 42px; /* 명시적 높이 지정 */
+    width: 100%;
+    height: 42px;
 
     &:focus {
       outline: none;
@@ -45,54 +49,47 @@
     }
   }
 
-  /* --- 입력 필드 + 중복 확인 버튼 그룹 (Flexbox 적용) --- */
   .inputGroup {
-    display: flex;       /* Flexbox 컨테이너 */
-    align-items: center; /* 세로 중앙 정렬 */
-    gap: 8px;           /* input과 button 사이 간격 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
 
-    /* input 요소 설정 */
     input {
-      flex-grow: 1; /* 남은 공간 모두 차지 */
-      width: auto;  /* flex-grow와 함께 사용 */
-      height: 42px; /* 높이 유지 (정렬 기준) */
-      padding: 12px; /* 패딩 유지 */
-      box-sizing: border-box; /* box-sizing 유지 */
-      /* 기타 input 스타일 상속 */
+      flex-grow: 1;
+      width: auto;
+      height: 42px;
+      padding: 12px;
+      box-sizing: border-box;
     }
   }
 
-  /* --- 중복 확인 텍스트 버튼 스타일 --- */
   .checkTextButton {
-    font-size: 0.9rem;       /* 기존 버튼과 유사한 폰트 크기 */
-    color: #FFA500;         /* 클릭 가능함을 나타내는 색상 (예: 파란색) */
-    cursor: pointer;         /* 마우스 커서 변경 */
-    white-space: nowrap;     /* 텍스트 줄바꿈 방지 */
-    padding: 0 5px;          /* 좌우 약간의 여백 */
-    transition: color 0.2s ease; /* 부드러운 색상 변경 효과 */
-    user-select: none;       /* 텍스트 선택 방지 (버튼처럼 보이도록) */
+    font-size: 0.9rem;
+    color: #FFA500;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0 5px;
+    transition: color 0.2s ease;
+    user-select: none;
 
     &:hover {
-      color: darken(#FFA500, 10%); /* 호버 시 색상 약간 어둡게 */
-      text-decoration: underline;  /* 호버 시 밑줄 추가 */
+      color: darken(#FFA500, 10%);
+      text-decoration: underline;
     }
 
-    /* 비활성화 상태 스타일 */
     &.disabled {
-      color: #aaa;             /* 비활성화 시 회색 */
-      cursor: not-allowed;    /* 커서 변경 */
-      text-decoration: none;  /* 밑줄 제거 */
+      color: #aaa;
+      cursor: not-allowed;
+      text-decoration: none;
     }
   }
 
 
-  /* 성별 라디오 버튼 그룹 */
   .genderButtons {
       display: flex;
       gap: 20px;
       align-items: center;
-      /* margin-bottom 제거 또는 조정 (form의 gap으로 간격 관리) */
 
       label {
         display: flex;
@@ -101,17 +98,15 @@
         gap: 5px;
 
         input[type="radio"] {
-          /* 기본 input 스타일 상속 방지 및 크기 재정의 */
           width: 16px !important;
           height: 16px !important;
           padding: 0 !important;
           cursor: pointer;
-          border: 1px solid #ccc; /* 라디오 버튼 테두리 */
+          border: 1px solid #ccc;
         }
       }
   }
 
-  /* 회원가입 버튼 */
   button[type="submit"] {
     padding: 14px 20px;
     background-color: #FFA500;
@@ -121,22 +116,20 @@
     cursor: pointer;
     font-size: 1.1rem;
     transition: background-color 0.3s ease;
-    height: auto; /* 패딩으로 높이 결정 */
-    width: 100%; /* 너비 100% */
-    margin-top: 10px; /* 위 요소와의 간격 추가 */
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
 
     &:hover {
         background-color: #e69500;
     }
   }
 
-  /* 피드백 메시지 */
   .feedbackMessage {
     font-size: 0.85rem;
-    /* margin-top 제거 또는 조정 (form의 gap으로 간격 관리) */
     padding-left: 5px;
-    min-height: 1.2em; /* 메시지 없을 때 공간 유지 */
-    margin-bottom: -5px; /* 아래 요소와의 간격 줄임 (필요시 조절) */
+    min-height: 1.2em;
+    margin-bottom: -5px;
 
     &.success {
       color: green;
@@ -147,15 +140,7 @@
     }
   }
 
-  /* 로그인/메인 이동 링크 스타일 */
-  /* React 컴포넌트에서 인라인 스타일로 처리했으므로 여기선 제거하거나 필요시 재정의 */
-  /*
-  p {
-    // ...
-  }
-  */
 
-  /* 반응형 디자인 (작은 화면) */
   @media (max-width: 600px) {
     max-width: 95%;
     margin: 20px auto;
@@ -163,10 +148,9 @@
 
     h2 {
       font-size: 1.5rem;
-      margin-bottom: 15px; /* 간격 조정 */
+      margin-bottom: 15px;
     }
 
-    /* 작은 화면 input 높이 조정 */
     input[type="email"],
     input[type="text"],
     input[type="password"],
@@ -174,50 +158,49 @@
     input[type="date"] {
       font-size: 1rem;
       padding: 10px;
-      height: 38px; /* 작은 화면 높이 조정 */
+      height: 38px;
     }
 
-     /* 작은 화면 라디오 버튼 크기 */
     .genderButtons label input[type="radio"] {
         width: 16px !important;
         height: 16px !important;
         padding: 0 !important;
     }
 
-    /* 작은 화면 input 높이 조정 */
    .inputGroup input {
-      height: 38px; /* 작은 화면 높이 조정 */
-      padding: 10px; /* 작은 화면 패딩 */
+      height: 38px;
+      padding: 10px;
     }
 
-    /* 작은 화면 중복 확인 텍스트 버튼 스타일 */
     .checkTextButton {
-        font-size: 0.85rem; /* 작은 화면 폰트 크기 */
-        /* 패딩 등은 기본 스타일 유지 */
+        font-size: 0.85rem;
     }
 
-    /* 작은 화면 .checkButton 스타일 제거 */
-    /*
-    .checkButton {
-      // ...
-    }
-    */
-
-    /* 작은 화면 inputGroup 간격 조정 */
     .inputGroup {
-        gap: 6px; /* 작은 화면 간격 */
+        gap: 6px;
     }
 
-    /* 작은 화면 회원가입 버튼 스타일 */
     button[type="submit"] {
         font-size: 1rem;
         padding: 10px;
         margin-top: 5px;
     }
 
-    /* 작은 화면 성별 버튼 간격 조정 */
     .genderButtons {
       gap: 15px;
     }
   }
 }
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px); /* 위에서 20px 떨어진 위치에서 시작 */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* 최종 위치 (원래 위치) */
+  }
+}
+/* --------------------------- */

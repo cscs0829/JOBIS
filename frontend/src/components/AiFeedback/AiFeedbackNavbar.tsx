@@ -2,8 +2,8 @@ import React, { FC, useState } from 'react';
  import styles from './AiFeedbackNavbar.module.scss';
  import { useNavigate } from 'react-router-dom';
  import {
-  FaRegFileAlt,
-  FaQuestionCircle,
+  FaPenNib,
+  FaCommentDots,
   FaBars,
   FaTimes,
  } from 'react-icons/fa';
@@ -52,11 +52,11 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>MODE</p>
   <ul>
   <li onClick={goToAiJasoseo}>  {/* Modify this line */}
-  <FaRegFileAlt />
+  <FaPenNib />
   <span>AI 자소서 작성</span>
   </li>
   <li>
-  <FaQuestionCircle />
+  <FaCommentDots />
   <span>AI 자소서 피드백</span>
   </li>
   </ul>
@@ -81,11 +81,11 @@ import React, { FC, useState } from 'react';
   <p className={styles.modeTitle}>MODE</p>
   <ul>
   <li onClick={goToAiJasoseo}>  {/* Modify this line */}
-  <FaRegFileAlt />
+  <FaPenNib />
   <span>AI 자소서 작성</span>
   </li>
   <li className={styles.selected}>
-  <FaQuestionCircle />
+  <FaCommentDots />
   <span>AI 자소서 피드백</span>
   </li>
   </ul>

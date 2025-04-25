@@ -73,6 +73,13 @@ const HomeLeftContainer: FC<HomeLeftContainerProps> = ({
           />
         ))}
       </section>
+      
+      <img
+        src="/mainimg.png" // public 폴더 기준 경로
+        alt="J.O.B.I.S 메인 이미지"
+        className={styles.mainImage} // 스타일링 클래스
+      />
+
     </div>
   );
 };

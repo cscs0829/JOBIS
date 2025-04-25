@@ -14,6 +14,7 @@ interface FileUploadModalProps {
   onClose: () => void;
   onFileUpload: (files: File[]) => void;
   onSaveFiles: (files: File[]) => void;
+  initialFiles?: UploadingFile[]; // ✅ 추가
 }
 
 interface UploadingFile {
@@ -27,12 +28,23 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   onClose,
   onFileUpload,
   onSaveFiles,
+  initialFiles, // ✅ 추가
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<UploadingFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+
+  // ✅ 여기 아래에 추가
+  useEffect(() => {
+    if (isOpen && initialFiles?.length) {
+      setSelectedFiles(initialFiles); // ✅ 모달 열릴 때 초기값 설정
+    } else if (!isOpen) {
+      setSelectedFiles([]);           // ✅ 모달 닫을 때 초기화
+      setErrors([]);
+    }
+  }, [isOpen, initialFiles]);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
   const ACCEPTED_FILE_TYPES = [
@@ -83,7 +95,14 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
-    handleFilesChange(selectedFiles as File[]);
+    // 기존 선택 파일을 제거하고, 새로 선택한 파일만 반영
+    const validatedFiles = selectedFiles.map(file => ({
+      file,
+      progress: 0,
+      speed: 0,
+    }));
+    setSelectedFiles(validatedFiles); // ✅ 무조건 새 파일로 덮어쓰기
+    onFileUpload(selectedFiles);      // ✅ 부모에 알림
   };
 
   const handleFilesChange = useCallback(

@@ -4,6 +4,8 @@ import UserEditNavbar from '../components/UserEdit/UserEditNavbar'; // Navbar �
 import UserFileEditForm from '../components/UserEdit/UserFileEditForm';
 import FileUploadModal from '../components/Input/FileUploadModal';
 import axios from 'axios'; // axios import 추가
+import { useEffect } from 'react';
+
 
 // UserEditNavbar props 타입 정의 (실제 Navbar 컴포넌트에 맞게 조정 필요)
 interface UserEditNavbarProps {
@@ -23,8 +25,59 @@ const UserFileEdit = () => {
   const [files, setFiles] = useState<{ [key: string]: File | null }>({
     resume: null,
     portfolio: null,
-    intro: null,
+    self_intro: null,
   });
+  const [fileNames, setFileNames] = useState<{ [key: string]: string }>({
+    resume: '',
+    portfolio: '',
+    self_intro: '',
+  });
+  // ✅ 파일명 유지용 상태 (FileUploadModal용)
+  const [initialFiles, setInitialFiles] = useState<
+    { file: File; progress: number; speed: number }[]
+  >([]);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem("uploadedFileNames");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setFileNames(prev => ({ ...prev, ...parsed }));
+    }
+    const storedUserInfo = sessionStorage.getItem("userInfo");
+    if (!storedUserInfo) return;
+    const mem_id = JSON.parse(storedUserInfo).id;
+    if (!mem_id) return;
+  
+    axios.get(`http://localhost:9000/uploaded-files`, {
+      params: { mem_id },
+    }).then((res) => {
+      console.log("📂 기존 업로드된 파일:", res.data);
+      setFileNames(res.data);
+    }).catch((err) => {
+      console.error("❌ 파일 목록 불러오기 실패", err);
+    });
+  }, []);
+
+  useEffect(() => {
+    const storedUserInfo = sessionStorage.getItem("userInfo");
+    if (!storedUserInfo) return;
+    const mem_id = JSON.parse(storedUserInfo).id;
+    if (!mem_id) return;
+  
+    axios.get(`http://localhost:9000/uploaded-files`, {
+      params: { mem_id },
+    }).then((res) => {
+      console.log("📂 기존 업로드된 파일:", res.data);
+  
+      // ✅ sessionStorage에 저장
+      sessionStorage.setItem("uploadedFileNames", JSON.stringify(res.data));
+  
+      // ✅ 상태에도 반영
+      setFileNames(res.data);
+    }).catch((err) => {
+      console.error("❌ 파일 목록 불러오기 실패", err);
+    });
+  }, []);
 
   // UserEditNavbar 관련 상태 (실제 Navbar 구현에 맞게 조정)
   const [selectedTab, setSelectedTab] = useState(0);
@@ -58,13 +111,14 @@ const UserFileEdit = () => {
       alert("로그인이 필요합니다.");
       return false;
     }
-
+    if (!["resume", "self_intro", "portfolio"].includes(file_type)) {
+      console.error("❌ 잘못된 file_type 전달됨:", file_type);
+      return false;
+    }
     const formData = new FormData();
     formData.append("mem_id", mem_id);
-    // 서버 API에 맞는 파일 타입 이름 사용 (예: self_intro)
-    const serverFileType = file_type === 'intro' ? 'self_intro' : file_type;
-    formData.append("file_type", serverFileType);
-    formData.append("file", file);
+    formData.append("file_type", file_type); // ✅ 그대로 전달
+    formData.append("file", file, file.name); // 파일 이름도 명시!
 
     try {
       const res = await axios.post("http://localhost:9000/upload", formData, { // API 주소 확인
@@ -89,52 +143,68 @@ const UserFileEdit = () => {
       return false;
     }
   };
-
+  
+  // 파일 저장 핸들러 (Modal에서 호출) - 서버 업로드 및 상태 업데이트
+  const handleSaveFiles = async (filesToSave: File[]) => {
+    if (editingFileType && filesToSave.length > 0) {
+      const file = filesToSave[0];
+      if (!file) {
+        alert("파일이 없습니다.");
+        return;
+      }
+      const isUploadSuccess = await uploadFileToServer(file, editingFileType);
+      if (isUploadSuccess) {
+        setFiles(prev => ({ ...prev, [editingFileType]: file }));
+        setFileNames(prev => ({ ...prev, [editingFileType]: file.name })); // ✅ 반영됨
+        // ✅ sessionStorage에 파일명 저장
+        const stored = sessionStorage.getItem("uploadedFileNames") || "{}";
+        const updated = JSON.parse(stored);
+        updated[editingFileType] = file.name;
+        sessionStorage.setItem("uploadedFileNames", JSON.stringify(updated));
+        alert(`${editingFileType === 'resume' ? '이력서' : editingFileType === 'portfolio' ? '포트폴리오' : '자기소개서'} 업로드 완료!`);
+        closeModal();
+      } else {
+        closeModal();
+      }
+    } else {
+      closeModal();
+    }
+  };
+  
+  // 파일 업로드 핸들러 (Modal에서 호출) - 파일 상태 업데이트
+  const handleFileUpload = (uploadedFiles: File[]) => {
+    if (editingFileType && uploadedFiles.length > 0) {
+      const file = uploadedFiles[0];
+      console.log(`${editingFileType} 파일 선택됨:`, file);
+  
+      // ✅ 새로 선택한 파일을 모달에 즉시 반영
+      setInitialFiles([{ file, progress: 0, speed: 0 }]);
+    }
+  };
+  
   // 모달 열기 함수 (파일 타입 받도록 수정)
   const openModal = (fileType: string) => {
     setEditingFileType(fileType); // 어떤 파일을 편집 중인지 상태 설정
     setIsModalOpen(true);
+    // ✅ sessionStorage에서 해당 파일명이 있으면 보여줄 초기값 설정
+    const stored = sessionStorage.getItem("uploadedFileNames");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      const name = parsed[fileType];
+      if (name) {
+        setInitialFiles([{ file: new File([], name), progress: 100, speed: 0 }]);
+      } else {
+        setInitialFiles([]);
+      }
+    } else {
+      setInitialFiles([]);
+    }
   };
+  
 
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingFileType(null); // 모달 닫을 때 편집 중 파일 타입 초기화
-  };
-
-  // 파일 업로드 핸들러 (Modal에서 호출) - 파일 상태 업데이트
-  const handleFileUpload = (uploadedFiles: File[]) => {
-    if (editingFileType && uploadedFiles.length > 0) {
-      console.log(`${editingFileType} 파일 선택됨:`, uploadedFiles[0]);
-      // 실제 저장은 handleSaveFiles에서 진행하므로 여기서는 상태 업데이트 불필요 (필요 시 추가)
-    }
-  };
-
-  // 파일 저장 핸들러 (Modal에서 호출) - 서버 업로드 및 상태 업데이트
-  const handleSaveFiles = async (filesToSave: File[]) => {
-    console.log('💾 handleSaveFiles 호출됨', filesToSave);
-    if (editingFileType && filesToSave.length > 0) {
-      const file = filesToSave[0];
-      console.log(`📤 ${editingFileType} 업로드 시도:`, file.name);
-      const isUploadSuccess = await uploadFileToServer(file, editingFileType);
-
-      if (isUploadSuccess) {
-         // 사용자 친화적인 파일 타입 이름으로 알림
-         const userFriendlyFileType = editingFileType === 'resume' ? '이력서' : editingFileType === 'portfolio' ? '포트폴리오' : '자기소개서';
-         alert(`${userFriendlyFileType} 업로드 완료!`);
-        // 업로드 성공 시 파일 상태 업데이트
-        setFiles(prevFiles => ({
-          ...prevFiles,
-          [editingFileType]: file,
-        }));
-        closeModal(); // 성공 시 모달 닫기
-      } else {
-        // 업로드 실패 시에도 모달은 닫도록 closeModal() 호출 (필요에 따라 유지 또는 제거)
-         closeModal(); // 실패 시 모달 닫기 (UX 고려)
-      }
-    } else {
-       console.log("저장할 파일 또는 파일 타입 없음");
-       closeModal(); // 파일 없어도 모달 닫기
-    }
   };
 
   return (
@@ -154,6 +224,7 @@ const UserFileEdit = () => {
           <UserFileEditForm
             openModal={openModal}
             currentFiles={files} // 현재 파일 상태 전달
+            fileNames={fileNames} // ✅ 추가
           />
         </div>
       </div>
@@ -163,6 +234,7 @@ const UserFileEdit = () => {
         onClose={closeModal}
         onFileUpload={handleFileUpload} // 파일 선택 시 호출될 함수
         onSaveFiles={handleSaveFiles}   // 저장 버튼 클릭 시 호출될 함수
+        initialFiles={initialFiles} // ✅ 이 줄 꼭 있어야 함!!
       />
     </div>
   );

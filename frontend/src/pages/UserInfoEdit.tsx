@@ -16,7 +16,7 @@ const UserInfoEdit = () => {
                     <UserEditNavbar />
                 </div>
                 <div className={styles.userEditRight}>
-                    <UserInfoEditForm onSubmit={handleSubmit} />
+                    <UserInfoEditForm />
                 </div>
             </div>
         </div>

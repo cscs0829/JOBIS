@@ -1,3 +1,4 @@
+// src/pages/Home.tsx
 import React, {
   FC,
   useEffect,
@@ -9,7 +10,6 @@ import styles from "./Home.module.scss";
 import HomeRightContainer from "../components/Home/HomeRightContainer";
 import { Transition } from "react-transition-group";
 import HomeLeftContainer from "../components/Home/HomeLeftContainer";
-import { PersonaSelectModalProps } from "../types/types";
 import PersonaSelectModal from "../components/Home/PersonaSelectModal";
 import JobSelectModal from "../components/Home/JobSelectModal";
 
@@ -47,10 +47,11 @@ const Home: FC = () => {
     setPersonaInputValue("");
   }, []);
 
-  const selectPersona = useCallback((persona: string) => {
-    setSelectedPersona(persona);
+  // onSelect 콜백은 이제 페르소나 이름(string)만 받습니다.
+  const selectPersona = useCallback((personaName: string) => {
+    setSelectedPersona(personaName);
     closePersonaModal();
-  }, []);
+  }, [closePersonaModal]); // 의존성 배열 업데이트
 
   const handlePersonaInputChange = useCallback((value: string) => {
     setPersonaInputValue(value);
@@ -68,7 +69,7 @@ const Home: FC = () => {
   const selectJob = useCallback((job: string) => {
     setSelectedJob(job);
     closeJobModal();
-  }, []);
+  }, [closeJobModal]); // 의존성 배열 업데이트
 
   const handleJobInputChange = useCallback((value: string) => {
     setJobInputValue(value);
@@ -86,11 +87,13 @@ const Home: FC = () => {
     "군인",
   ];
 
-  const personas: string[] = [
-    "꼬리물기에 능한 면접관",
-    "프론트엔드 React 특화 면접관",
-    "백엔드 Spring 특화 면접관",
+  // --- personas 데이터 구조 변경 ---
+  const personas: { name: string; image: string }[] = [
+    { name: "꼬리물기에 능한 면접관", image: "/면접관.jpg" }, // 이미지 경로 추가
+    { name: "프론트엔드 React 특화 면접관", image: "/면접관1.jpg" }, // 다른 페르소나 이미지 경로 (예시)
+    { name: "백엔드 Spring 특화 면접관", image: "/면접관2.jpg" }, // 다른 페르소나 이미지 경로 (예시)
   ];
+  // -----------------------------
 
   return (
     <div className={styles.Home}>
@@ -112,7 +115,7 @@ const Home: FC = () => {
           openPersonaModal={openPersonaModal}
           selectedPersona={selectedPersona}
           setOpenPersonaModal={setIsPersonaModalOpen}
-          onSelectPersona={selectPersona}
+          onSelectPersona={selectPersona} // 이미 이름만 전달하므로 수정 불필요
           openJobModal={openJobModal}
           selectedJob={selectedJob}
           setJob={setSelectedJob}
@@ -121,16 +124,16 @@ const Home: FC = () => {
           closeJobModal={closeJobModal}
           selectJob={selectJob}
           isJobModalOpen={isJobModalOpen}
-          closePersonaModal={closePersonaModal} // [추가] prop 전달
-          handleJobInputChange={handleJobInputChange} // [추가] prop 전달
-          jobInputValue={jobInputValue} // [추가] prop 전달
-          isPersonaModalOpen={isPersonaModalOpen} // [추가] prop 전달
+          closePersonaModal={closePersonaModal}
+          handleJobInputChange={handleJobInputChange}
+          jobInputValue={jobInputValue}
+          isPersonaModalOpen={isPersonaModalOpen}
         />
         <PersonaSelectModal
           isOpen={isPersonaModalOpen}
           onClose={closePersonaModal}
-          onSelect={selectPersona}
-          personas={personas}
+          onSelect={selectPersona} // 이름(string)을 받는 콜백 전달
+          personas={personas} // 업데이트된 객체 배열 전달
           onInputChange={handlePersonaInputChange}
           inputValue={personaInputValue}
         />

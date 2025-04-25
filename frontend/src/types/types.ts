@@ -93,6 +93,10 @@ export interface FormData {
   cvFile: File | null;
   resumeFile?: File | null;
   emphasisPoints: string;
+  qualifications?: string;
+  projects?: string;
+  experiences?: string;
+  major?: string;
 }
 
 export interface UserEditFormData {

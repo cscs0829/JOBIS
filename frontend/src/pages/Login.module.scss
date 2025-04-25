@@ -1,3 +1,5 @@
+/* src/pages/Login.module.scss */
+
 .authContainer {
   max-width: 400px;
   margin: 80px auto; /* 위아래 마진 증가 */
@@ -53,18 +55,23 @@
     }
   }
 
-  p {
-    margin-top: 25px;
-    color: #555;
+  /* --- 하단 링크 컨테이너 스타일 추가 --- */
+  .bottomLinks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px; /* 기존 div의 marginTop과 동일하게 */
+  }
+
+  /* --- 공통 링크 스타일 --- */
+  .linkPrimary, .linkSecondary {
     font-size: 0.9rem;
     cursor: pointer;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #2f80ed;
-      text-decoration: underline;
-    }
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    margin: 0; /* p 태그 기본 마진 제거 */
   }
+
 
   /* 작은 화면 반응형 */
   @media (max-width: 600px) {
@@ -79,10 +86,14 @@
 
     input[type="text"],
     input[type="password"],
-    button[type="submit"],
-    p {
+    button[type="submit"] {
       font-size: 1rem;
       padding: 12px;
+    }
+
+    /* 작은 화면 링크 스타일 */
+    .linkPrimary, .linkSecondary {
+      font-size: 1rem; /* 다른 요소와 동일하게 */
     }
   }
 }

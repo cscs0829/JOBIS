@@ -1,7 +1,7 @@
 // src/components/AiFeedback/FeedbackTypeModal.tsx
 import React, { useState, useEffect } from 'react';
 import Button from '../Button/Button';
-import styles from './FeedbackTypeModal.module.scss'; // 경로 확인
+import styles from './FeedbackTypeModal.module.scss'; 
 
 // 피드백 옵션 정의 (동일)
 const FEEDBACK_OPTIONS = [
@@ -88,8 +88,8 @@ const FeedbackTypeModal: React.FC<FeedbackTypeModalProps> = ({
         </div>
 
         <div className={styles.buttonContainer}>
-          <Button onClick={onClose} className={styles.cancelButton}>취소</Button>
           <Button onClick={handleSaveClick} className={styles.saveButton}>저장하기</Button>
+          <Button onClick={onClose} className={styles.cancelButton}>닫기</Button>
         </div>
       </div>
     </div>

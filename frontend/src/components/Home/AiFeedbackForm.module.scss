@@ -4,19 +4,20 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px; // 폼 내부 요소 간 간격
-  padding: 25px 30px; // 폼 내부 여백
-  border: 1px solid #ddd; // 폼 테두리
-  border-radius: 12px; // 폼 둥근 모서리
-  background-color: #FFFBEF; // 폼 배경색
-  margin-bottom: 25px; // 폼 하단 외부 여백
-  height: 100%; // 부모 요소 기준 높이 100%
-  overflow-y: auto; // 내용 넘칠 시 세로 스크롤
-  flex-basis: 50%; // flex 아이템 기본 너비 (부모가 flex row 일 때)
-  flex-shrink: 1; // 공간 부족 시 줄어듦 허용
-  flex-grow: 1; // 남은 공간 차지
-  max-width: 50%; // 최대 너비 제한 (부모가 flex row 일 때)
-  box-sizing: border-box; // 패딩, 테두리 포함하여 크기 계산
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  background-color: #FFFBEF;
+  margin-bottom: 32px;
+  height: 100%;
+  overflow-y: auto;
+  flex-basis: 50%;
+  flex-shrink: 1;
+  flex-grow: 1;
+  max-width: 50%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
   .attachedFileSection {
     a {
@@ -24,128 +25,207 @@
     }
   }
 
-  /* 👇 파일 수정 라벨 컨테이너 스타일 수정 */
   .fileEditLabelContainer {
-    display: flex;          // flex 레이아웃 적용
-    align-items: center;    // 세로 중앙 정렬
-    gap: 5px;               // 라벨과 아이콘 사이 간격 추가
-    margin-bottom: 8px;     // 버튼과의 간격 조정
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
   }
 
   .fileEditLabel {
-    font-size: 1rem;
-    color: #555;
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
     margin-bottom: 8px;
     display: block;
     font-weight: 500;
+    letter-spacing: -0.3px;
   }
 
-  /* 👇 툴팁 아이콘 스타일 (필요시 추가 조정) */
   .tooltipIcon {
-    color: #777; // 아이콘 색상 (예시)
-    cursor: help; // 도움말 커서
-    display: flex; // 아이콘 정렬을 위해 flex 추가 (선택 사항)
-    align-items: center; // 세로 중앙 정렬 (선택 사항)
+    color: rgba(0, 0, 0, 0.4);
+    cursor: help;
+    display: flex;
+    align-items: center;
     margin-bottom: 8px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $main-color;
+    }
   }
   
   h2 {
-    font-size: 1.75rem; // 제목 폰트 크기
-    margin-bottom: 20px; // 제목 하단 여백
-    color: $main-color; // 제목 색상 (App.scss 변수)
-    text-align: center; // 제목 가운데 정렬
-    font-weight: 600; // 제목 굵기
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+    color: $main-color;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
   }
 
-  /* --- Form 요소 공통 스타일 (기존 유지) --- */
   label {
-    font-size: 1rem; // 레이블 폰트 크기
-    color: #555; // 레이블 색상
-    margin-bottom: 8px; // 레이블 하단 여백
-    display: block; // 블록 레벨 요소로 만듦
-    font-weight: 500; // 레이블 굵기
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+    letter-spacing: -0.3px;
   }
 
   input,
   textarea {
-    padding: 12px 16px; // 입력 필드 내부 여백
-    font-size: 1rem; // 입력 필드 폰트 크기
-    border: 1px solid #ccc; // 입력 필드 테두리
-    border-radius: 8px; // 입력 필드 둥근 모서리
-    outline: none; // 포커스 시 외곽선 제거
-    width: 100%; // 너비 100%
-    box-sizing: border-box; // 크기 계산 방식
-    transition: border-color 0.2s ease; // 테두리 색상 변경 애니메이션
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.3px;
 
-    // 포커스 시 스타일
+    &:hover {
+      border-color: rgba($main-color, 0.5);
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
     &:focus {
-      border-color: $main-color; // 포커스 시 테두리 색상 변경
-      box-shadow: 0 0 6px rgba($main-color, 0.2); // 포커스 시 그림자 효과
+      border-color: $main-color;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba($main-color, 0.1);
     }
   }
 
   textarea {
-    resize: vertical; // 세로 크기 조절 가능
-    min-height: 100px; // 최소 높이
+    resize: vertical;
+    min-height: 120px;
   }
-  /* ----------------------------- */
 
-
-  /* --- 파일 업로드 -> 파일 수정 버튼 스타일 (기존 유지) --- */
-  // .tsx 파일에서 Button 컴포넌트에 className={styles.fileUploadButton} 적용 필요
   .fileUploadButton {
-    padding: 12px 16px;
-    font-size: 1rem;
-    background-color: #f0f0f0; // 배경색
-    color: #333; // 글자색 수정됨 (기존 black)
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 24px;
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    text-align: center; // 가운데 정렬 (수정됨)
+    transition: all 0.25s ease;
+    text-align: left;
     display: flex;
     align-items: center;
-    justify-content: center; // 가운데 정렬 (수정됨)
+    justify-content: space-between;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: $main-color;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .buttonContent {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+
+      .buttonTitle {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      .buttonDescription {
+        font-size: 0.85rem;
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 400;
+      }
+    }
+
+    .buttonIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background-color: rgba($main-color, 0.08);
+      color: $main-color;
+      transition: all 0.25s ease;
+      margin-left: 16px;
+      font-size: 1.1rem;
+    }
 
     &:hover {
-      background-color: #e0e0e0;
-      border-color: #b3b3b3;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-color: rgba($main-color, 0.12);
+      transform: translateY(-1px);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .buttonContent {
+        .buttonTitle {
+          color: $main-color;
+        }
+        
+        .buttonDescription {
+          color: rgba($main-color, 0.7);
+        }
+      }
+
+      .buttonIcon {
+        background-color: $main-color;
+        color: white;
+        transform: scale(1.05);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
-  /* --------------------------- */
 
-
-  /* --- 파일 목록 스타일 (기존 유지, 현재 사용 안 함) --- */
-  // .tsx 파일에서 파일 목록 ul에 className={styles.fileList} 적용 필요
   .fileList {
-    list-style: none; // 기본 목록 스타일 제거
+    list-style: none;
     padding: 0;
-    margin: 8px 0 15px; // 위아래 여백 조정
-    font-size: 0.9rem; // 파일 이름 폰트 크기
-    color: #555; // 파일 이름 색상
+    margin: 8px 0 15px;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
 
     li {
-      margin-bottom: 4px; // 파일 이름 간 간격
-      padding: 4px 0; // 파일 이름 상하 여백
-      border-bottom: 1px dashed #eee; // 구분선 (선택 사항)
+      margin-bottom: 4px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      
       &:last-child {
-        border-bottom: none; // 마지막 항목 구분선 제거
+        border-bottom: none;
       }
     }
   }
-  /* ---------------------- */
 
-  /* +++ 피드백 종류 선택 버튼 스타일 (신규 추가) +++ */
   .feedbackSelectButton {
-    padding: 12px 16px;
-    font-size: 1rem;
-    background-color: #f8f8f8; // 다른 버튼과 구분되는 색상 (예시)
-    color: #444;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     cursor: pointer;
     text-align: center;
     display: flex;
@@ -153,110 +233,98 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 8px; // 아래 표시 영역과의 간격
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    transition: all 0.2s ease;
 
     &:hover {
-      background-color: #eee;
-      border-color: #bbb;
+      background-color: rgba($main-color, 0.04);
+      border-color: rgba($main-color, 0.3);
+      color: $main-color;
     }
   }
-  /* +++++++++++++++++++++++++++++++++++++++ */
 
-  /* +++ 선택된 피드백 표시 영역 스타일 (신규 추가) +++ */
   .selectedFeedbackDisplay {
-    font-size: 0.9rem;
-    color: #666;
-    padding: 8px 12px;
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    min-height: 30px; // 최소 높이
-    margin-bottom: 15px; // 다음 요소와의 간격
-    line-height: 1.4;
-    white-space: pre-wrap; // 줄바꿈 표시
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 14px 16px;
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    min-height: 30px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    letter-spacing: -0.3px;
   }
-  /* +++++++++++++++++++++++++++++++++++++++ */
 
-  /* --- 메인 액션 버튼 (피드백 요청) 스타일 (기존 유지) --- */
-  // .tsx 파일에서 Button 컴포넌트에 className={styles.submitButton} 적용 필요
   .submitButton {
-    padding: 14px 24px; // 수정: 피드백 요청 버튼 크기 유지 또는 조정
-    font-size: 1.1rem; // 수정: 피드백 요청 버튼 폰트 크기 유지 또는 조정
-    background-color: $main-color; // 메인 컬러 적용
+    padding: 16px 32px;
+    font-size: 1rem;
+    background-color: $main-color;
     color: white;
     border: none;
-    border-radius: 10px; // radius 조정 (선택 사항)
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    align-self: center; // 가운데 정렬
+    transition: all 0.2s ease;
+    align-self: center;
     font-weight: 600;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    width: auto; // 너비를 자동으로 설정하여 내용에 맞춤
-    margin-top: 15px; // 위쪽 여백 추가
+    letter-spacing: -0.3px;
+    width: auto;
+    margin-top: 8px;
+    box-shadow: 0 1px 2px rgba($main-color, 0.2);
 
     &:hover {
-      background-color: darken($main-color, 10%);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: darken($main-color, 5%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($main-color, 0.2);
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba($main-color, 0.2);
     }
   }
-  /* --------------------------------------- */
 }
 
-// --- 모바일 반응형 ---
 @media (max-width: 768px) {
   .formContainer {
     max-width: 100%;
     flex-basis: auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    gap: 15px;
+    padding: 24px;
+    margin-bottom: 0;
+    gap: 20px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
 
     h2 {
       font-size: 1.5rem;
+      margin-bottom: 16px;
     }
 
-    label {
+    label,
+    .fileEditLabel {
       font-size: 0.9rem;
     }
 
     input,
-    textarea {
-      font-size: 0.95rem;
-      padding: 10px 12px;
-    }
-
-    // 파일 수정 버튼 모바일 스타일
-    .fileUploadButton {
-        font-size: 1rem;
-        padding: 10px 16px;
-    }
-
-    // 파일 목록 모바일 스타일 (필요 시)
-    .fileList {
-       font-size: 0.85rem;
-    }
-
-    /* +++ 피드백 종류 선택 버튼 모바일 스타일 (신규 추가) +++ */
-    .feedbackSelectButton {
-      font-size: 0.95rem;
-      padding: 10px 14px;
-    }
-    /* +++++++++++++++++++++++++++++++++++++++ */
-
-    /* +++ 선택된 피드백 표시 영역 모바일 스타일 (신규 추가) +++ */
+    textarea,
+    .fileUploadButton,
+    .feedbackSelectButton,
     .selectedFeedbackDisplay {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
+      padding: 14px 16px;
+      border-radius: 12px;
     }
-    /* +++++++++++++++++++++++++++++++++++++++ */
 
-    // 피드백 요청 버튼 모바일 스타일
     .submitButton {
       font-size: 1rem;
-      padding: 10px 16px;
+      padding: 16px;
+      width: 100%;
+      align-self: stretch;
+      border-radius: 12px;
     }
   }
 }

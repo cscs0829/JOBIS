@@ -156,21 +156,21 @@
        margin-bottom: 20px; // 모바일 하단 여백 조정
      }
   }
-  // Overlay (햄버거 메뉴 열렸을 때 배경 어둡게) - 필요 시 추가
-  // .navbarOverlay {
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   background-color: rgba(0, 0, 0, 0.5);
-  //   z-index: 1000;
-  //   opacity: 0;
-  //   visibility: hidden;
-  //   transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-  //   &.active {
-  //     opacity: 1;
-  //     visibility: visible;
-  //   }
-  // }
+  //Overlay (햄버거 메뉴 열렸을 때 배경 어둡게) - 필요 시 추가
+  .navbarOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 }

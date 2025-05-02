@@ -24,7 +24,7 @@ const CompanyRecommendation = () => {
 
   const handleCompanySearch = async (criteria: CompanySearchCriteria) => {
     try {
-      const response = await fetch("http://localhost:9000/recommend", {
+      const response = await fetch("http://localhost:9000/recommend/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -39,14 +39,23 @@ const CompanyRecommendation = () => {
       }
 
       const data = await response.json();
-      const formatted: Company[] = data.map((item: any, index: number) => ({
+      const companies = data.recommended_companies || [];
+
+      const formatted: Company[] = companies.map((item: any, index: number) => ({
         id: index,
-        name: item.company || "정보 없음",
-        techStack: item.tech_stack || (criteria.techStack ? [criteria.techStack] : []),
-        salary: item.salary || criteria.salary || "정보 없음",
-        location: item.location || criteria.location || "정보 없음",
+        name: item.name || "정보 없음",
+       // 🔁 수정: 쉼표 기준 분리 후 배열로 전달
+        techStack: criteria.techStack
+        ? criteria.techStack.split(",").map((s: string) => s.trim()).filter(Boolean)
+        : ["정보 없음"],
+        location: criteria.location || "정보 없음", // ✅ 무조건 사용자가 입력한 값
         link: item.link,
+        similarity: item.similarity || 0
       }));
+      
+      
+      
+
 
       setSearchResult(formatted);
       closeModal();

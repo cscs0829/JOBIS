@@ -51,7 +51,7 @@
   cursor: pointer;
 
   &:hover {
-  background-color: darken($main-color, 10%);
+    text-decoration: underline;
   }
 
   &:disabled {

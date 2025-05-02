@@ -1,4 +1,4 @@
-@import "../App.scss";
+@import "../App.scss"; // $main-color, $radius 등 변수 사용 위해 import
 
 .Interview {
   height: 100vh;
@@ -27,77 +27,38 @@
       flex-direction: column;
       justify-content: space-between;
       padding-right: 20px;
-      flex-basis: 200px; // Navbar 너비보다 작게 설정 (Navbar 내부 요소 고려)
+      flex-basis: 200px; // Navbar 너비에 맞춰 조정
       flex-shrink: 0;
 
-      .title { // title div 스타일 (햄버거 아이콘만 포함하도록 수정)
-        display: flex; // flex 유지
-        align-items: center; // 세로 중앙 정렬
-        justify-content: flex-start; // 왼쪽 정렬
-        padding: 10px 0; // 상하 패딩 (기존 h2 패딩과 유사하게)
-        position: relative; // 아이콘 위치 기준
-
-        // h2 제거 (Navbar로 이동)
-
-        .hamburgerIcon { // 햄버거 아이콘 스타일 (mobileQuery 적용 제거)
-           cursor: pointer;
-           color: #777;
-           font-size: 1.5rem; // 아이콘 크기 조정
-           // position: absolute; 제거 (기본 위치 사용)
+      .title {
+        display: flex;
+        align-items: center;
+        > * {
+          margin: 8px;
+        }
+        > h2 {
+          color: $main-color;
         }
       }
     }
 
-
     .interview_right {
       flex-grow: 1;
-      position: relative; // 상대 위치 유지
+      position: relative;
       padding: 0 30px;
-      display: flex; // 추가: flex 컨테이너로 만듦
-      flex-direction: column; // 추가: 세로 방향 배치
 
       .interview_right_wrapper {
         position: relative;
         width: 100%;
-        height: 100%; // 부모 높이 채우도록 설정
-        display: flex; // 추가: flex 컨테이너
-        flex-direction: column; // 추가: 세로 방향 배치
+        height: 100%;
       }
-
-      // --- 추가: 결과 버튼 컨테이너 ---
-      .resultsContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%; // 부모 높이 채우기
-      }
-
-      // --- 추가: 면접 결과 보기 버튼 ---
-      .viewResultsButton {
-        padding: 12px 25px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: white;
-        background-color: $main-color;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-
-        &:hover {
-          background-color: darken($main-color, 10%);
-        }
-      }
-
 
       .chatList {
         overflow-y: auto;
         width: 100%;
-        // height: 85%; // InputAns 위치 변경으로 제거 또는 % 조정
-        flex-grow: 1; // 변경: 남은 공간 채우도록 설정
-        padding: 10px;
-        box-sizing: border-box;
+        /* height: 85%; */ // 세션 시작 여부에 따라 동적 높이 조절 위해 주석 처리 또는 제거
+        /* padding: 10px; */ // entryChat 포함 위해 패딩 조정 가능
+        box-sizing: border-box; // 패딩/테두리 포함 크기 계산
 
         &::-webkit-scrollbar {
           width: 3px; /*스크롤바의 너비*/
@@ -113,42 +74,57 @@
           background-color: #fff; /*스크롤바 트랙 색상*/
         }
 
-        // --- 추가: 입장 버튼 스타일 ---
-         .entryChat {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%; // 부모 높이 채우기
-            text-align: center;
+        // --- 👇 입장 안내 섹션 스타일링 시작 ---
+        .entryChat {
+          display: flex;           // Flexbox 레이아웃 사용
+          flex-direction: column;  // 요소들을 세로로 배치
+          justify-content: center; // 세로 중앙 정렬
+          align-items: center;     // 가로 중앙 정렬
+          height: 100%;           // 부모 요소(.chatList) 높이 전체 사용 (동적 높이 설정됨)
+          text-align: center;       // 텍스트 가운데 정렬
+          padding: 20px;            // 내부 여백
+          box-sizing: border-box;   // 패딩 포함 높이 계산
 
-            .entryText {
-               font-size: 1.2rem;
-               margin-bottom: 20px;
-               color: #555;
+          .entryText {
+            font-size: 1.4rem;     // 폰트 크기 키움
+            color: #333;           // 텍스트 색상
+            margin-bottom: 25px;   // 버튼과의 간격
+            font-weight: 500;      // 약간 굵게
+            line-height: 1.5;      // 줄 간격
+          }
+
+          .enterButton {
+            padding: 12px 28px;    // 버튼 내부 여백 조정
+            font-size: 1.1rem;     // 버튼 폰트 크기
+            font-weight: 600;      // 버튼 폰트 굵기
+            color: #fff;           // 버튼 텍스트 색상 (흰색)
+            background-color: $main-color; // 주황색 배경 ($App.scss 변수)
+            border: none;           // 테두리 없음
+            border-radius: 8px;     // 버튼 둥근 모서리 (값 조정 가능)
+            cursor: pointer;        // 마우스 커서 변경
+            transition: background-color 0.2s ease, transform 0.1s ease; // 부드러운 전환 효과
+
+            &:hover {
+              background-color: darken($main-color, 8%); // 마우스 올렸을 때 약간 어둡게
             }
 
-            .enterButton {
-               padding: 10px 20px;
-               font-size: 1rem;
-               font-weight: 600;
-               color: white;
-               background-color: $main-color;
-               border: none;
-               border-radius: 6px;
-               cursor: pointer;
-               transition: background-color 0.2s ease;
-
-               &:hover {
-                  background-color: darken($main-color, 10%);
-               }
-               &:disabled {
-                  background-color: #ccc;
-                  cursor: not-allowed;
-               }
+            &:active {
+              transform: scale(0.98); // 클릭 시 약간 작아지는 효과
             }
-         }
 
+            &:disabled { // 비활성화 상태 스타일
+              background-color: #ccc;
+              cursor: not-allowed;
+            }
+          }
+
+          // 오류 메시지 스타일 (선택 사항)
+          p[style*="color: red"] { // style 속성으로 빨간색을 가진 p 태그 대상
+             margin-top: 15px;
+             font-size: 0.9rem;
+          }
+        }
+        // --- 👆 입장 안내 섹션 스타일링 끝 ---
 
         .loading {
           display: flex;
@@ -157,9 +133,8 @@
           background-color: #fff;
           border-radius: $radius;
           min-height: 40px;
-
           padding: 6px;
-          margin: 20px 0;
+          margin: 20px 0; // 로딩 요소 간격
 
           .loading-text {
             font-size: 14px;
@@ -169,70 +144,101 @@
             word-break: break-all;
             white-space: pre-wrap;
             padding: 8px;
+            margin-right: 8px; // 스피너와의 간격
           }
         }
+        // ChatBox 컴포넌트에 대한 스타일도 필요시 추가
+        // 예: .chatBoxUser { ... } .chatBoxAssistant { ... }
       }
-      // InputAns 스타일은 InputAns.module.scss 로 이동/관리되므로 여기서 제거 가능
-      /*
-      .InputAns {
-         // ... (InputAns 관련 스타일)
-      }
-      */
+
+      // InputAns 컴포넌트 wrapper 스타일 (필요시)
+      // .inputAnsWrapper { ... }
     }
   }
 }
 
+// --- 모바일 스타일 ---
 @media (max-width: 768px) {
   .Interview {
     display: block;
     padding: 0;
     min-width: 300px;
     .interview_container {
-      height: 100vh; // 변경: 화면 전체 높이 사용
+      height: 100%;
       min-width: 0;
       width: 100%;
       flex-direction: column;
-      padding: 0;
-      border-radius: 0; // 모바일 테두리 제거
-      box-shadow: none; // 모바일 그림자 제거
+      padding: 0; // 모바일에서는 패딩 제거
 
       .interview_left {
-        display: block; // 유지
-        flex-basis: auto; // 변경: auto 또는 0
+        display: block;
+        flex-basis: 0;
         border: none;
         padding: 0;
-        height: 60px; // 변경: 고정 헤더 높이 설정
-        background-color: $light-color; // 배경색 지정
-        border-bottom: 1.5px solid #ddd; // 하단 구분선 추가
-        display: flex; // 추가: 내부 요소 정렬 위해
-        align-items: center; // 추가: 세로 중앙 정렬
-        padding: 0 20px; // 추가: 좌우 패딩
 
-        .title { // title div가 헤더 역할
-          width: 100%; // 너비 100%
-          padding: 0; // 내부 패딩 제거
-          // border-bottom 제거 (interview_left에 적용)
-          margin: 0; // 마진 제거
-          justify-content: flex-start; // 왼쪽 정렬 유지
+        .title {
+          height: 50px; // 헤더 높이 고정 (예시)
+          display: flex; // flex 유지
+          justify-content: center;
+          align-items: center; // 세로 중앙 정렬
+          border-bottom: 1.5px solid #ddd;
+          margin: 0; // 좌우 마진 제거
+          padding: 0 15px; // 좌우 패딩
+          position: relative; // 햄버거 아이콘 위치 기준
 
-           .hamburgerIcon {
-             // 스타일 유지 또는 필요시 조정
-           }
+          h2 { // 필요시 제목 추가
+            font-size: 1.2rem;
+            color: $main-color;
+          }
+
+          .hamburgerIcon {
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            left: 15px; // 왼쪽 패딩 고려
+            top: 50%; // 세로 중앙
+            transform: translateY(-50%); // 정확한 중앙 정렬
+            font-size: 1.4rem; // 아이콘 크기
+          }
         }
-        // Navbar는 이제 absolute/fixed 이므로 left 영역에 직접 포함되지 않음
       }
-
       .interview_right {
-        padding: 10px;
-        height: calc(100vh - 60px); // 변경: 헤더 높이 제외한 나머지 높이
-        // min-height 제거
+        padding: 10px; // 모바일 내부 패딩
+        height: calc(100% - 50px); // 헤더 높이 제외한 나머지 높이
+        box-sizing: border-box;
+
          .interview_right_wrapper {
-           height: 100%; // 오른쪽 래퍼 높이 100%
-           // .chatList {
-           //   // 모바일 높이 계산 (InputAns 고려)
-           //   height: calc(100% - 100px); // 예시 값, InputAns 높이에 따라 조정 필요
-           // }
+             height: 100%; // 부모 높이 상속
          }
+
+        .chatList {
+          padding: 5px; // 모바일 채팅 목록 패딩
+
+          .entryChat {
+            padding: 15px; // 모바일 입장 섹션 패딩
+
+            .entryText {
+              font-size: 1.2rem; // 모바일 폰트 크기 조정
+              margin-bottom: 20px;
+            }
+            .enterButton {
+              padding: 10px 22px;
+              font-size: 1rem;
+            }
+            p[style*="color: red"] {
+              font-size: 0.85rem;
+            }
+          }
+
+          .loading {
+             margin: 15px 0;
+             padding: 4px;
+             min-height: 35px;
+             .loading-text {
+                 font-size: 13px;
+             }
+          }
+        }
       }
     }
   }

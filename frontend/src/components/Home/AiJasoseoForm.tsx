@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import { FormData } from '../../types/types'; // FormData 타입 정의에 맞게 Omit 사용
 import styles from './AiJasoseoForm.module.scss';
-import { FaInfoCircle } from 'react-icons/fa'; // react-icons에서 아이콘 임포트
+import { FaChevronRight, FaInfoCircle } from 'react-icons/fa'; // react-icons에서 아이콘 임포트
 
 interface AiJasoseoFormProps {
   formData: FormData;
@@ -20,23 +20,33 @@ const AiJasoseoForm: React.FC<AiJasoseoFormProps> = ({
 }) => {
   const fileEditTooltipText = "이력서, 자기소개서, 포트폴리오 파일은\n'첨부 파일 수정' 버튼을 눌러 관리할 수 있습니다.";
 
+  const navigate = useNavigate();
+
+  const handleEditFileClick = () => {
+    navigate('/user-file-edit');
+  };
+
   return (
     <div className={styles.formContainer}>
       <h2>AI 자소서 작성</h2>
 
       {/* 파일 첨부 섹션 */}
       <div className={styles.attachedFileSection}>
-        {/* 👇 라벨과 아이콘을 감싸는 컨테이너에 flex 스타일 적용 */}
         <div className={styles.fileEditLabelContainer}>
-          <label className={styles.fileEditLabel}>첨부 파일 수정</label>
+          <label>첨부 파일 수정</label>
           <span className={styles.tooltipIcon} title={fileEditTooltipText}>
-             <FaInfoCircle />
+            <FaInfoCircle />
           </span>
         </div>
-        {/* 설명 문구 제거 */}
-        <Link to="/user-file-edit">
-           <Button>첨부 파일 수정하러 가기</Button> {/* 버튼 텍스트 명확화 */}
-        </Link>
+        <Button onClick={handleEditFileClick} className={styles.fileUploadButton}>
+          <div className={styles.buttonContent}>
+            <span className={styles.buttonTitle}>첨부 파일 수정하기</span>
+            <span className={styles.buttonDescription}>이력서, 자기소개서, 포트폴리오를 관리해보세요</span>
+          </div>
+          <div className={styles.buttonIcon}>
+            <FaChevronRight />
+          </div>
+        </Button>
       </div>
 
       {/* --- 필수 Input 필드들 --- */}

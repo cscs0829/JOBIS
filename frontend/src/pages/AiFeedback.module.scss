@@ -43,47 +43,45 @@
 }
 
 @media (max-width: 768px) {
-    .AiGuide {
-        height: auto;
-        min-height: 100vh;
-        background-color: $bg-color;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        position: relative;
-        padding-top: 60px;
+    .AiGuide { // 페이지 최상위 컨테이너
+      height: auto;
+      min-height: 100vh;
+      // 👇 상단에 고정될 헤더 영역(햄버거 아이콘, 제목 포함)을 위한 공간 확보
+      padding-top: 60px; // 헤더 높이에 맞춰 조정 필요 (예: 60px)
+      display: block;
     }
-
-    .ai_guide_container {
-        margin: 0;
-        width: 100%;
-        max-width: none;
-        background-color: $light-color;
-        display: flex;
-        flex-direction: column;
-        border-radius: 0;
-        box-shadow: none;
-        overflow: auto;
-        min-height: auto;
-        height: auto;
+  
+    .ai_guide_container { // 메인 콘텐츠 영역 (헤더 제외)
+      margin: 0;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      // 👇 페이지 구조에 따라 필요시 flex/column 유지 또는 제거
+      // display: flex;
+      // flex-direction: column;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+      min-height: calc(100vh - 60px); // 헤더 높이 제외한 최소 높이
     }
-
-    .ai_guide_right {
-        flex-grow: 1;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
+  
+    // .ai_guide_left 관련 스타일은 Navbar 컴포넌트/SCSS에서 처리
+  
+    .ai_guide_right { // Form + Result 포함 영역
+      width: 100%;
+      padding: 0;
+      // flex-grow 제거 또는 페이지 구조에 맞게 조정
     }
-
-    .ai_guide_right_wrapper {
-        position: relative;
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-direction: column;
+  
+    .ai_guide_right_wrapper { // Form & Result 래퍼
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column; // Form과 Result 수직 배치 유지
+      padding: 10px; // 콘텐츠 좌우 여백
+      gap: 15px; // Form과 Result 사이 간격
     }
-}
+  }
 
 /* --- 애니메이션 키프레임 정의 --- */
 @keyframes slideDownFadeIn {

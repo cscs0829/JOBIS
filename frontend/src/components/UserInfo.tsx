@@ -36,10 +36,10 @@ const UserInfo = ({ displayMode }: UserInfoProps) => {
     return (
       <div className={styles.userInfoButtons}>
         <button className={styles.myInfoButton} onClick={handleMyInfoClick}>
-          회원 수정
+          회원수정
         </button>
         <button className={styles.resumeEditButton} onClick={handleResumeEditClick}>
-          이력서 수정  {/* 이력서 수정 버튼 추가 */}
+          파일수정  {/* 이력서 수정 버튼 추가 */}
         </button>
         <button className={styles.logoutButton} onClick={logout}>로그아웃</button>
       </div>

@@ -111,7 +111,7 @@ button { // 버튼 스타일 개선
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: darken($main-color, 10%);
+    text-decoration: underline;
   }
 
   &:disabled { // 비활성화 스타일

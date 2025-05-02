@@ -82,7 +82,6 @@ export interface NavbarProps {
   navbarToggle: boolean;
   setNavbarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   handleChangeMode: (modeNum: number) => void;
-  onEndInterview: () => void;
 }
 
 export interface FormData {
@@ -166,6 +165,7 @@ export interface Company {
   salary: string;
   location: string;
   link?: string;
+  similarity: number; 
 }
 
 export interface CompanySearchCriteria {
@@ -263,4 +263,24 @@ export interface DragAndDropInputProps {
   onGenerateFeedback: () => void; // 피드백 생성 함수는 유지
 }
 
+// 인터뷰 피드백 데이터 구조 정의 (백엔드 응답에 맞춰 수정 필요)
+export interface InterviewFeedbackData {
+  overallScore: number; // 종합 점수
+  scores: { // 세부 역량 점수 (오각형 차트용)
+    clarity: number; // 명확성
+    relevance: number; // 관련성
+    professionalism: number; // 전문성
+    conciseness: number; // 간결성
+    confidence: number; // 자신감
+    // 필요에 따라 다른 역량 추가
+  };
+  questionFeedbacks: QuestionFeedback[]; // 질문별 피드백 배열
+  finalFeedback: string; // 최종 종합 코멘트
+}
 
+export interface QuestionFeedback {
+  question: string; // 질문 내용
+  answer: string; // 사용자 답변 내용
+  feedback: string; 
+  score: number; 
+}

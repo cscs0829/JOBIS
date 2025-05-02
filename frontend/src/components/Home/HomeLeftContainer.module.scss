@@ -1,26 +1,31 @@
+// src/components/Home/HomeLeftContainer.module.scss
 @import "../../App.scss";
 
 .HomeLeftContainer {
-  @include glass_box(650px, 100%);
+  @include glass_box(650px, auto); // 👈 높이를 auto로 변경 (또는 min-height: 100%;)
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
   min-width: 500px;
-  float: left;
+  // float: left; // 👈 float 대신 flexbox 레이아웃 유지
   z-index: 2;
-  background-color: $light-color;
+  background-color: #FAF5EF;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;  /* 변경: 왼쪽 정렬 */
+  justify-content: flex-start; // 👈 상단 정렬 유지
+  align-items: center; // 👈 가로 중앙 정렬로 변경 (내부 요소들 정렬 위해)
+  padding: 20px 40px; // 👈 내부 여백 추가 (상하, 좌우)
+  overflow-y: auto; // 👈 내용 많을 시 스크롤 추가
 
   .userInfoContainer {
-    width: 100%;
+    width: 100%; // 👈 너비 100% 유지
+    max-width: 550px; // 👈 최대 너비 설정 (내부 콘텐츠 정렬)
     display: flex;
-    justify-content: space-between; /* 변경: 양쪽 정렬 */
+    justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0; // 👈 상하 패딩, 좌우는 제거 (부모 패딩 사용)
     box-sizing: border-box;
   }
 
+  // ... (userInfoGreeting, userInfoButtons, authContainer 등 기존 스타일 유지) ...
   .userInfoGreeting {
     /* Styles for the greeting on the left */
   }
@@ -30,123 +35,147 @@
     justify-content: flex-end; /* 오른쪽 정렬 유지 */
   }
 
-  .authContainer {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+   .authContainer {
+     width: 100%;
+     max-width: 550px; // 👈 최대 너비 설정
+     display: flex;
+     justify-content: flex-end;
+     padding: 20px 0; // 👈 상하 패딩, 좌우는 제거
+     box-sizing: border-box;
+   }
 
-  .authButtons {
-    display: flex;
-    justify-content: flex-end;
-  }
+   // ... (.authButtons, .authButton 기존 스타일 유지) ...
+   .authButtons {
+     display: flex;
+     justify-content: flex-end;
+   }
 
-  .authButton {
-    @include glass_box(fit-content, fit-content);
-    margin-left: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: transparent;
-    border: 1px solid $main-color;
-    color: $main-color;
-    font-size: 1rem;
+   .authButton {
+     @include glass_box(fit-content, fit-content);
+     margin-left: 10px;
+     padding: 10px 20px;
+     cursor: pointer;
+     background-color: transparent;
+     border: 1px solid $main-color;
+     color: $main-color;
+     font-size: 1rem;
 
-    &:hover {
-      background-color: $main-color;
-      color: #fff;
-    }
-  }
+     &:hover {
+       background-color: $main-color;
+       color: #fff;
+     }
+   }
+
 
   .title_section {
-    width: 80%;
-    margin: 30px auto;
-    text-align: left; // ✅ title_section 자체도 왼쪽 정렬 (선택 사항)
-
+    width: 100%; 
+    max-width: 550px; 
+    margin: 30px 0; 
+    text-align: left;
+    background-color: #FAF5EF;
     h3 {
-      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
+      text-align: left;
     }
 
     h2 {
       color: $main-color;
       font-size: 1.8rem;
       margin-top: 3px;
-      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
+      text-align: left;
     }
 
     p {
       color: #444;
       font-size: 0.9rem;
       margin-top: 10px;
-      text-align: left; // ✅ 명시적 왼쪽 정렬 추가
-      line-height: 1.5; // ✅ 줄 간격 살짝 추가 (가독성 개선, 선택 사항)
+      text-align: left;
+      line-height: 1.5;
     }
   }
 
   .select_mode_section {
-    width: 100%;
+    width: 100%; // 👈 너비 100%
+    max-width: 550px; // 👈 최대 너비 설정
     margin-top: 30px;
     position: relative;
+    // 👇 ModeBox 정렬을 위해 추가 (ModeBox가 position: absolute 이므로)
+    display: flex;
+    justify-content: center; // ModeBox들을 가로 중앙에 배치 (ModeBox 스타일에 따라 조정 필요)
+    height: 220px; // ModeBox 영역 높이 확보 (ModeBox 크기에 따라 조정)
+    background-color: #FAF5EF;
   }
 }
 
 .mainImage {
-  display: block; // 이미지 하단 여백 제거
-  width: 55%;     // 이미지 너비 (컨테이너 기준)
-  max-width: 500px; // 이미지 최대 너비 (컨테이너 크기 고려)
-  margin: 250px auto 30px auto; // 위쪽 간격, 좌우 자동(가운데 정렬), 아래쪽 간격
-  align-self: center; // Flex column 내에서 가운데 정렬
+  display: block;
+  width: 55%;
+  max-width: 400px; // 👈 이미지 최대 너비 살짝 줄임 (선택 사항)
+  margin: auto auto -10px auto; // 👈 상단 마진 대폭 줄임
+  align-self: center; // 👈 중앙 정렬 유지
 }
 
-// mobile
+// mobile 스타일은 일단 그대로 둡니다.
 @media (max-width: 768px) {
-  .Home {
-    display: block;
-  }
-  .HomeLeftContainer {
-    width: 100%;
+ // ... (기존 모바일 스타일 유지) ...
+   .Home {
+     display: block;
+   }
+   .HomeLeftContainer {
+     width: 100%;
+     padding: 10px; // 모바일 패딩 조정
 
-    .userInfoContainer {
-      flex-direction: column;
-      align-items: center;
-      padding-top: 10px;
-      margin-bottom: 10px;
-    }
+     .userInfoContainer {
+       flex-direction: column;
+       align-items: center;
+       padding-top: 10px;
+       margin-bottom: 10px;
+       max-width: 100%; // 모바일 최대 너비 해제
+     }
 
-    .userInfoGreeting {
-      text-align: center;
-    }
+     .userInfoGreeting {
+       text-align: center;
+     }
 
-    .userInfoButtons {
-      width: 100%;
-      justify-content: center;
-      gap: 8px;
-    }
+     .userInfoButtons {
+       width: 100%;
+       justify-content: center;
+       gap: 8px;
+     }
 
-    .authContainer {  /* 새로운 컨테이너 스타일 */
-      width: 100%;
-      justify-content: center;
-      padding: 10px;
-      box-sizing: border-box;
-    }
+     .authContainer {
+       width: 100%;
+       justify-content: center;
+       padding: 10px;
+       box-sizing: border-box;
+       max-width: 100%; // 모바일 최대 너비 해제
+     }
 
-    .authButtons {
-      width: 100%;
-      justify-content: center;
-    }
+     .authButtons {
+       width: 100%;
+       justify-content: center;
+     }
 
-    .title_section {
-      // 모바일에서는 width: 80%, margin: 30px auto 대신 아래 스타일 적용됨
-      margin: 50px;
-      margin-left: 12%;
-      // text-align: left; 는 여전히 적용됩니다.
-    }
+     .title_section {
+       margin: 30px auto; // 모바일 마진 조정
+       width: 90%; // 모바일 너비
+       max-width: 100%; // 모바일 최대 너비 해제
+       text-align: center; // 모바일 중앙 정렬
 
-    .select_mode_section {
-      margin: 0 auto;
-      height: 200px;
-      width: 500px;
-    }
-  }
+       h3, h2, p { text-align: center; } // 내부 텍스트도 중앙 정렬
+     }
+
+     .select_mode_section {
+       margin: 20px auto;
+       height: 180px; // 모바일 높이 조정
+       width: 90%; // 모바일 너비
+       max-width: 100%; // 모바일 최대 너비 해제
+       // 모바일 ModeBox 정렬 조정 필요 시 추가
+     }
+
+     .mainImage {
+        width: 60%; // 모바일 이미지 너비
+        max-width: 250px; // 모바일 이미지 최대 너비
+        margin: 40px auto 20px auto; // 모바일 마진 조정
+     }
+   }
 }

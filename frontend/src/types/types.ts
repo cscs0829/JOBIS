@@ -1,4 +1,13 @@
-import { Key, RefObject, ChangeEventHandler, ChangeEvent, Dispatch, SetStateAction, ReactNode, MouseEventHandler } from "react";
+import {
+  Key,
+  RefObject,
+  ChangeEventHandler,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+  MouseEventHandler,
+} from "react";
 
 export interface HomeLeftContainerProps {
   selectedMode: number;
@@ -82,13 +91,14 @@ export interface NavbarProps {
   navbarToggle: boolean;
   setNavbarToggle: React.Dispatch<React.SetStateAction<boolean>>;
   handleChangeMode: (modeNum: number) => void;
+  onEndInterview: () => void;
 }
 
 export interface FormData {
   field: string;
   company: string;
   skills: string;
-  questions: string; 
+  questions: string;
   portfolioFile?: File | null;
   cvFile: File | null;
   resumeFile?: File | null;
@@ -108,7 +118,7 @@ export interface UserEditFormData {
   mem_gender: string;
 }
 
-export interface FileEditModalProps { 
+export interface FileEditModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -165,7 +175,6 @@ export interface Company {
   salary: string;
   location: string;
   link?: string;
-  similarity: number; 
 }
 
 export interface CompanySearchCriteria {
@@ -181,36 +190,37 @@ export interface CompanyCardProps {
 export interface Mentor {
   id: number;
   nickname: string;
-  techStack: string[]; 
-  location: string; 
-  company?: string; 
-  experience?: string; 
-  meetingType: '대면' | '비대면' | '둘다가능'; 
-  meetingLocation?: string; 
-  price: { 
+  techStack: string[];
+  location: string;
+  company?: string;
+  experience?: string;
+  meetingType: "대면" | "비대면" | "둘다가능";
+  meetingLocation?: string;
+  price: {
     min: number;
     max: number;
   };
-  mentoringTopics?: string[]; 
-  targetMentees?: string[];  
-  yearsExperience?: number | string; 
-  availability?: string[];   
+  mentoringTopics?: string[];
+  targetMentees?: string[];
+  yearsExperience?: number | string;
+  availability?: string[];
 }
 
 export interface MentorSearchCriteria {
-  techStack?: string; 
-  location?: string; 
-  price?: { 
+  techStack?: string;
+  location?: string;
+  price?: {
     min?: number;
     max?: number;
   };
-  meetingType?: '대면' | '비대면' | '둘다가능'; 
+  meetingType?: "대면" | "비대면" | "둘다가능";
   mentoringTopic?: string;
-  targetMentee?: string;   
-  minYearsExperience?: number; 
+  targetMentee?: string;
+  minYearsExperience?: number;
 }
 
-export interface MentorCardProps { // MentorCardProps 인터페이스 정의 확인 (이미 있다면 수정)
+export interface MentorCardProps {
+  // MentorCardProps 인터페이스 정의 확인 (이미 있다면 수정)
   mentor: Mentor;
   // onSelect?: (mentorId: number) => void; // 선택 버튼 콜백 함수 타입 (추후 구현 시)
 }
@@ -239,48 +249,26 @@ export interface DragAndDropInputProps {
   isDragging: boolean;
   setIsDragging: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void; // onClick 타입 추가
- }
+}
 
- export interface DragAndDropProps {
+export interface DragAndDropProps {
   onFileUpload: (files: File[]) => void;
-  label: string; 
+  label: string;
   onSave: (files: File[]) => void;
- }
+}
 
- export interface FileUploadModalProps {
+export interface FileUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onFileUpload: (files: File[]) => void;
   onSaveFiles: (files: File[]) => void;
- }
+}
 
- export interface AiFeedbackFormProps {
+export interface AiFeedbackFormProps {
   field: string; // '지원할 직무'로 사용됨
   onFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   selectedFeedbackTypes: string[]; // 선택된 피드백 종류 배열
   otherFeedbackType: string; // 기타 피드백 입력값
   onOpenFeedbackModal: () => void; // 피드백 선택 모달 여는 함수
   onGenerateFeedback: () => void; // 피드백 생성 함수는 유지
-}
-
-// 인터뷰 피드백 데이터 구조 정의 (백엔드 응답에 맞춰 수정 필요)
-export interface InterviewFeedbackData {
-  overallScore: number; // 종합 점수
-  scores: { // 세부 역량 점수 (오각형 차트용)
-    clarity: number; // 명확성
-    relevance: number; // 관련성
-    professionalism: number; // 전문성
-    conciseness: number; // 간결성
-    confidence: number; // 자신감
-    // 필요에 따라 다른 역량 추가
-  };
-  questionFeedbacks: QuestionFeedback[]; // 질문별 피드백 배열
-  finalFeedback: string; // 최종 종합 코멘트
-}
-
-export interface QuestionFeedback {
-  question: string; // 질문 내용
-  answer: string; // 사용자 답변 내용
-  feedback: string; 
-  score: number; 
 }

@@ -213,6 +213,34 @@ async def generate_final_feedback_with_ai(all_answers: List[str]) -> str:
     final_feedback = response.choices[0].message.content.strip()
     return final_feedback
 
+def generate_individual_feedback_with_ai(question: str, answer: str) -> str:
+    prompt =f"""
+        다음은 면접 질문과 이에 대한 지원자의 답변입니다. 이 답변에 대해 다음 기준에 따라 피드백을 작성하세요.
+
+        - 어떤 점이 부족한지
+        - 어떻게 개선할 수 있는지
+        - 1~2 문장 이내, 단순한 표현은 피하고, 구체적이고 실질적인 조언을 제시하세요.
+
+        [질문]
+        {question}
+
+        [답변]
+        {answer}
+
+        피드백:
+    """
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        print("GPT 응답 결과:", response)
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"generate_individual_feedback_with_ai 실패: {e}")
+        return "답변은 비교적 성실했지만, 핵심 전달력이 다소 부족했습니다."
+
 @router.get("/{session_id}/feedback", response_model=InterviewFeedbackData)
 async def get_interview_feedback(session_id: str):
     try:
@@ -245,14 +273,15 @@ async def get_interview_feedback(session_id: str):
             current_question = row["talk_content"]
         elif row["talk_person"] == "interviewee" and current_question:
             score = await score_answer_with_ai(current_question, row["talk_content"])
+            feedback = generate_individual_feedback_with_ai(current_question, row["talk_content"])
             questions_feedback.append(
                 QuestionFeedback(
                     question=current_question,
                     answer=row["talk_content"],
-                    feedback="답변의 구체성을 조금 더 강화하면 좋겠습니다.", # 임시 피드백
-                    score=score # 임시 점수
+                    feedback=feedback,
+                    score=score
                 )
-            ) 
+            )
             current_question = None # 질문-답변 짝 맞추고 나면 초기화
 
     if not questions_feedback:

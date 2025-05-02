@@ -23,7 +23,9 @@ const MentorCard: React.FC<MentorCardProps> = ({ mentor }) => {
             <span className={styles.years}>{mentor.yearsExperience}</span>
           </div>
           <div className={styles.info}>
-            <span className={styles.price}>{mentor.price.min.toLocaleString()}원~</span>
+            <span className={styles.price}>
+              {mentor.price.min.toLocaleString()}원~
+            </span>
           </div>
         </div>
         <Button className={styles.selectBtn} onClick={handleSelect}>

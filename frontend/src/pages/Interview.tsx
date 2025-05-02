@@ -14,6 +14,7 @@ import { useMediaQuery } from "react-responsive";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Navbar from "../components/Interview/Navbar";
 import API_BASE_URL from "../constants/api";
+import STTRecorder from "../components/STTRecorder";
 
 // --- 모달 컴포넌트 ---
 interface ResultModalProps {
@@ -117,6 +118,7 @@ const Interview: FC = () => {
   const [sessionId, setSessionId] = useState<number | null>(null);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [ttsDone, setTtsDone] = useState<boolean>(false);
 
   const abortController = useRef<AbortController | null>(null);
   const isMount = useRef<boolean>(true);
@@ -190,7 +192,8 @@ const Interview: FC = () => {
     } catch (err) {
       console.error("❌ 세션 시작 실패:", err);
       setIsError(true);
-      return null;
+    } finally {
+      setIsLoading(false);
     }
   };
   // =============================================================
@@ -200,38 +203,47 @@ const Interview: FC = () => {
     setIsLoading(true);
     setIsError(false);
 
-    // startInterviewSession 호출하고 반환된 sessionId를 받음
-    const receivedSessionId = await startInterviewSession();
-
-    // 반환된 sessionId 확인
-    if (!receivedSessionId) {
-      console.error("❌ 세션 ID를 받아오지 못했습니다.");
-      // isError는 startInterviewSession 내부에서 이미 설정될 수 있음
-      setIsLoading(false);
+    const storedMemId = localStorage.getItem("mem_id") || userInfo?.id;
+    if (!storedMemId) {
+      setIsError(true);
       return;
     }
 
-    setSessionStarted(true);
-
-    const systemPrompt = {
-      role: "system",
-      content: `
-      [역할] 너는 ${name} 스타일의 AI 면접관 역할을 수행하고 있어.
-      [상황] 지원자는 ${job} 직무에 지원했어.
-      ${interviewType} 유형의 면접을 진행할거야.
-      [규칙]
-      1. 면접관 페르소나(${name})를 일관되게 유지해줘.
-      2. 입장 클릭 시 바로 질문 시작, 인사말 금지
-      3. 질문은 2문장 이내, 간결하게
-      4. 총 5개의 질문만 하고, 마지막 질문 후에는 "면접이 종료되었습니다." 라는 메시지만 정확히 출력해줘.
-      5. 다른 추가적인 말 없이 면접 종료 메시지만 출력해야 해.
-      [행동] 지금부터 첫 질문을 하세요.
-      `,
-    };
-
     try {
-      // 👇 첫 질문 받아오기 API 호출
-      const res = await fetch(`${API_BASE_URL}/interview/interview`, {
+      const res = await fetch(`${API_BASE_URL}/interview/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          persona: name,
+          job,
+          interviewType,
+          selectedMode,
+          mem_id: storedMemId,
+          messages: [],
+        }),
+      });
+      const data = await res.json();
+      const receivedSessionId = data.session_id;
+      setSessionId(receivedSessionId);
+      setSessionStarted(true);
+
+      const systemPrompt = {
+        role: "system",
+        content: `
+        [역할] 너는 ${name} 스타일의 AI 면접관 역할을 수행하고 있어.
+        [상황] 지원자는 ${job} 직무에 지원했어.
+        ${interviewType} 유형의 면접을 진행할거야.
+        [규칙]
+        1. 면접관 페르소나(${name})를 일관되게 유지해줘.
+        2. 입장 클릭 시 바로 질문 시작, 인사말 금지
+        3. 질문은 2문장 이내, 간결하게
+        4. 총 5개의 질문만 하고, 마지막 질문 후에는 "면접이 종료되었습니다." 라는 메시지만 정확히 출력해줘.
+        5. 다른 추가적인 말 없이 면접 종료 메시지만 출력해야 해.
+        [행동] 지금부터 첫 질문을 하세요.
+        `,
+      };
+
+      const interviewRes = await fetch(`${API_BASE_URL}/interview/interview`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -242,39 +254,28 @@ const Interview: FC = () => {
           messages: [systemPrompt],
         }),
       });
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      const data = await res.json();
-      const firstQuestion = { role: "assistant", content: data.reply };
+      const interviewData = await interviewRes.json();
+      const firstQuestion = interviewData.reply;
 
-      // DB 저장 시 반환받은 receivedSessionId 사용
-      await saveMessageToDB(receivedSessionId, "interviewer", data.reply);
+      setMessages([
+        systemPrompt,
+        { role: "assistant", content: firstQuestion },
+      ]);
 
-      setMessages([systemPrompt, firstQuestion]);
-
-      // TTS 요청
+      // TTS 실행 후 STT 시작
       const ttsRes = await fetch(`${API_BASE_URL}/tts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: data.reply }),
+        body: JSON.stringify({ text: firstQuestion }),
       });
-      if (!ttsRes.ok) {
-        console.warn("⚠️ TTS 요청 실패:", ttsRes.status);
-      } else {
-        const ttsData = await ttsRes.json();
-        const audioUrl = `${API_BASE_URL}${ttsData.audio_url}`;
-        const audio = new Audio(audioUrl);
-        setAudioUrl(audioUrl);
-        try {
-          await audio.play();
-          console.log("✅ TTS 자동 재생 성공");
-        } catch (err) {
-          console.error("❌ TTS 자동 재생 실패:", err);
-        }
-      }
+      const ttsData = await ttsRes.json();
+      const audio = new Audio(`${API_BASE_URL}${ttsData.audio_url}`);
+      await audio.play();
+      audio.onended = () => {
+        setTtsDone(true);
+      };
     } catch (err) {
-      console.error("❌ 첫 질문 요청 실패:", err);
+      console.log("면접 시작 실패:", err);
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -349,6 +350,7 @@ const Interview: FC = () => {
         const assistantMessage = { role: "assistant", content: data.reply };
         const finalMessages = [...updatedMessages, assistantMessage];
         setMessages(finalMessages);
+
         if (currentSessionId)
           await saveMessageToDB(currentSessionId, "interviewer", data.reply);
 
@@ -375,11 +377,22 @@ const Interview: FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: data.reply }),
       });
+
       if (!ttsResponse.ok) {
         console.warn("⚠️ TTS 요청 실패:", ttsResponse.status);
       } else {
         const ttsData = await ttsResponse.json();
-        const audio = new Audio(`${API_BASE_URL}${ttsData.audio_url}`);
+        const audioUrl = `${API_BASE_URL}${ttsData.audio_url}`;
+        setAudioUrl(audioUrl);
+        const audio = new Audio(audioUrl);
+
+        try {
+          await audio.play();
+          console.log("TTS 자동 재생 성공");
+        } catch (err) {
+          console.error("TTS 자동 생성");
+        }
+
         setAudioUrl(`${API_BASE_URL}${ttsData.audio_url}`);
         audio
           .play()
@@ -502,13 +515,29 @@ const Interview: FC = () => {
 
             {/* 답변 입력 */}
             {sessionStarted && !isInterviewFinished && (
-              <InputAns
-                ans={ans}
-                onClick={handleSubmit}
-                setAns={setAns}
-                isLoading={isLoading}
-                isError={isError}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                <InputAns
+                  ans={ans}
+                  onClick={handleSubmit}
+                  setAns={setAns}
+                  isLoading={isLoading}
+                  isError={isError}
+                />
+
+                {/* STTRecorder: 음성 녹음 결과를 ans 상태에 넣음 */}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <STTRecorder
+                    trigger={ttsDone}
+                    onTranscribed={(text) => setAns(text)}
+                  />
+                </div>
+              </div>
             )}
           </div>
         </div>

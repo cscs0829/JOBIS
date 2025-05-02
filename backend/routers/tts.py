@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request # FastAPI 라우터 생성과 요청 정보 읽기 위함
-from fastapi.responses import FileResponse # 파일 응답 반환을 위한 모듈
+from fastapi.responses import FileResponse, JSONResponse # 파일 응답 반환을 위한 모듈
 from gtts import gTTS # Google Text to Speech 모듈
 import uuid # 고유한 파일명을 만들기 위한 uuid 모듈
 import os # 파일 시스템 경로 조작을 위한 모듈
@@ -14,7 +14,10 @@ async def generate_tts(request: Request):
     data = await request.json()
 
     # JSON에서 "text"라는 key에 해당하는 값을 가져옴 (없으면 기본값 "")
-    text = data.get("text", "")
+    text = data.get("text", "").strip()
+
+    if not text:
+        return JSONResponse(status_code=400, content={"error": "No text to speak"})
 
     # 고유한 mp3 파일명들 생성
     filename = f"tts_{uuid.uuid4().hex}.mp3"
@@ -23,13 +26,18 @@ async def generate_tts(request: Request):
     filepath = f"audio/{filename}"
 
     # gTTS 객체를 생성(언어: 한국어 'ko', 변환할 텍스트: text)
-    tts = gTTS(text=text, lang='ko')
+    try:
 
-    # 지정된 경로에 mp3 파일로 저장
-    tts.save(filepath)
+        tts = gTTS(text=text, lang='ko')
 
-    # 클라이언트에게 해당 음성 파일의 URL을 반환
-    return{"audio_url": f"/audio/{filename}"}
+        # 지정된 경로에 mp3 파일로 저장
+        tts.save(filepath)
+
+        # 클라이언트에게 해당 음성 파일의 URL을 반환
+        return{"audio_url": f"/audio/{filename}"}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
 
 @router.post("/tts/delete")
 async def delete_audio(request: Request):

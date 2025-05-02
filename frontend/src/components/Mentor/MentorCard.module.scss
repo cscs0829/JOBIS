@@ -2,76 +2,145 @@
 @import "../../App.scss";
 
 .card {
-  padding: 15px; // 패딩 조정
-  border: 1px solid #ddd;
-  border-radius: $radius;
-  background-color: #fff;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
   width: 100%;
-  max-width: 250px; // 최대 너비 조정 (내용 증가 고려)
-  // height: 140px; // 고정 높이 제거
-  min-height: 180px; // 최소 높이 설정 (내용 증가 고려, 필요시 더 늘리거나 줄이세요)
-  display: flex;
-  flex-direction: column;
-  // justify-content: space-between; // 제거 (margin-top: auto 사용)
+  max-width: 360px;
+  height: 240px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    height: auto;
+    min-height: 240px;
+  }
 
   &:hover {
-    transform: translateY(-4px); // hover 효과 조정
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
-  // 카드 정보 영역
-  .cardInfo {
+  .cardContent {
     display: flex;
     flex-direction: column;
-    gap: 6px; // 정보 간 간격 조정
+    height: 100%;
+    gap: 10px;
 
     h3 {
-      color: $main-color;
-      margin-bottom: 8px; // 제목 아래 간격 증가
-      font-size: 1.1rem; // 제목 폰트 크기 조정
-      font-weight: 600; // 제목 굵기 조정
-      line-height: 1.4; // 줄간격 추가
-       // 제목 텍스트 생략 필요 시 아래 주석 해제 및 line-clamp 값 조정
-       // overflow: hidden;
-       // text-overflow: ellipsis;
-       // display: -webkit-box;
-       // -webkit-line-clamp: 2; // 예: 최대 2줄
-       // -webkit-box-orient: vertical;
+      color: #191F28;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 0;
+      letter-spacing: -0.3px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
 
-    // 부가 정보 스타일 (p 태그)
-    .subInfo {
-      margin-bottom: 2px;
-      font-size: 0.85rem; // 폰트 크기 조정
-      color: #444; // 글자색 조정
-      line-height: 1.4; // 줄 간격
-       // 여러 줄 정보(주제, 대상 등)가 너무 길 경우 생략 처리 필요 시 아래 주석 해제
-       // overflow: hidden;
-       // text-overflow: ellipsis;
-       // display: -webkit-box;
-       // -webkit-line-clamp: 2; // 예: 최대 2줄
-       // -webkit-box-orient: vertical;
-       // white-space: normal; // 줄바꿈 허용
+    .infoList {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      
+      .info {
+        display: flex;
+        align-items: flex-start;
+        min-height: 22px;
+        
+        &:not(:last-child) {
+          padding-bottom: 8px;
+          border-bottom: 1px solid #F2F4F6;
+        }
+        
+        span {
+          font-size: 14px;
+          color: #666;
+          letter-spacing: -0.2px;
+          line-height: 1.4;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: unset;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          word-break: keep-all;
+        }
+
+        .stack {
+          color: #666;
+          font-weight: 500;
+          font-size: 15px;
+        }
+
+        .experience {
+          color: #666;
+        }
+
+        .years {
+          color: #666;
+        }
+
+        .price {
+          color: #666;
+          font-weight: 500;
+          font-size: 15px;
+        }
+      }
     }
-  }
 
-  // 선택하기 버튼 스타일
-  .selectBtn {
-    margin-top: auto; // 버튼을 하단으로 밀어냄
-    align-self: flex-end; // 오른쪽 정렬
-    padding: 6px 12px; // 버튼 패딩
-    font-size: 0.8rem; // 버튼 폰트 크기
-    background-color: $main-color; // 배경색
-    color: white; // 글자색
-    border: none; // 테두리 제거
-    border-radius: 6px; // 둥근 모서리
-    cursor: pointer; // 커서 추가
-    transition: background-color 0.2s ease; // hover 효과
+    .selectBtn {
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background-color: $main-color;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: -0.2px;
+      margin-top: auto;
+      height: 42px;
 
-    &:hover {
-      background-color: darken($main-color, 10%);
+      &:focus {
+        outline: 2px solid rgba($main-color, 0.4);
+        outline-offset: 2px;
+      }
+
+      &::after {
+        content: "→";
+        font-size: 13px;
+        transition: transform 0.2s ease;
+        color: #fff;
+      }
+
+      &:hover {
+        background-color: darken($main-color, 5%);
+        
+        &::after {
+          transform: translateX(4px);
+        }
+      }
+
+      &:active {
+        transform: scale(0.98);
+        background-color: darken($main-color, 10%);
+      }
     }
   }
 }

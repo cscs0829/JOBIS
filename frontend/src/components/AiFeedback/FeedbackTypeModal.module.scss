@@ -128,13 +128,13 @@
 }
 
 .cancelButton {
-  background-color: #ccc;
-  color: #333;
-  border-color: #ccc;
+  background-color: $main-color;
+  color: white;
+  border-color: $main-color; // 테두리 색상 통일
   padding: 10px 20px;
   &:hover {
-    background-color: darken(#ccc, 10%);
-    border-color: darken(#ccc, 10%);
+    background-color: darken($main-color, 10%);
+    border-color: darken($main-color, 10%);
   }
 }
 

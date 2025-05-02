@@ -180,7 +180,7 @@ const HomeRightContainer: FC<HomeRightContainerProps> = ({
                 </div>
 
                 {/* 면접 시작 버튼 */}
-                <button className={styles.action_button} onClick={handleInterviewStart}>
+                <button className={styles.start_button} onClick={handleInterviewStart}>
                   면접 시작
                 </button>
               </div>

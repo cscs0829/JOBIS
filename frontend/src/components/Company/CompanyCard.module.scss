@@ -1,74 +1,113 @@
 @import "../../App.scss";
 
 .card {
-  padding: 18px;
-  border: 1px solid #e0e0e0;
-  border-radius: $radius;
-  background-color: #fff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  padding: 16px;
+  padding-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
   width: 100%;
-  max-width: 280px;
-  // height: 200px; // 고정 높이 제거
-  min-height: 200px; // 최소 높이 설정으로 변경
+  max-width: 360px;
+  height: 240px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 12px; // 내부 요소 간격 유지
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    height: auto;
+    min-height: 240px;
+  }
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
   .cardInfo {
-     display: flex;
-     flex-direction: column;
-     gap: 8px;
-     overflow: hidden; // 내부 내용이 넘칠 경우 대비 (선택 사항)
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 10px;
+    margin-bottom: 12px;
 
-     h3 {
-       color: $main-color;
-       font-size: 1.15rem; // 제목 폰트 크기 유지
-       margin-bottom: 4px;
-       line-height: 1.4; // 줄 간격 추가 (여러 줄일 때 가독성)
-       // --- 텍스트 생략 처리 (예: 최대 3줄) ---
-       overflow: hidden;
-       text-overflow: ellipsis;
-       display: -webkit-box;
-       -webkit-line-clamp: 3; // 최대 3줄까지 표시
-       -webkit-box-orient: vertical;
-       // --------------------------------------
-     }
+    h3 {
+      color: #191F28;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 0;
+      letter-spacing: -0.3px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
 
-     p {
-       font-size: 0.9rem;
-       color: #555;
-       line-height: 1.4;
-       margin-bottom: 0;
-       // --- 한 줄 생략 처리 (선택 사항) ---
-       // white-space: nowrap;
-       // overflow: hidden;
-       // text-overflow: ellipsis;
-       // -------------------------------
-     }
+    p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+      margin: 0;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &:not(:last-child) {
+        padding-bottom: 8px;
+        border-bottom: 1px solid #F2F4F6;
+      }
+    }
   }
 
-
   .applyBtn {
-    display: inline-block;
-    padding: 8px 14px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: $main-color;
-    background-color: #fff;
-    border: 1px solid $main-color;
-    border-radius: 6px;
-    text-align: center;
-    text-decoration: none;
+    margin-top: auto;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background-color: $main-color;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    align-self: flex-end; // 오른쪽 정렬 유지
-    // margin-top: auto; // space-between 대신 버튼을 항상 아래로 밀고 싶을 때 사용 가능
+    transition: all 0.2s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    letter-spacing: -0.2px;
+    height: 42px;
+
+    &:focus {
+      outline: 2px solid rgba($main-color, 0.4);
+      outline-offset: 2px;
+    }
+
+    &::after {
+      content: "→";
+      font-size: 13px;
+      transition: transform 0.2s ease;
+      color: #fff;
+    }
+
+    &:hover {
+      background-color: darken($main-color, 5%);
+      
+      &::after {
+        transform: translateX(4px);
+      }
+    }
+
+    &:active {
+      transform: scale(0.98);
+      background-color: darken($main-color, 10%);
+    }
   }
 }

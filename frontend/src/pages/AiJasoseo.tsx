@@ -36,7 +36,7 @@ const AiJasoseoPage: React.FC = () => {
       const file = e.target.files[0];
       setFormData({ ...formData, [key]: file });
 
-      // ✅ 수정됨: 파일 업로드 후 file_idx 받아오기
+      // ✅ 파일 업로드 후 file_idx 받아오기
       const uploadForm = new FormData();
       uploadForm.append("mem_id", sessionStorage.getItem("login_id") || "");
       uploadForm.append(key.replace("File", ""), file); // resumeFile -> resume, cvFile -> cv 등
@@ -59,7 +59,20 @@ const AiJasoseoPage: React.FC = () => {
     try {
       const formPayload = new FormData();
       formPayload.append("mem_id", sessionStorage.getItem("login_id") || "");
-      if (fileIdx !== null) formPayload.append("file_idx", fileIdx.toString()); // ✅ 수정됨: 첨부된 경우에만
+      if (fileIdx !== null) formPayload.append("file_idx", fileIdx.toString()); // ✅ 저장된 file_idx
+
+      // ✅ 파일도 같이 전송 (추가된 부분)
+      if (formData.cvFile) {
+        formPayload.append("cv", formData.cvFile);
+      }
+      if (formData.resumeFile) {
+        formPayload.append("resume", formData.resumeFile);
+      }
+      if (formData.portfolioFile) {
+        formPayload.append("portfolio", formData.portfolioFile);
+      }
+
+      // 기존 텍스트 필드들
       formPayload.append("questions", formData.questions);
       formPayload.append("skills", formData.skills);
       formPayload.append("field", formData.field);
@@ -69,7 +82,6 @@ const AiJasoseoPage: React.FC = () => {
       formPayload.append("projects", formData.projects || "");
       formPayload.append("experiences", formData.experiences || "");
       formPayload.append("major", formData.major || "");
-
 
       const response = await fetch("http://localhost:9000/jasoseo/generate-draft", {
         method: "POST",

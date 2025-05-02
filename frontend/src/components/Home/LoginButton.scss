@@ -1,26 +1,31 @@
-// src/components/LoginButton.scss
+// src/components/Home/LoginButton.scss
+@import "../../App.scss"; // 변수 사용 위해 필요
 
-.login-button {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  
-    button {
-      background-color: #444;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.3s;
-  
-      &:hover {
-        background-color: #666;
-      }
+// 클래스 이름을 .sign_button 으로 변경
+.sign_button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-end;
+  position: absolute;
+  padding: 0px 10px 0;
+  margin-bottom: 20px;
+
+
+  > * {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.9rem; 
+    color: #333;
+    font-weight: 600;
+    font-family: "Pretendard-Regular", sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    white-space: nowrap;
+    &:hover {
+      text-decoration: underline;
     }
   }
-  
+}

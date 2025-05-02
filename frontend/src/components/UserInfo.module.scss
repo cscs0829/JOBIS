@@ -1,103 +1,81 @@
+/* src/components/UserInfo.module.scss */
 @import "../App.scss";
 
-.userInfoWrapper { /* 새로운 wrapper 추가 */
+.userInfoWrapper {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  gap: 16px;
-  padding: 16px 20px 0; /* 상단 padding 추가, 좌우 padding 유지 */
-  margin-bottom: 20px; /* 필요에 따라 조절 */
+  justify-content: flex-end; /* 오른쪽 정렬 유지 */
+  gap: 16px; // 인사말과 버튼 그룹(또는 개별 버튼) 사이 간격
+  padding: 16px 20px 0;
+  margin-bottom: 20px;
 }
 
-.userInfoText {
+.userInfoText { // "안녕하세요, OOO님!" 텍스트 스타일
   p {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
-    color: #2c2c2c;
+    color: #333;
+    font-family: "Noto Sans KR", sans-serif;
   }
 }
 
-.userInfoButtons {
+.userInfoButtons { // 버튼(이제는 링크)들을 감싸는 컨테이너
   display: flex;
-  gap: 8px; /* 버튼 간 간격 줄임 */
+  align-items: center; // 수직 정렬 (선택 사항)
+  gap: 12px; // 링크 사이 간격 조정 (기존 8px -> 12px)
 }
 
+// --- 공통 링크 스타일 (기존 버튼 클래스 활용) ---
 .myInfoButton,
 .logoutButton,
-.resumeEditButton {  /* resumeEditButton 추가 */
-  padding: 6px 12px; /* 버튼 padding 줄임 */
-  font-size: 0.8rem; /* 버튼 폰트 크기 줄임 */
-  border: 1px solid #ccc; /* 테두리 추가 */
-  border-radius: 8px; /* 더 작은 border-radius */
+.resumeEditButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: "Pretendard-Regular", sans-serif; // 폰트 지정
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  font-weight: 500;
-  box-shadow: none; /* 그림자 제거 */
-}
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
 
-.myInfoButton {
-  background-color: $main-color;
-  color: white;
-
-  &:hover {
-    background-color: darken($main-color, 8%);
-  }
-
-  &:active {
-    transform: scale(0.97);
+  &:active { // 클릭 효과 제거 (텍스트 링크에는 불필요)
+    transform: none;
   }
 }
 
-.logoutButton {
-  background-color: #ff6b6b;
-  color: white;
-
-  &:hover {
-    background-color: darken(#ff6b6b, 8%);
-  }
-
-  &:active {
-    transform: scale(0.97);
-  }
+// --- 개별 링크 스타일 ---
+.myInfoButton,
+.resumeEditButton { // 회원 수정, 이력서 수정 링크
+  color: #333; 
 }
 
-.resumeEditButton {   /* resumeEditButton 스타일 */
-  background-color: #4CAF50; /* 녹색 계열 색상 */
-  color: white;
-
-  &:hover {
-    background-color: darken(#4CAF50, 8%);
+.logoutButton { 
+  color: #333; 
   }
 
-  &:active {
-    transform: scale(0.97);
-  }
-}
 
-
-// 모바일 대응 (필요에 따라 조정)
+// --- 모바일 대응 ---
 @media (max-width: 768px) {
-  .userInfoWrapper {
-    justify-content: center; /* 가운데 정렬 */
+  .userInfoWrapper { 
+    justify-content: center; 
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px; 
     padding-top: 10px;
+    margin-bottom: 15px; 
   }
 
-  .userInfoButtons {
+  .userInfoButtons { // 모바일: 버튼(링크) 컨테이너
     width: 100%;
-    justify-content: space-around;
-    gap: 8px;
+    justify-content: center; // 링크들을 가운데 정렬
+    gap: 15px; // 모바일 링크 사이 간격 조정
   }
 
   .myInfoButton,
   .logoutButton,
-  .resumeEditButton {
-    flex: 1;
-    text-align: center;
-    padding: 8px 16px;
-    font-size: 0.9rem;
+  .resumeEditButton { // 모바일: 개별 링크
+    font-size: 0.95rem; // 모바일 폰트 크기 살짝 키움
   }
 }

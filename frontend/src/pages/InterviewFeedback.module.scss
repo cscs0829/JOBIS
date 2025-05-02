@@ -1,0 +1,245 @@
+// src/pages/InterviewFeedback.module.scss
+@import '../App.scss'; // $main-color 등 변수 사용
+
+.feedbackContainer {
+  max-width: 900px; // 콘텐츠 최대 너비
+  margin: 30px auto; // 상하 여백 및 중앙 정렬
+  padding: 25px 30px; // 내부 여백
+  background-color: $light-color; // 페이지 배경색
+  border-radius: $radius;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out; // 부드럽게 나타나는 효과
+
+  h1 {
+    text-align: center;
+    color: $main-color;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    color: darken($main-color, 10%);
+    border-bottom: 2px solid $main-color;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+  }
+
+   h3 {
+    text-align: center;
+    color: #444;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+   }
+}
+
+// 로딩 및 에러 메시지 스타일
+.loading, .error {
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 1.2rem;
+  color: #555;
+}
+.error {
+  color: red;
+}
+
+// 섹션 공통 스타일
+section {
+  margin-bottom: 35px;
+  padding: 20px;
+  background-color: #fff; // 섹션 배경 흰색
+  border-radius: 8px;
+}
+
+// 종합 평가 섹션
+.overallSection {
+  .chartsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // 반응형 그리드
+      gap: 25px; // 차트 간격
+      margin-bottom: 25px; // 아래 텍스트와의 간격
+  }
+
+  .chartWrapper {
+     border: 1px solid #f0f0f0;
+     padding: 15px;
+     border-radius: 6px;
+     background-color: #fafafa;
+  }
+
+  .chartArea {
+      height: 280px; // 차트 높이 고정 (필요시 조정)
+      position: relative; // 캔버스 크기 조절 위해 필요
+  }
+
+  .overallScoreText {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #333;
+      margin-top: 15px;
+      font-weight: 500;
+       strong {
+          color: $main-color;
+          font-size: 1.3em; // 점수 강조
+       }
+  }
+}
+
+
+// 질문별 피드백 섹션
+.questionSection {
+  .questionFeedbackItem {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+    display: grid; // 그리드 레이아웃 사용
+    grid-template-columns: 1fr auto; // 질문/답변 영역 | 피드백/점수 영역
+    gap: 20px; // 그리드 갭
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .qaPair { // 질문 & 답변 묶음
+     line-height: 1.6;
+  }
+
+  .question {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+     strong { color: #333; }
+  }
+
+  .answer {
+    font-size: 0.95rem;
+    color: #666;
+    white-space: pre-wrap; // 줄바꿈 유지
+    background-color: #f9f9f9; // 답변 배경 약간 다르게
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 3px solid #eee;
+  }
+
+  .feedbackScore { // 피드백 & 점수 묶음
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; // 피드백과 점수 위아래 정렬
+      align-items: flex-end; // 오른쪽 정렬
+      padding: 10px;
+      background-color: lighten($main-color, 45%); // 연한 주황색 배경
+      border-radius: 4px;
+      min-width: 200px; // 최소 너비
+  }
+
+  .feedbackText {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    text-align: right; // 오른쪽 정렬
+  }
+
+  .score {
+    font-size: 1rem;
+    font-weight: bold;
+    color: $main-color;
+    white-space: nowrap; // 줄바꿈 방지
+  }
+}
+
+// 종합 코멘트 섹션
+.finalFeedbackSection {
+  p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #333;
+    background-color: #fdfdfd;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+  }
+}
+
+// 하단 버튼 컨테이너
+.buttonContainer {
+  text-align: center; // 버튼 중앙 정렬
+  margin-top: 30px;
+
+  button {
+    padding: 10px 25px;
+    font-size: 1rem;
+    background-color: $main-color;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: darken($main-color, 10%);
+    }
+  }
+}
+
+// 반응형 스타일
+@media (max-width: 768px) {
+  .feedbackContainer {
+    margin: 15px;
+    padding: 15px;
+     h1 { font-size: 1.5rem; margin-bottom: 25px; }
+     h2 { font-size: 1.2rem; margin-bottom: 15px; }
+     h3 { font-size: 1rem; margin-bottom: 10px; }
+  }
+
+  section {
+    padding: 15px;
+    margin-bottom: 25px;
+  }
+
+   .overallSection {
+        .chartsGrid {
+            grid-template-columns: 1fr; // 모바일에서는 세로로 쌓이도록
+            gap: 20px;
+        }
+        .chartArea { height: 250px; } // 모바일 차트 높이 조정
+        .overallScoreText { font-size: 1.1rem; }
+   }
+
+   .questionSection {
+        .questionFeedbackItem {
+            grid-template-columns: 1fr; // 모바일에서는 세로로 쌓이도록
+            gap: 15px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .feedbackScore {
+            align-items: flex-start; // 왼쪽 정렬
+            min-width: auto; // 최소 너비 제거
+        }
+        .feedbackText { text-align: left; } // 왼쪽 정렬
+        .score { align-self: flex-start; } // 왼쪽 정렬
+        .question { font-size: 0.95rem; }
+        .answer { font-size: 0.9rem; }
+        .feedbackText { font-size: 0.85rem; }
+   }
+
+   .finalFeedbackSection p {
+       font-size: 0.95rem;
+   }
+
+   .buttonContainer {
+       margin-top: 25px;
+       button { padding: 9px 20px; font-size: 0.95rem; }
+   }
+}
+
+// 애니메이션 키프레임
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

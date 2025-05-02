@@ -48,29 +48,52 @@
 
 .resultContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); // 카드 크기에 맞게 minmax 조정
-  gap: 16px;
-  // margin-top: 20px; // MentorSearch 컴포넌트 마진으로 대체
-  overflow-y: auto; // 결과 많을 시 스크롤
-  flex-grow: 1; // 남은 공간 채우도록 설정
-  padding-bottom: 10px; // 하단 버튼 영역과의 간격
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 12px;
+  padding-right: 20px;
+  margin: -12px;
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 
-.noResults { // 검색 결과 없을 때 스타일
+.noResults {
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px 0;
   color: #777;
+  font-size: 16px;
+  letter-spacing: -0.3px;
 }
-
 
 // 하단 버튼 컨테이너
 .bottomButtonContainer {
   display: flex;
-  justify-content: space-between; // 양쪽 끝으로 버튼 배치
-  padding-top: 15px; // 결과 영역과의 간격
-  margin-top: auto; // 컨테이너를 맨 아래로 밀착 (companyMentorRight가 flex column일 때)
-  border-top: 1px solid #eee; // 구분선 (선택 사항)
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 // 멘토 추가 버튼 스타일
@@ -90,7 +113,7 @@
 .searchBtn {
   background-color: $main-color; // primary 스타일도 주황색으로 덮어쓰기
   border-color: $main-color; // 테두리 색상도 통일
-
+  color: white;
   &:hover {
     background-color: darken($main-color, 10%); // hover 시 약간 어둡게
     border-color: darken($main-color, 10%);

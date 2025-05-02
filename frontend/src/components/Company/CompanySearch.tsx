@@ -30,7 +30,7 @@ const CompanySearch: FC<{ onSearch: (criteria: CompanySearchCriteria) => void }>
       {/* 연봉 입력 필드와 단위 표시를 위한 div 추가 */}
       <div className={styles.salaryInputWrapper}>
         <Input
-          label="연봉 (만원)-선택" // 레이블에 단위 명시
+          label="희망 연봉" // 레이블에 단위 명시
           value={salary}
           onChange={(e) => setSalary(e.target.value)}
           placeholder="숫자만 입력 (예: 3000)" // 플레이스홀더 추가

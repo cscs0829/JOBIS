@@ -140,7 +140,7 @@ const MentorSearchModal: FC<MentorSearchModalProps> = ({ isOpen, onClose, onSear
         {/* --- 하단 버튼 그룹 --- */}
         <div className={styles.buttonGroup}>
             <Button onClick={handleReset} className={styles.resetButton}>초기화</Button>
-            <Button onClick={handleApplySearch} primary className={styles.applyButton}>검색 적용</Button>
+            <Button onClick={handleApplySearch} primary className={styles.applyButton}>검색</Button>
         </div>
       </div>
     </SearchModal>

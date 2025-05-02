@@ -1,4 +1,4 @@
-// src/App.tsx
+// src/App.tsx (라우터 추가)
 import React, { createContext, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
@@ -9,10 +9,11 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AiJasoseo from "./pages/AiJasoseo";
 import AiFeedback from './pages/AiFeedback';
-import CompanyRecommendation from "./pages/CompanyRecommendation"; 
-import MentorRecommendation from "./pages/MentorRecommendation"; 
+import CompanyRecommendation from "./pages/CompanyRecommendation";
+import MentorRecommendation from "./pages/MentorRecommendation";
 import UserInfoEdit from './pages/UserInfoEdit';
 import UserFileEdit from './pages/UserFileEdit';
+import InterviewFeedback from './pages/InterviewFeedback'; // <<< 피드백 페이지 import
 import { NameJobContext } from "./types/types";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -48,6 +49,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/interview" element={<Interview />} />
+            {/* <<< 피드백 페이지 라우트 추가 (sessionId 파라미터 사용) >>> */}
+            <Route path="/interview-feedback/:sessionId" element={<InterviewFeedback />} />
             <Route path="/ai-jasoseo" element={<AiJasoseo />} />
             <Route path="/ai-feedback" element={<AiFeedback />} />
             <Route

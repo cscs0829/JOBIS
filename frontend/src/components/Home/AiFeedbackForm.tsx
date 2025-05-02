@@ -4,7 +4,7 @@ import GuideInput from '../Input/GuideInput';
 import Button from '../Button/Button';
 import styles from './AiFeedbackForm.module.scss';
 import { AiFeedbackFormProps } from '../../types/types';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaFileAlt, FaChevronRight } from 'react-icons/fa';
 
 const AiFeedbackForm: React.FC<AiFeedbackFormProps> = ({
   field,
@@ -15,7 +15,6 @@ const AiFeedbackForm: React.FC<AiFeedbackFormProps> = ({
   onGenerateFeedback,
 }) => {
   const navigate = useNavigate();
-  const fileEditTooltipText = "이력서, 자기소개서, 포트폴리오 파일은\n'첨부 파일 수정' 버튼을 눌러 관리할 수 있습니다.";
 
   const handleEditFileClick = () => {
     navigate('/user-file-edit');
@@ -29,6 +28,8 @@ const AiFeedbackForm: React.FC<AiFeedbackFormProps> = ({
     return displayString || '선택된 피드백 없음';
   };
 
+  const fileEditTooltipText = "이력서, 자기소개서, 포트폴리오 파일은\n'첨부 파일 수정' 버튼을 눌러 관리할 수 있습니다.";
+  
   return (
     <div className={styles.formContainer}>
       <h2>AI 자소서 피드백</h2>
@@ -42,7 +43,13 @@ const AiFeedbackForm: React.FC<AiFeedbackFormProps> = ({
           </span>
         </div>
         <Button onClick={handleEditFileClick} className={styles.fileUploadButton}>
-          첨부 파일 수정하러 가기
+          <div className={styles.buttonContent}>
+            <span className={styles.buttonTitle}>첨부 파일 수정하기</span>
+            <span className={styles.buttonDescription}>이력서, 자기소개서, 포트폴리오를 관리해보세요</span>
+          </div>
+          <div className={styles.buttonIcon}>
+            <FaChevronRight />
+          </div>
         </Button>
       </div>
 

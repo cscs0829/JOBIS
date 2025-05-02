@@ -1,15 +1,15 @@
-// src/components/LoginButton.tsx
+// src/components/Home/LoginButton.tsx
 
-import { useNavigate } from "react-router-dom";
-import "./LoginButton.scss";
+import { useNavigate, Link } from "react-router-dom"; // Link 추가 (권장)
+import "./LoginButton.scss"; // SCSS 파일 import
 
 function LoginButton() {
-  const navigate = useNavigate();
 
   return (
-    <div className="login-button">
-      <button onClick={() => navigate("/login")}>로그인</button>
-      <button onClick={() => navigate("/signup")}>회원가입</button>
+    <div className="sign_button">
+      <Link to="/login">로그인</Link>
+      <Link to="/signup">회원가입</Link>
+
     </div>
   );
 }

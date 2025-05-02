@@ -3,18 +3,20 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 25px 30px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #FFFBEF; /* Keep the original background color */
-  margin-bottom: 25px;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  background-color: #FFFBEF;
+  margin-bottom: 32px;
   height: 100%;
   overflow-y: auto;
   flex-basis: 50%;
   flex-shrink: 1;
   flex-grow: 1;
   max-width: 50%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
   .attachedFileSection {
     a {
@@ -22,182 +24,293 @@
     }
   }
 
-  /* 👇 파일 수정 라벨 컨테이너 스타일 수정 */
   .fileEditLabelContainer {
-    display: flex;          // flex 레이아웃 적용
-    align-items: center;    // 세로 중앙 정렬
-    gap: 5px;               // 라벨과 아이콘 사이 간격 추가
-    margin-bottom: 8px;     // 버튼과의 간격 조정
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+
+    label {
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.75);
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
   }
 
-  .fileEditLabel {
-    font-size: 1rem;
-    color: #555;
+  .tooltipIcon {
+    color: rgba(0, 0, 0, 0.4);
+    cursor: help;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $main-color;
+    }
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+    color: $main-color;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  label {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
     margin-bottom: 8px;
     display: block;
     font-weight: 500;
+    letter-spacing: -0.3px;
   }
 
-  /* 👇 툴팁 아이콘 스타일 (필요시 추가 조정) */
-  .tooltipIcon {
-    color: #777; // 아이콘 색상 (예시)
-    cursor: help; // 도움말 커서
-    display: flex; // 아이콘 정렬을 위해 flex 추가 (선택 사항)
-    align-items: center; // 세로 중앙 정렬 (선택 사항)
-    margin-bottom: 8px;
-  }
-
-
-  h2 {
-  font-size: 1.75rem;
-  margin-bottom: 20px;
-  color: $main-color;
-  text-align: center;
-  font-weight: 600;
-  }
-  button {
-    padding: 12px 16px;
-    font-size: 1rem;
-    background-color: #f0f0f0; // 배경색
-    color: #333; // 글자색 수정됨 (기존 black)
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center; // 가운데 정렬 (수정됨)
-    display: flex;
-    align-items: center;
-    justify-content: center; // 가운데 정렬 (수정됨)
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 8px;
-
-    &:hover {
-      background-color: #e0e0e0;
-      border-color: #b3b3b3;
-    }
-  }
-  
-
-  /* Style for the file list */
-  ul {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 0;
-  }
-
-  li {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 4px;
-  }
-
-  /* Style the labels */
-  // Input 컴포넌트 내부의 label 스타일은 해당 컴포넌트에서 관리됩니다.
-  /*
-  label {
-    // font-size: 1rem;
-    // color: #555;
-    // margin-bottom: 8px;
-    // display: block;
-    // font-weight: 500;
-  }
-  */
-
-  /* Style the input fields */
-  // Input 컴포넌트 내부의 input/textarea 스타일은 해당 컴포넌트에서 관리됩니다.
-  /*
   input,
   textarea {
-  // padding: 12px 16px;
-  // font-size: 1rem;
-  // border: 1px solid #ccc;
-  // border-radius: 8px;
-  // outline: none;
-  // width: 100%;
-  // box-sizing: border-box;
-  // transition: border-color 0.2s ease;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.3px;
+    font-family: inherit;
 
-  // &:focus {
-  // border-color: $main-color;
-  // box-shadow: 0 0 6px rgba($main-color, 0.2);
-  // }
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    &:hover {
+      border-color: rgba($main-color, 0.5);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    &:focus {
+      border-color: $main-color;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba($main-color, 0.1);
+    }
   }
-  */
 
-  // Input isTextArea={true} 일 때의 스타일은 Input 컴포넌트에서 관리
-  /*
   textarea {
-  // resize: vertical;
-  // min-height: 100px;
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
   }
-  */
 
-  /* Style the "자소서 작성하기" button */
-  // '자소서 작성하기' 버튼에 특정 클래스(예: .submitButton)를 부여하고 스타일링하는 것을 추천합니다.
-  .submitButton { // 예시 클래스명 (AiJasoseoForm.tsx에서 className 적용 필요)
-    padding: 14px 24px;
+  .fileUploadButton {
+    padding: 24px;
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: $main-color;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .buttonContent {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+
+      .buttonTitle {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      .buttonDescription {
+        font-size: 0.85rem;
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 400;
+      }
+    }
+
+    .buttonIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background-color: rgba($main-color, 0.08);
+      color: $main-color;
+      transition: all 0.3s ease;
+      margin-left: 16px;
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-color: rgba($main-color, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .buttonContent {
+        .buttonTitle {
+          color: $main-color;
+        }
+        
+        .buttonDescription {
+          color: rgba($main-color, 0.7);
+        }
+      }
+
+      .buttonIcon {
+        background-color: $main-color;
+        color: white;
+        transform: scale(1.05);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .submitButton {
+    padding: 14px 32px;
     font-size: 1.1rem;
     background-color: $main-color;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: all 0.3s ease;
     align-self: center;
     font-weight: 600;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    width: auto; // 너비를 자동으로 설정하여 내용에 맞춤
-    margin-top: 15px; // 위쪽 여백 추가
+    letter-spacing: -0.3px;
+    width: auto;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba($main-color, 0.2);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
 
     &:hover {
-      background-color: darken($main-color, 10%);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: darken($main-color, 5%);
+      box-shadow: 0 6px 16px rgba($main-color, 0.25);
+      transform: translateY(-2px);
+
+      &::after {
+        transform: translateX(100%);
+      }
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba($main-color, 0.15);
     }
   }
- }
 
- @media (max-width: 768px) {
-  .formContainer {
+  @media (max-width: 768px) {
     max-width: 100%;
     flex-basis: auto;
-    padding: 15px;
-    margin-bottom: 15px;
-    gap: 15px;
-
-    /* 👇 모바일에서 라벨 컨테이너 스타일 */
-    .fileEditLabelContainer {
-      margin-bottom: 5px; // 간격 조정
-    }
+    padding: 24px;
+    margin-bottom: 0;
+    gap: 20px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
 
     h2 {
       font-size: 1.5rem;
+      margin-bottom: 16px;
     }
 
-    // Input 컴포넌트 label 스타일
-    /*
-    label {
+    label,
+    .fileEditLabel {
       font-size: 0.9rem;
     }
-    */
 
-    // Input 컴포넌트 input/textarea 스타일
-    /*
     input,
     textarea {
       font-size: 0.95rem;
-      padding: 10px 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
     }
-    */
 
-    // 버튼 공통 스타일 (모바일)
-    // button, // Button 컴포넌트 스타일 사용 권장
-    .submitButton { // .submitButton 추가
+    .fileUploadButton {
+      padding: 20px;
+      
+      .buttonContent {
+        gap: 4px;
+        
+        .buttonTitle {
+          font-size: 0.95rem;
+        }
+        
+        .buttonDescription {
+          font-size: 0.8rem;
+        }
+      }
+      
+      .buttonIcon {
+        width: 36px;
+        height: 36px;
+        margin-left: 12px;
+      }
+    }
+
+    .submitButton {
+      padding: 14px 28px;
       font-size: 1rem;
-      padding: 10px 16px;
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 16px;
     }
   }
- }
+}

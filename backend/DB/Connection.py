@@ -1,11 +1,11 @@
 # DB/Connection.py
 import asyncpg # 비동기 연결
 
-DB_HOST = "project-db-campus.smhrd.com"
+DB_HOST = ""
 DB_PORT = 3310
-DB_NAME = "jobis"
-DB_USER = "jobis"
-DB_PASSWORD = "12345"
+DB_NAME = ""
+DB_USER = ""
+DB_PASSWORD = ""
 
 async def get_db_connection(): # DB연결 만들어주는 함수
     conn = await asyncpg.connect( # DB서버 접속

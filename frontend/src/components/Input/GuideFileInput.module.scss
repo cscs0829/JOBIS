@@ -1,0 +1,21 @@
+.fileInputWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    label {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        background-color: #f9f9f9;
+
+        &:hover {
+            background-color: #f0f0f0;
+        }
+    }
+}

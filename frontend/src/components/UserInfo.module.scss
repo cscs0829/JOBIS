@@ -1,0 +1,81 @@
+/* src/components/UserInfo.module.scss */
+@import "../App.scss";
+
+.userInfoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 오른쪽 정렬 유지 */
+  gap: 16px; // 인사말과 버튼 그룹(또는 개별 버튼) 사이 간격
+  padding: 16px 20px 0;
+  margin-bottom: 20px;
+}
+
+.userInfoText { // "안녕하세요, OOO님!" 텍스트 스타일
+  p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+}
+
+.userInfoButtons { // 버튼(이제는 링크)들을 감싸는 컨테이너
+  display: flex;
+  align-items: center; // 수직 정렬 (선택 사항)
+  gap: 12px; // 링크 사이 간격 조정 (기존 8px -> 12px)
+}
+
+// --- 공통 링크 스타일 (기존 버튼 클래스 활용) ---
+.myInfoButton,
+.logoutButton,
+.resumeEditButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: "Pretendard-Regular", sans-serif; // 폰트 지정
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  &:active { // 클릭 효과 제거 (텍스트 링크에는 불필요)
+    transform: none;
+  }
+}
+
+// --- 개별 링크 스타일 ---
+.myInfoButton,
+.resumeEditButton { // 회원 수정, 이력서 수정 링크
+  color: #333; 
+}
+
+.logoutButton { 
+  color: #333; 
+  }
+
+
+// --- 모바일 대응 ---
+@media (max-width: 768px) {
+  .userInfoWrapper { 
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; 
+    padding-top: 10px;
+    margin-bottom: 15px; 
+  }
+
+  .userInfoButtons { // 모바일: 버튼(링크) 컨테이너
+    width: 100%;
+    justify-content: center; // 링크들을 가운데 정렬
+    gap: 15px; // 모바일 링크 사이 간격 조정
+  }
+
+  .myInfoButton,
+  .logoutButton,
+  .resumeEditButton { // 모바일: 개별 링크
+    font-size: 0.95rem; // 모바일 폰트 크기 살짝 키움
+  }
+}

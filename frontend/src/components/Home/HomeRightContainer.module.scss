@@ -1,0 +1,275 @@
+@import "../../App.scss";
+
+.HomeRightContainer {
+  @include glass_box(fit-content, 100%); // 너비는 내용에 맞게, 높이는 100%
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
+  background-color: $light-color;
+  display: flex;
+  justify-content: center; // 세로축 중앙 정렬 (내용이 적을 때)
+  flex-direction: column;
+  float: left;
+  z-index: 1;
+  transform: translateX(-70%);
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  padding: 40px 50px; // 내부 여백 조정 (상하, 좌우)
+
+  // --- Transition 상태 ---
+  &.entering {
+    transform: translateX(-5%);
+    opacity: 0.8;
+  }
+  &.entered {
+    transform: translateX(-5%);
+    opacity: 1;
+  }
+  &.exiting {
+    transform: translateX(-70%);
+    opacity: 0;
+  }
+
+  // --- 공통 제목 ---
+  h3 {
+    font-size: 1.4rem; // 크기 살짝 키움
+    font-family: "Pretendard-Bold";
+    margin-bottom: 30px; // 아래쪽 여백 추가
+    text-align: center; // 가운데 정렬
+    margin-left: 0; // 왼쪽 마진 제거
+    margin-top: 0; // 위쪽 마진 제거 (패딩으로 대체)
+    width: 100%;
+  }
+
+  // --- 사용자 입력/선택 박스 ---
+  .input_user_info_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center; // 내부 요소들 가운데 정렬
+    gap: 20px; // 각 섹션(div) 사이의 간격
+    width: 100%;
+    max-width: 400px; // 최대 너비 설정
+    margin: 0 auto; // 좌우 마진 auto로 가운데 정렬
+    padding: 0; // 내부 패딩 제거 (HomeRightContainer 패딩 사용)
+
+    // --- 섹션 공통 스타일 (페르소나, 직무, 면접 유형 등) ---
+    .select_section {
+      width: 100%; // 너비 100%
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; // 왼쪽 정렬
+      gap: 10px; // 제목(h4)과 버튼/내용 사이 간격
+
+      h4 {
+        margin-bottom: 0; // h4 자체 마진 제거 (gap 사용)
+        color: $main-color;
+        text-align: left;
+        font-size: 1rem; // 폰트 크기 조정
+      }
+
+      // 선택된 값 표시 (이제 버튼 내부에 표시되므로 제거 가능)
+      // div {
+      //   margin-top: 8px;
+      //   font-size: 0.9rem;
+      //   color: #555;
+      //   text-align: left;
+      //   width: 100%;
+      // }
+    }
+
+    // 시작버튼
+    .start_button { 
+      @include glass_box(100%, fit-content); // 너비 100%
+      font-family: "Pretendard-Bold";
+      color: #fff; // 기본 텍스트 색상
+      background-color: $main-color; // 기본 배경색
+      border: none; // 테두리 추가
+      font-weight: 500; // 폰트 두께 조정
+      font-size: 1.1rem; // 폰트 크기 조정
+      padding: 12px 20px; // 패딩 조정
+      border-radius: $radius;
+      cursor: pointer;
+      margin-top: 20px; // 위쪽 여백 추가 (마지막 버튼용)
+      transition: background-color 0.3s ease;
+      text-align: center; // 텍스트 가운데 정렬
+
+      &:hover {
+        background-color: darken($main-color, 10%);
+      }
+    }
+
+    // (기존 .button 스타일을 .action_button 으로 명확히 함)
+    .action_button {
+      @include glass_box(100%, fit-content); // 너비 100%
+      font-family: "Pretendard-Bold";
+      color: $main-color; // 기본 텍스트 색상
+      background-color: #fff; // 기본 배경색
+      border: 1px solid $main-color; // 테두리 추가
+      font-weight: 500; // 폰트 두께 조정
+      font-size: 1.1rem; // 폰트 크기 조정
+      padding: 12px 20px; // 패딩 조정
+      border-radius: $radius;
+      cursor: pointer;
+      margin-top: 20px; // 위쪽 여백 추가 (마지막 버튼용)
+      transition: background-color 0.3s ease;
+      text-align: center; // 텍스트 가운데 정렬
+
+      &:hover {
+        background-color: darken($main-color, 10%);
+      }
+    }
+
+    // --- 선택 버튼 (페르소나, 직무) ---
+    .select_button {
+      @include glass_box(100%, fit-content); // 너비 100%
+      font-family: "Pretendard-Bold";
+      color: $main-color; // 기본 텍스트 색상
+      background-color: #fff; // 기본 배경색
+      font-size: 1.1rem;
+      padding: 12px 20px;
+      border-radius: $radius;
+      cursor: pointer;
+      border: 1px solid $main-color; // 테두리 추가
+      margin-top: 0; // 위쪽 마진 제거 (gap 사용)
+      transition: background-color 0.3s ease, color 0.3s ease;
+      text-align: center;
+      width: 100%; // 너비 100% 명시
+
+      &:hover {
+        background-color: darken($main-color, 10%);
+          color: #fff;
+          border-color: darken($main-color, 10%);
+      }
+
+      // 선택된 상태
+      &.selected_button {
+        background-color: $main-color;
+        color: #fff;
+        border-color: $main-color; // 선택 시 테두리 색상도 통일
+        &:hover {
+          background-color: darken($main-color, 10%);
+        }
+      }
+    }
+
+    // --- 면접 유형 버튼 그룹 ---
+    .interviewTypeButtons {
+      display: flex;
+      gap: 10px; // 버튼 사이 간격
+      justify-content: flex-start; // 왼쪽 정렬
+      width: 100%; // 너비 100%
+      margin-top: 0; // 위쪽 마진 제거
+      margin-bottom: 0; // 아래쪽 마진 제거
+
+      button { // 개별 버튼 스타일
+        @include glass_box(auto, auto); // 크기는 내용에 맞게
+        padding: 10px 20px; // 패딩 조정 (다른 버튼과 유사하게)
+        font-size: 1rem; // 폰트 크기 조정
+        color: $main-color; /* 초기 텍스트 색상 */
+        font-weight: bold;
+        background-color: #fff; /* 초기 배경색 */
+        border: 1px solid $main-color; // 테두리 추가
+        border-radius: $radius; // $radius 적용
+        cursor: pointer;
+        margin: 0; // 개별 마진 제거 (gap 사용)
+        transition: all 0.3s ease;
+        flex-grow: 1; // 가능한 공간 균등하게 차지
+        text-align: center;
+
+        &:hover {
+          background-color: darken($main-color, 10%);
+          color: #fff;
+          border-color: darken($main-color, 10%);
+        }
+
+        // 선택된 상태
+        &.selected {
+          background-color: $main-color;
+          color: #fff;
+          border-color: $main-color; // 테두리 색상 통일
+          &:hover {
+            background-color: darken($main-color, 15%);
+          }
+        }
+      }
+    }
+
+    // --- 알림 텍스트 ---
+    .notice_text {
+      color: red;
+      font-size: 0.85rem; // 크기 살짝 줄임
+      margin-top: 5px; // 위쪽 여백 추가
+      width: 100%; // 너비 100%
+      text-align: left; // 왼쪽 정렬
+      // position, bottom, left 제거 (기본 흐름 따르도록)
+    }
+  }
+
+
+  // --- 모바일 반응형 ---
+  @media (max-width: 768px) {
+    transform: translateY(-100%); // 초기 위치 조정
+    opacity: 1; // 초기 투명도
+    width: 100%;
+    align-items: center; // 수직 가운데 정렬 제거 (flex-start 필요 시)
+    padding: 20px; // 모바일 패딩 조정
+    height: auto; // 높이 자동
+    min-height: calc(100vh - 60px); // 최소 높이 (헤더 제외)
+    justify-content: flex-start; // 위쪽 정렬
+
+    // Transition 상태 (모바일)
+    &.entering, &.entered {
+      transform: translateY(0%); // 나타날 때 위치
+      opacity: 1;
+    }
+    &.exiting {
+      transform: translateY(-100%); // 사라질 때 위치
+      opacity: 0;
+    }
+
+    h3 {
+      margin-top: 10%; // 위쪽 여백 (모바일)
+      font-size: 1.3rem; // 모바일 폰트 크기
+    }
+
+    .input_user_info_box {
+      padding-top: 0; // 위쪽 패딩 제거
+      gap: 25px; // 모바일 섹션 간격 조정
+      max-width: 100%; // 모바일 최대 너비 제한 해제
+
+      // 섹션 공통 스타일 (모바일)
+      .select_section {
+        gap: 8px; // 모바일 내부 간격 조정
+        h4 {
+          font-size: 0.95rem;
+        }
+      }
+
+      // 공통 버튼 (모바일)
+      .action_button, .select_button {
+        font-size: 1rem;
+        padding: 12px 18px;
+      }
+
+      // 면접 유형 버튼 (모바일)
+      .interviewTypeButtons {
+        flex-direction: row; // 가로 배치 유지 (공간 충분하면)
+        // flex-direction: column; // 세로 배치 필요 시 주석 해제
+        // align-items: stretch; // 세로 배치 시 버튼 너비 100%
+        gap: 8px;
+        button {
+          font-size: 0.9rem;
+          padding: 10px 15px;
+        }
+      }
+
+       // 알림 텍스트 (모바일)
+      .notice_text {
+         font-size: 0.8rem;
+      }
+    }
+  }
+
+  // --- 이전 스타일 제거 (select_box 클래스 -> select_section 으로 변경) ---
+  // .persona_select_box, .job_select_box {
+  //  margin-bottom: 30px; // 제거 (gap 으로 대체)
+  // }
+}

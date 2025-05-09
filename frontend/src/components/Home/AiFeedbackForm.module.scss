@@ -1,0 +1,330 @@
+/* src/components/Home/AiFeedbackForm.module.scss */
+@import '../../App.scss'; // App.scss 경로 확인
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  background-color: #FFFBEF;
+  margin-bottom: 32px;
+  height: 100%;
+  overflow-y: auto;
+  flex-basis: 50%;
+  flex-shrink: 1;
+  flex-grow: 1;
+  max-width: 50%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+
+  .attachedFileSection {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .fileEditLabelContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .fileEditLabel {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+
+  .tooltipIcon {
+    color: rgba(0, 0, 0, 0.4);
+    cursor: help;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $main-color;
+    }
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+    color: $main-color;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  label {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+
+  input,
+  textarea {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.3px;
+
+    &:hover {
+      border-color: rgba($main-color, 0.5);
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    &:focus {
+      border-color: $main-color;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba($main-color, 0.1);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .fileUploadButton {
+    padding: 24px;
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: $main-color;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .buttonContent {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+
+      .buttonTitle {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      .buttonDescription {
+        font-size: 0.85rem;
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 400;
+      }
+    }
+
+    .buttonIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background-color: rgba($main-color, 0.08);
+      color: $main-color;
+      transition: all 0.25s ease;
+      margin-left: 16px;
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.7);
+      border-color: rgba($main-color, 0.12);
+      transform: translateY(-1px);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .buttonContent {
+        .buttonTitle {
+          color: $main-color;
+        }
+        
+        .buttonDescription {
+          color: rgba($main-color, 0.7);
+        }
+      }
+
+      .buttonIcon {
+        background-color: $main-color;
+        color: white;
+        transform: scale(1.05);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .fileList {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 15px;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+
+    li {
+      margin-bottom: 4px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .feedbackSelectButton {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba($main-color, 0.04);
+      border-color: rgba($main-color, 0.3);
+      color: $main-color;
+    }
+  }
+
+  .selectedFeedbackDisplay {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 14px 16px;
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    min-height: 30px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    letter-spacing: -0.3px;
+  }
+
+  .submitButton {
+    padding: 16px 32px;
+    font-size: 1rem;
+    background-color: $main-color;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: center;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    width: auto;
+    margin-top: 8px;
+    box-shadow: 0 1px 2px rgba($main-color, 0.2);
+
+    &:hover {
+      background-color: darken($main-color, 5%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($main-color, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba($main-color, 0.2);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: 100%;
+    flex-basis: auto;
+    padding: 24px;
+    margin-bottom: 0;
+    gap: 20px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    label,
+    .fileEditLabel {
+      font-size: 0.9rem;
+    }
+
+    input,
+    textarea,
+    .fileUploadButton,
+    .feedbackSelectButton,
+    .selectedFeedbackDisplay {
+      font-size: 0.95rem;
+      padding: 14px 16px;
+      border-radius: 12px;
+    }
+
+    .submitButton {
+      font-size: 1rem;
+      padding: 16px;
+      width: 100%;
+      align-self: stretch;
+      border-radius: 12px;
+    }
+  }
+}

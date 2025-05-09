@@ -1,0 +1,150 @@
+// src/pages/CompanyRecommendation.module.scss
+@import '../App.scss';
+
+.companyMentorPage {
+  height: 100vh;
+  background-color: $bg-color;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 10px 0;
+}
+
+.companyMentorContainer {
+  min-height: 600px;
+  margin: auto 0;
+  width: 80%;
+  height: 95%;
+  max-width: 1200px;
+  min-width: 700px;
+  background-color: $light-color;
+  display: flex;
+  border-radius: $radius;
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; 
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; 
+  animation: slideDownFadeIn 0.5s ease-out forwards; 
+}
+
+.companyMentorLeft {
+  border-right: 1.5px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 20px; // 필요시 Navbar 너비에 맞게 조정
+  flex-basis: 250px; // Navbar 너비와 일치시키는 것이 좋음
+  flex-shrink: 0;
+}
+
+.companyMentorRight {
+  flex-grow: 1;
+  position: relative; // 자식 요소의 absolute 위치 기준점
+  display: flex;
+  flex-direction: column;
+  padding: 20px; // 내부 여백 유지
+}
+
+// --- 버튼 컨테이너 스타일 수정 ---
+.searchTriggerContainer {
+  position: absolute; // 절대 위치 지정
+  bottom: 20px;     // 하단에서 20px
+  right: 20px;      // 오른쪽에서 20px
+
+  // --- 버튼 자체 스타일 수정 ---
+  button {
+    padding: 8px 16px; // 버튼 크기 줄이기 (기존 Button 컴포넌트 스타일 오버라이드)
+    font-size: 0.9rem; // 폰트 크기 줄이기
+    background-color: $main-color; // 배경색을 주황색($main-color)으로 변경
+    border: none; // 필요시 테두리 제거
+    color: white; // 글자색 흰색 유지
+
+    // 기존 Button 컴포넌트의 primary 스타일 오버라이드 (필요 시)
+    &.primary { // 만약 Button 컴포넌트에 primary 클래스가 적용된다면
+      background-color: $main-color; // primary 스타일도 주황색으로 덮어쓰기
+      border-color: $main-color; // 테두리 색상도 통일
+    }
+
+    &:hover {
+       background-color: darken($main-color, 10%); // hover 시 약간 어둡게
+       border-color: darken($main-color, 10%);
+    }
+  }
+}
+
+
+.resultContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 4개 카드 */
+  gap: 16px;
+  // margin-top 제거 또는 조정 (버튼 위치 변경으로 인해 불필요할 수 있음)
+  overflow-y: auto;
+  height: calc(100% - 60px); // 검색 버튼 공간 확보 (대략적인 값, 조정 필요)
+}
+
+.noResults { // 검색 결과 없을 때 메시지 스타일 (선택 사항)
+  grid-column: 1 / -1; // 전체 너비 차지
+  text-align: center;
+  margin-top: 40px;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .companyMentorPage {
+    display: block;
+    padding: 0;
+    min-width: 300px;
+    .companyMentorContainer {
+      height: 100%;
+      min-width: 0;
+      width: 100%;
+      flex-direction: column;
+      padding: 0;
+      .companyMentorLeft {
+        display: block;
+        flex-basis: auto; // 모바일에서는 flex-basis 제거 또는 auto
+        border: none;
+        padding: 0;
+
+        /* 모바일 Navbar 스타일 유지 */
+        // .title { ... }
+      }
+      .companyMentorRight {
+        padding: 10px;
+        height: auto; // 모바일에서는 높이 자동 조절
+        min-height: calc(100vh - 60px); // 최소 높이 확보 (헤더 등 고려)
+
+        // --- 모바일 버튼 위치 조정 ---
+        .searchTriggerContainer {
+          position: static; // 모바일에서는 static으로 변경하여 기본 흐름 따르도록
+          margin-top: 15px; // 위쪽 여백 추가
+          align-self: center; // 가운데 정렬 (선택 사항)
+
+          button {
+            // 모바일 버튼 크기/스타일 유지 또는 약간 조정 가능
+            padding: 10px 20px;
+            font-size: 1rem;
+          }
+        }
+
+         .resultContainer {
+           height: auto; // 모바일 높이 자동
+           margin-top: 15px; // 버튼 아래 여백
+         }
+      }
+    }
+  }
+}
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

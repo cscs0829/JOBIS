@@ -1,0 +1,114 @@
+/* src/pages/Login.module.scss */
+@import '../App.scss'; // Import App.scss if not already present
+
+.authContainer {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #FAF5EF;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+
+  /* --- 애니메이션 추가 --- */
+  opacity: 0; /* 시작 시 투명 */
+  animation: slideDownFadeIn 0.5s ease-out forwards; /* 애니메이션 적용 */
+  /* ------------------- */
+
+  h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #FFA500;
+      box-shadow: 0 0 5px rgba(47, 128, 237, 0.3);
+    }
+  }
+
+  button[type="submit"] {
+    padding: 14px 20px;
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken(#FFA500, 10%);
+    }
+  }
+
+  .bottomLinks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .linkPrimary, .linkSecondary {
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    margin: 0;
+  }
+
+
+  @media (max-width: 600px) {
+    max-width: 90%;
+    margin: 40px auto;
+    padding: 30px;
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    button[type="submit"] {
+      font-size: 1rem;
+      padding: 12px;
+    }
+
+    .linkPrimary, .linkSecondary {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* --- 애니메이션 키프레임 정의 --- */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px); /* 위에서 20px 떨어진 위치에서 시작 */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* 최종 위치 (원래 위치) */
+  }
+}
+/* --------------------------- */

@@ -1,0 +1,84 @@
+@import "../../App.scss";
+
+ .modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+ }
+
+ .modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+ }
+
+ .jobList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+ }
+
+ .jobOption {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+  background-color: #f0f0f0;
+  }
+ }
+
+ button {
+  padding: 10px 15px;
+  background-color: $main-color;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+  }
+ }
+
+ input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 10px;
+ }
+
+ .buttonContainer { /* 추가된 스타일 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+ }
+
+ h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+ }

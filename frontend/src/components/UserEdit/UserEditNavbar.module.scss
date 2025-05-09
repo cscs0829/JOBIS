@@ -1,0 +1,140 @@
+@import '../../App.scss';
+
+.navbar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 변경: space-between -> flex-start */
+    background-color: #FFFBEF;
+    border-right: 1.5px solid #ddd;
+    padding: 20px 0;
+    width: 250px;
+    flex-shrink: 0;
+
+    .title {
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+
+        h2 {
+            font-size: 1.4rem;
+            color: $main-color;
+            text-align: center;
+        }
+    }
+
+    .modeWrapper {
+        flex-grow: 1; /* 변경: 0.6 -> 1 */
+    }
+
+    .extraWrapper {
+        margin-bottom: 50px;
+        flex-basis: auto; /* 추가 */
+    }
+
+    .modeWrapper,
+    .extraWrapper {
+        margin-left: 12px;
+
+        .modeTitle,
+        .extraTitle {
+            font-size: 0.8rem; /* 변경: 12px -> 0.8rem */
+            color: #999;
+            margin-bottom: 18px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0; /* 추가 */
+
+            li {
+                display: flex;
+                align-items: center;
+                padding: 10px 10px; /* 추가 */
+                margin: 14px 5px;
+                cursor: pointer;
+                transition: background-color 0.2s ease; /* 추가 */
+
+                > *:first-child {
+                    font-size: 1.1rem; /* 변경: 14px -> 1.1rem */
+                    margin-right: 18px;
+                    color: #777; /* 추가 */
+                }
+
+                span {
+                    font-size: 0.9rem;
+                    color: #444;
+                    font-family: 'Pretendard-Bold';
+                }
+
+                &:hover {
+                    background-color: #f5f5f5; /* 추가 */
+                    * {
+                        color: $main-color;
+                    }
+                }
+
+                &.selected {
+                    background-color: $light-color; /* 추가 */
+                    border-left: 4px solid $main-color; /* 추가 */
+                    svg,
+                    span {
+                        color: $main-color;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .hamburgerIcon {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        width: fit-content;
+        padding: 20px;
+        border-radius: 20px;
+        border: 0.5px solid $main-color;
+        background-color: $light-color;
+        position: absolute;
+        z-index: 3;
+        height: auto; /* 변경: 400px -> auto */
+        top: 20%;
+        left: 20px;
+        transition: all 0.3s;
+
+        &.disappear {
+            opacity: 0;
+            transform: translateX(-120%);
+        }
+
+        &.appear {
+            opacity: 100;
+            transform: translateX(0%);
+            box-shadow: 0px 0px 1000px 4000px rgba(0, 0, 0, 0.5);
+        }
+
+        .modeWrapper,
+        .extraWrapper {
+            margin-left: 0;
+
+            ul {
+                margin-left: 8px;
+            }
+        }
+
+        .hamburgerIcon {
+            display: block;
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            left: 2px;
+            top: 10px;
+            font-size: 1.2rem;
+        }
+    }
+}

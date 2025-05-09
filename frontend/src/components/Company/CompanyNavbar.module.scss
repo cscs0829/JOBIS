@@ -1,0 +1,211 @@
+// src/components/Company/CompanyNavbar.module.scss
+@import '../../App.scss'; //
+
+.navbar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* flex-start로 변경 */
+    background-color: #FFFBEF;
+    border-right: 1.5px solid #ddd;
+    padding: 20px 0;
+    width: 250px;
+    flex-shrink: 0;
+
+    /* 데스크탑 타이틀 - AiJasoseoNavbar와 다르게 클릭 이벤트 및 아이콘 없음 */
+    .title {
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        /* border-bottom 제거됨 (원본 CompanyNavbar 스타일 유지) */
+
+        h2 {
+            font-size: 1.4rem; /* AiJasoseoNavbar와 일치 */
+            color: $main-color; //
+            text-align: center; /* AiJasoseoNavbar와 일치 */
+        }
+    }
+
+    .modeWrapper {
+        flex-grow: 1; /* AiJasoseoNavbar와 일치 (기존 0.6 -> 1) */
+    }
+
+    .extraWrapper {
+        margin-bottom: 50px;
+        flex-basis: auto; /* AiJasoseoNavbar와 일치 (기존 15% -> auto) */
+    }
+
+    .modeWrapper,
+    .extraWrapper {
+        margin-left: 12px;
+
+        .modeTitle { /* extraTitle 클래스 사용하지 않음 */
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 18px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                align-items: center;
+                padding: 10px 10px;
+                margin: 14px 5px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                /* 아이콘 스타일 */
+                > *:first-child {
+                    font-size: 1.1rem; /* AiJasoseoNavbar와 일치 */
+                    margin-right: 18px;
+                    color: #777;
+                    /* font-size: 14px; /* CompanyNavbar 원본 스타일 주석 처리 */
+                }
+
+                span {
+                    font-size: 0.9rem;
+                    color: #444;
+                    font-family: 'Pretendard-Bold';
+                }
+
+                &:hover {
+                    background-color: #f5f5f5;
+                    * { /* 아이콘과 텍스트 모두 색 변경 */
+                        color: $main-color; //
+                    }
+                }
+
+                /* 선택된 메뉴 스타일 */
+                &.selected {
+                    background-color: $light-color; //
+                    border-left: 4px solid $main-color; //
+                    /* padding-left 조정 (필요 시) */
+
+                    /* 아이콘과 텍스트 스타일 변경 */
+                    svg,
+                    span {
+                        color: $main-color; //
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    /* 모바일 메뉴 아이콘 (기본 숨김) */
+    .menuIcon {
+        display: none;
+    }
+}
+
+/* 모바일 스타일 */
+@media (max-width: 768px) { /* mobileQuery 값으로 대체 가능 */
+    .navbar {
+        /* === AiJasoseoNavbar 모바일 스타일 적용 === */
+        width: fit-content; /* 변경: 100% -> fit-content */
+        padding: 20px;
+        border-radius: 20px; /* 변경: 0 -> 20px */
+        border: 0.5px solid $main-color; // /* 변경: border-bottom -> border */
+        background-color: $light-color; // /* 변경: #f8f8f8 -> $light-color */
+        position: absolute; /* 변경: fixed -> absolute */
+        z-index: 3; /* 변경: 2 -> 3 */
+        height: auto; /* 변경: 60px -> auto */
+        top: 20%; /* 변경: 0 -> 20% */
+        left: 20px; /* 변경: 0 -> 20px */
+        transition: all 0.3s; /* 추가 */
+        justify-content: flex-start; /* 추가 */
+        box-shadow: none; /* 추가: 초기 그림자 없음 */
+
+        /* === 기존 CompanyNavbar 모바일 헤더 스타일 제거 === */
+        /* height: 60px; */
+        /* background-color: #f8f8f8; */
+        /* border-bottom: 1px solid #ddd; */
+        /* display: flex; */
+        /* justify-content: space-between; */
+        /* align-items: center; */
+        /* padding: 0 20px; */
+        /* position: fixed; */
+        /* top: 0; */
+        /* left: 0; */
+        /* width: 100%; */
+        /* z-index: 2; */
+
+        /* 메뉴 숨김/표시 상태 */
+        &.disappear {
+            opacity: 0;
+            transform: translateX(-120%);
+        }
+
+        &.appear {
+            opacity: 1; /* 변경: 100 -> 1 */
+            transform: translateX(0%);
+            box-shadow: 0px 0px 1000px 4000px rgba(0, 0, 0, 0.5); /* 오버레이 효과 */
+        }
+
+        /* === 모바일 타이틀 (AiJasoseoNavbar와 동일) === */
+        .title {
+             padding: 15px 20px;
+             margin-bottom: 20px;
+             border-bottom: 1px solid #eee; /* 모바일에서는 하단선 추가 */
+
+             h2 {
+                 font-size: 1.4rem;
+                 color: $main-color; //
+                 text-align: center;
+             }
+         }
+        /* === 기존 CompanyNavbar 모바일 타이틀 스타일 제거 === */
+        /* .title { */
+        /*     font-size: 1.2rem; */
+        /*     color: $main-color; */
+        /*     font-weight: bold; */
+        /*     position: relative; */
+        /*     display: flex; */
+        /*     align-items: center; */
+        /*     justify-content: flex-start; */
+        /*     padding-left: 40px; */
+        /* } */
+
+        /* 모바일 메뉴 아이콘 */
+        .menuIcon {
+            display: block; /* 보이도록 변경 */
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            left: 2px; /* AiJasoseoNavbar와 일치 */
+            top: 10px; /* AiJasoseoNavbar와 일치 */
+            font-size: 1.2rem; /* AiJasoseoNavbar와 일치 */
+            /* === 기존 CompanyNavbar 메뉴 아이콘 스타일 제거 === */
+            /* font-size: 1.5rem; */
+            /* color: #555; */
+            /* position: absolute; */
+            /* left: 10px; */
+            /* top: 50%; */
+            /* transform: translateY(-50%); */
+        }
+
+         /* 모바일 메뉴 내부 wrapper 스타일 */
+         .modeWrapper,
+         .extraWrapper {
+             margin-left: 0; /* AiJasoseoNavbar와 일치 */
+             ul {
+                 margin-left: 8px; /* AiJasoseoNavbar와 일치 */
+             }
+         }
+
+        /* === 모바일 메뉴 오버레이 스타일 (기존 mobileMenu 클래스 활용) === */
+        /* CompanyNavbar에는 mobileMenu 클래스가 없었으므로 AiJasoseoNavbar 구조를 따름 */
+        /* 단, CompanyNavbar.tsx 에서는 appear/disappear 클래스로 제어하므로 mobileMenu 스타일은 불필요 */
+        /* .mobileMenu { ... } */
+
+        /* 닫기 버튼 스타일 (CompanyNavbar.tsx 에서 appear/disappear로 제어하므로 불필요) */
+        /* .closeButton { ... } */
+    }
+}
+
+/* === 애니메이션 키프레임 (AiJasoseoNavbar 와 동일, 필요 시 추가) === */
+/* @keyframes slideIn { ... } */
+/* @keyframes fadeIn { ... } */

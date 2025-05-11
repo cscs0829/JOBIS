@@ -160,7 +160,6 @@
 ![Image](https://github.com/user-attachments/assets/42454b83-6a64-4102-b5a3-7a2ed0a5c1e3)
 ![Image](https://github.com/user-attachments/assets/756fd06a-28a6-4569-9573-8cda62204743)
 
-:link: [화면설계서 링크](https://www.figma.com/design/PkABMn1ZnHp2tuFcA8yRcM/-%EA%B8%B0%ED%9A%8D-%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C-%ED%85%9C%ED%94%8C%EB%A6%BF-UX-UI-Wireframe-Template-KOR--UX-UI--Community-?node-id=0-1&p=f)
+:link: [화면설계서 링크](https://www.figma.com/proto/PkABMn1ZnHp2tuFcA8yRcM/JOBIS-%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C?page-id=0%3A1&node-id=733-66&t=v85aHvlDm4oOknWn-1)
 ---
-
 
